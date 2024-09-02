@@ -1,0 +1,306 @@
+---
+title: "Interactions (Moderators)"
+author: "STAT 245"
+date: ""
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '4:3'
+---
+
+```{r, setup, include=FALSE}
+library(tidyverse)
+library(mosaic)    
+library(ggformula)
+library(ggeffects)
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 7, 
+                      fig.height = 3,
+                      tidy = FALSE,
+                      fig.align = 'center', 
+                      message = FALSE, 
+                      warning = FALSE,
+                      error = TRUE,
+                      out.width = '60%', 
+                      dpi = 300)
+theme_set(theme_minimal(base_size = 22))
+
+set.seed(9)
+harp_seals <- data.frame(ice_cover = runif(18, min = 10, max = 80)) |>
+  mutate(strandings = 75.22 - 0.88*ice_cover + rnorm(18, 0, 16)) |>
+  mutate(strandings = ifelse(strandings < 0, -strandings, strandings))
+
+teach_beauty <- read.csv('http://www.stat.columbia.edu/~gelman/arm/examples/beauty/ProfEvaltnsBeautyPublic.csv') |>
+  rename(beauty = btystdave,
+         eval = courseevaluation) |>
+  mutate(race_eth = ifelse(minority == 0, 'White/Caucasian', 'Other'),
+         native_language = ifelse(nonenglish == 1, 'English', 'Other Language'),
+         formal = ifelse(formal == 1, 'Formal Dress', 'Informal Dress'),
+         female = ifelse(female == 1, 'female', 'not female')) |>
+  dplyr::select(beauty, eval, race_eth, native_language, age, students, formal, profnumber, female)
+
+```
+
+class: huge center inverse subsection
+
+# Interactions Defined
+
+Two predictors **interact** when you need to know values of *both* in order to make an accurate prediction of the response variable value. One variable *modulates* or *alters* the effect of the other *on the response*.
+
+(Interaction is AKA Moderation!)
+
+---
+class: huge center inverse subsection
+
+# Interaction Note
+
+Predictors can interact in *any* type of regression model (so this chapter could really be placed almost anywhere in our course).
+
+---
+
+# Video #1
+
+<iframe width="896" height="504" src="https://www.youtube.com/embed/3CCkeFShB3U?si=YunTWwImluB0wxH6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+---
+# Video #2
+
+<iframe width="896" height="504" src="https://www.youtube.com/embed/Xn3B_YI1JQw?si=BZq0peRxCCuPv_Sa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+---
+# SET Example
+
+.small[
+.pull-left[
+- Dataset: `teach_beauty`
+- Course evaluation scores (`eval`) for many profs. 
+- From Gelman -- Columbia?
+]]
+
+.small[
+.pull-right[
+
+Dataset includes:
+
+- `native_language`
+- `beauty` (?)
+- `age`
+- is dress `formal`?
+- is prof `female`?
+- is prof white/caucasian? (`race_eth`)
+
+]
+]
+
+---
+# More Background
+
+- [Spooren et al. 2013](https://doi.org/10.3102/0034654313496870), 
+- [Hornstein 2017](https://www.tandfonline.com/doi/full/10.1080/2331186X.2017.1304016)
+- [Kreitzer & Sweet-Cushman 2022](https://link.springer.com/article/10.1007/s10805-021-09400-w)
+
+---
+## Night Science - We can Peek!
+### A Categorical-Quantitative Interaction?
+
+```{r, echo = FALSE, fig.width = 11, fig.height=7, out.width='90%'}
+gf_point(eval ~ beauty | female, color = ~female, shape = ~female, data = teach_beauty) |>
+  gf_lm()
+```
+  
+---
+## Night Science - We can Peek!
+### A Categorical-Categorical Interaction?
+
+```{r, SET-graph-2, echo = FALSE, fig.width = 11, fig.height=7, out.width='90%'}
+gf_boxplot(eval ~ formal | female, data = teach_beauty)
+```
+
+---
+class: huge center inverse subsection
+# Quant-Quant interactions?
+
+Let's not go there...
+
+---
+## Interactions in R Model Formula: * not +
+
+
+```{r, beauty-model, echo = TRUE}
+beauty_mod <- lm(eval ~ 
+                   beauty * female + 
+                   formal * female, 
+                 data = teach_beauty)
+```
+
+## Consistent Diagram?
+
+
+---
+# `summary()` w/Interaction
+
+.small[
+```{r}
+msummary(beauty_mod)
+```
+]
+
+---
+## `summary()` w/Interaction -- Equation?
+
+.smaller[
+```{r}
+msummary(beauty_mod)
+```
+]
+
+---
+## Selection using ANOVA
+
+.small[
+```{r}
+car::Anova(beauty_mod)
+```
+]
+
+---
+## Selection using AIC
+
+.small[
+```{r}
+m2 <- lm(eval ~ beauty + female + formal * female, 
+                 data = teach_beauty)
+m3 <- lm(eval ~ beauty * female + formal + female, 
+                 data = teach_beauty)
+AIC(beauty_mod, m2)
+AIC(beauty_mod, m3)
+```
+]
+
+---
+class: huge center inverse subsection
+
+# Cautionary note
+If you include an interaction in a regression model, you **must** also include the corresponding "fixed effects" (It would take effort to mess this up in R).
+
+---
+## Another Example: Bees
+
+### We will use data from a 2019 paper by Adam Dolezal and colleagues, entitled *Interacting stressors matter: diet quality and virus infection in honeybee health* (<https://doi.org/10.1098/rsos.181803>).
+
+---
+## Bees
+
+.small[
+>>Honeybee population declines have been linked to multiple stressors, including reduced diet diversity and increased exposure to understudied viruses. Despite interest in these factors, few experimental studies have explored the interaction between diet diversity and viral infection in honeybees... In laboratory experiments, we found that high-quality diets have the potential to reduce mortality in the face of infection with Israeli acute paralysis virus (IAPV).
+
+]
+---
+## Data Prep
+
+.small[
+```{r, bee-setup, message = FALSE, warning = FALSE, echo = TRUE}
+bees <- read_csv('https://sldr.netlify.app/data/bee-virus.csv') |>
+  rename(Cage_id = `Cage Number`,
+         Virus = `Virus Treatment`,
+         Food = `Pollen Treatment`,
+         Experiment_id = `Experimental replicate code`,
+         Mortality = `72 hpi proportion mortality`) |>
+  drop_na(Virus, Food, Mortality)
+
+glimpse(bees)
+```
+]
+
+---
+class: huge center inverse subsection
+
+# Categorical-Quantitative Interaction of `Virus` and `Food`?
+
+---
+## Categorical-Quantitative Interaction
+
+```{r, bee-plot, fig.height = 8, fig.width = 6, out.width='40%'}
+gf_boxplot(Mortality ~ Virus | Food, 
+           data = bees)
+```
+
+---
+## Bee Model
+
+.small[
+```{r, bee-vf-int-model}
+bee_int_model <- lm(Mortality ~ 
+                      Virus * Food, 
+                    data = bees)
+msummary(bee_int_model)
+```
+]
+
+---
+# Selection
+## What's it mean?
+
+.small[
+```{r, bee-vf-int-select}
+car::Anova(bee_int_model)
+```
+]
+
+---
+class: huge center inverse subsection
+# Pred Plots
+
+If predictors interact in a model, you shouldn't show a prediction plot with *any* **of them unless it shows** *all* **of them**
+---
+## Pred Plot - How?
+
+---
+## Pred Plot Shortcut
+### (NOT allowed for use on Test 1!)
+
+```{r, bee-pred-plot1a, fig.width = 8, fig.height=5, out.width='90%', eval= FALSE}
+library(ggeffects)
+ggpredict(bee_int_model,
+          terms = c('Virus', 'Food')) |>
+  plot()
+```
+
+---
+## Pred Plot Shortcut
+### (NOT allowed for use on Test 1!)
+
+```{r, bee-pred-plot1b, fig.width = 8, fig.height=5, out.width='90%', echo = FALSE}
+ggpredict(bee_int_model,
+          terms = c('Virus', 'Food')) |>
+  plot()
+```
+
+---
+## Pred Plot Shortcut
+### (NOT allowed for use on Test 1!)
+### *Order matters*
+
+```{r, bee-pred-plot2a, fig.width = 8, fig.height=5, out.width='90%', eval= FALSE}
+library(ggeffects)
+ggpredict(bee_int_model,
+          terms = c('Food', 'Virus')) |>
+  plot()
+```
+
+---
+## Pred Plot Shortcut
+### (NOT allowed for use on Test 1!)
+
+```{r, bee-pred-plot2b, fig.width = 8, fig.height=5, out.width='90%', echo = FALSE}
+ggpredict(bee_int_model,
+          terms = c('Food', 'Virus')) |>
+  plot()
+```
+

@@ -1,0 +1,53 @@
+---
+title: "Causal Inference Examples"
+format: 
+  html:
+    embed-resources: true
+    code-tools: true
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(ggformula)
+
+set.seed (1896) 
+# Reproducibility 
+n <- 1000 
+# Sample Size 
+ex_mediation <- tibble(learning = rnorm(n),
+                       knowing = 5 * learning + rnorm(n),
+                       understanding = 3 * knowing + rnorm(n))
+set.seed(189)
+n2 <- 100
+ex_confounding <- tibble(intelligence = rnorm(n2, mean = 100, sd = 15),
+                         learning_time = 200 - intelligence + rnorm(n2),
+                         test_score = 2 * intelligence + 0.5 * learning_time + rnorm(n2)) |> 
+  arrange(intelligence)
+set.seed(1896)
+ex_collider <- tibble(network = rnorm(n),
+                      competence = rnorm(n),
+                      promotion = ((network > 1) | (competence > 1)),
+                      luck = rbinom(n, size = 1, prob = 0.05)) |>
+  mutate(promotion = (1 - luck) * promotion + luck * (1 - promotion))
+```
+
+## Confounders
+
+What if we *exclude* a confounder from our model?
+
+What if we *include* a confounder in our model?
+
+## Colliders
+
+What if we *exclude* a collider in our model?
+
+What if we *include* a collider in our model?
+
+## Mediation
+
+When there's a mediation chain, do we want to measure the *total*
+effect? Or differentiate pathways?

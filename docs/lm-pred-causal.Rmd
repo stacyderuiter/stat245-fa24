@@ -1,0 +1,357 @@
+---
+title: "Linear Regression: Prediction Plots, Planning"
+author: "STAT 245"
+date: "Jan. 30 - Feb 1, 2024"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+```{r, setup-lm1, include=FALSE}
+library(ggformula)
+library(tidyverse)
+library(dagitty)
+library(CalvinBayes)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 7, 
+                      fig.height = 3,
+                      tidy = FALSE,
+                      fig.align = 'center', 
+                      message = FALSE, 
+                      warning = FALSE,
+                      error = TRUE,
+                      out.width = '60%', 
+                      dpi = 300)
+theme_set(theme_minimal(base_size = 22))
+
+bonobos <- read_csv(file='http://sldr.netlify.app/data/bonobo_faces.csv')
+# add one missing for demo purposes
+bonobos[28, 'normDS'] <- NA
+
+m3_2q2c <- lm(AssR ~ fWHR + normDS + Sex + Group, 
+           data = bonobos)
+```
+
+
+# Prediction Plots
+## Vary only *certain* predictor(s)
+
+- **We can't just show "data plus line"** with multiple predictors
+- New dataset with desired predictor values
+
+---
+
+# New Prediction Data
+
+
+```{r, echo=TRUE, eval = FALSE}
+fake_data <- expand.grid(fWHR = seq(from = _____, 
+                                    to = _____, 
+                                    by = _____),
+                         normDS = _________,
+                         Sex = ________,
+                         Group = __________)
+```
+
+---
+
+# Generate Hypothetical Data
+## Quantitative Predictor
+
+One predictor varies; the others are held constant at median or most common or common-sense values (don't include impossible combinations!)
+---
+
+# Generate Hypothetical Data
+## Quantitative Predictor
+
+```{r, message = FALSE}
+library(mosaic) # for mean()
+fake_data <- expand_grid(
+  fWHR = seq(from = 1.05, by = 0.01, to = 1.9),
+  normDS = mean(~normDS,
+                data = bonobos,
+                na.rm = TRUE),
+  Sex = 'Female',
+  Group = 'Planckendael')
+```
+
+```{r, include = FALSE}
+detach("package:mosaic")
+```
+
+---
+
+# Make Predictions
+.small[
+
+
+```{r, echo = TRUE, error = TRUE}
+fake_data <- fake_data |> 
+  mutate(pred = predict(m3_2q2c, 
+                         newdata = fake_data))
+glimpse(fake_data)
+```
+
+]
+
+
+---
+
+# Prediction Plots
+## Create the Graph
+
+```{r}
+gf_line(pred ~ fWHR, data = fake_data)
+```
+
+---
+
+
+# Prediction Plots
+## What is still missing?
+
+
+---
+
+# Confidence Intervals!
+## On predictions: a CI gives a range of plausible values for average response, taking into account uncertainty in intercept and slope estimates.
+
+Relying on the Central Limit Theorem, a simple CI is:
+
+$$ \text{estimate} \pm 1.96 * \text{standard error}$$
+
+---
+
+# SE for predictions
+## Should account for uncertainty in *all* the $\beta$s
+
+.small[
+```{r}
+preds <- predict(m3_2q2c, 
+                 newdata = fake_data, 
+                 se.fit = TRUE)
+glimpse(preds)
+```
+]
+
+---
+# Put Preds + SEs in dataset
+
+```{r}
+fake_data <- fake_data |>
+  mutate(pred = preds$fit,
+         pred.se = preds$se.fit)
+```
+
+---
+
+# What did we do?
+
+```{r}
+glimpse(fake_data)
+```
+
+---
+
+# Convert from SE to CI
+
+.small[
+
+```{r}
+fake_data <- fake_data |>
+  mutate(CI_lower = pred - 1.96*pred.se,
+         CI_upper = pred + 1.96*pred.se)
+glimpse(fake_data)
+```
+
+]
+---
+
+
+
+# Plot Pred. w/CI
+
+```{r, echo = TRUE}
+gf_line(pred ~ fWHR, 
+        data = fake_data) |> 
+  gf_labs(y='Predicted\nAssR') |>
+  gf_ribbon(CI_lower + CI_upper ~ fWHR)
+```
+
+---
+
+# Categorical Predictors?
+## Replace `line`s with `point`s and `ribbon` with `errorbar`
+
+- new fake data
+- slightly different plotting code
+
+---
+
+# Generate Hypothetical Data
+## Categorical Predictor
+
+```{r}
+fake_data <- expand.grid(fWHR = 1.4,
+                         normDS = 2.4,
+                         Sex = c('Female', 'Male'),
+                         Group = 'Planckendael')
+```
+
+---
+
+
+# Make Predictions
+## Categorical Predictor
+
+.small[
+```{r}
+preds <- predict(m3_2q2c, 
+                 newdata = fake_data, 
+                 se.fit = TRUE)
+glimpse(preds)
+```
+]
+
+---
+
+# Convert to CI
+## Categorical Predictor
+
+.small[
+```{r}
+fake_data <- fake_data |>
+  mutate(pred = preds$fit,
+         pred.se = preds$se.fit,
+         CI_lower = pred - 1.96*pred.se,
+         CI_upper = pred + 1.96*pred.se)
+glimpse(fake_data)
+```
+]
+
+---
+# Make Prediction Plot (code)
+## Categorical Predictor
+
+```{r, fig.show = 'hide'}
+gf_point(pred ~ Sex, 
+        data = fake_data) |> 
+  gf_labs(y='Predicted\n AssR') |>
+  gf_errorbar(CI_lower + CI_upper ~ Sex)
+```
+
+---
+# The Prediction Plot
+## Categorical Predictor
+
+```{r, echo = FALSE}
+gf_point(pred ~ Sex, 
+        data = fake_data) |> 
+  gf_labs(y='Predicted\n AssR') |>
+  gf_errorbar(CI_lower + CI_upper ~ Sex)
+```
+
+---
+
+# R so far
+## Dataset functions
+
+- `|>` (pipe) for "and then..."
+- `mutate()` to add variable to dataset
+- `select()` to keep certain variables
+- `na.omit()` to remove rows w/missing data (!!)
+- `glimpse()` to peek at dataset
+- `pander::pander()` to print table
+
+---
+
+# R so far
+## Regression models
+- `lm(y ~ x1 + x2, data = ___)` to fit linear model
+- `resid(model)` to 
+- `predict(model, ...)` for prediction
+  - `se.fit = TRUE` (or `FALSE`)
+  - `newdata = ...`
+
+---  
+
+# R so far
+## New graphics
+- `gf_ribbon()` to add error band
+- `gf_errorbar()` to add error bars
+
+---
+# Causal Diagrams
+### There's more to planning than just p < n/15!
+
+```{r, simple-causal-diagram, echo = FALSE, out.width='85%'}
+# create the DAG object
+causal_diagram_1 <- dagitty("dag{
+  X -> Y;
+}")
+# plot it
+gg_dag(causal_diagram_1, size = 16)
+```
+---
+# PREKNOP Example
+## Response: Knowledge of Body (KoB) Score
+
+.pull-left[
+- Parity
+- Wish to conceive
+- Before/After course
+- Before KoB score
+]
+
+.pull-right[
+- Age
+- Education
+- Race/Ethnicity
+- Income
+- Health Insurance
+]
+---
+# Confounder
+
+---
+# Precision Covariate
+
+---
+# Mediator
+
+---
+# Moderator or Modifier
+## Also known as: *Interaction*
+---
+# Collider
+
+---
+# M-Bias
+
+```{r, m-bias-diagram, echo = FALSE, out.width='85%'}
+# create the DAG object
+causal_diagram_2 <- dagitty("dag{
+  X -> Y;
+  A -> X;
+  A -> D;
+  B -> Y;
+  B -> D;
+}")
+# plot it
+gg_dag(causal_diagram_2, size = 16, highlight = c('X', 'Y'))
+```
+.small[
+*Resource: Guide to Causal Inference <https://doi.org/10.1098/rspb.2020.2815>*
+]
+---
+
+# Your Summary
+## Linear modeling step-by-step:

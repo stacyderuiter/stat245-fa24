@@ -1,0 +1,337 @@
+---
+title: "Hierarchical Models: Random Effects"
+author: "STAT 245"
+date: ""
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+```{r setup, include=FALSE}
+require(tidyverse)
+require(ggformula)
+require(glmmTMB)
+require(DHARMa)
+require(s245)
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 7, 
+                      fig.height = 3,
+                      tidy = FALSE,
+                      fig.align = 'center', 
+                      message = FALSE, 
+                      error = TRUE,
+                      out.width = '60%', 
+                      dpi = 300)
+theme_set(theme_minimal(base_size = 14))
+```
+
+# Random Effects
+
+- What if residuals are *not independent*?
+- In other words: we have "dependent data"...
+- A solution (with many names): hierarchical models, multi-level models, random effects models, or mixed effects models.
+
+---
+
+# Dataset
+From: [Falcone et al. 2017, *Diving behaviour of Cuvier’s beaked whales exposed to two types of military sonar*](http://rsos.royalsocietypublishing.org/content/royopensci/4/8/170629.full.pdf)
+
+.small[
+Satellite tags were used to record dive data and movements of 16 Cuvier's beaked whales for up to 88 days each. The whales were incidentally exposed to different types of naval sonar exercises during the study. How did characteristics of their dives change during sonar exposure? We will look specifically at shallow dive duration as a response variable.
+]
+---
+class: small
+# Dataset
+
+
+```{r}
+zc_dives <- read.csv('http://sldr.netlify.com/data/zshal.csv') |>
+  mutate(SonarA = factor(SonarA)) |>
+  mutate(DurAvg = DurAvg / 60,
+         DepthAvg = DepthAvg) |>
+  rename(TimeOfDay = TransClass)
+glimpse(zc_dives)
+```
+
+---
+class: small
+# Plan/Exploration
+### We are especially interested in how dive duration depends on sonar exposure. We also need to control for effects of other variables like depth and time of day.
+
+.pull-left[
+```{r, echo = FALSE, fig.width=5, fig.height=4, fig.show='hold', out.width = '85%'}
+theme_set(theme_minimal(base_size = 14))
+gf_boxplot(DurAvg ~ SonarA,
+           data = zc_dives) |>
+  gf_labs(x = 'Sonar A Presence', 
+          y = 'Duration\n(minutes)')
+```
+]
+
+
+.pull-right[
+```{r, echo = FALSE, fig.width=5, fig.height=4, fig.show='hold', out.width = '85%'}
+gf_point(DurAvg ~ DepthAvg, data = zc_dives, alpha = 0.1) |>
+  gf_labs(x = 'Max. Depth (m)', y = 'Duration\n(minutes)')
+
+```
+]
+
+
+---
+class: small
+# Plan/Exploration
+### We are especially interested in how dive duration depends on sonar exposure. We also need to control for effects of other variables like depth and time of day.
+
+```{r, echo = FALSE, fig.width=5, fig.height=2.5, fig.show='hold', out.width = '65%'}
+gf_boxplot(DurAvg ~ TimeOfDay,
+           data = zc_dives) |>
+  gf_labs(x = 'Time of Day', y = 'Duration (minutes)')
+```
+
+
+---
+
+# What goes WRONG 
+## if we use a `lm()`? 
+## (RE also work for count, binary data)
+
+.small[
+```{r}
+base_model <- lm(DurAvg ~ DepthAvg + TimeOfDay + SonarA, 
+                 data = zc_dives)
+```
+]
+
+---
+
+class: small
+
+```{r}
+mosaic::msummary(base_model)
+```
+
+---
+# Model assessment
+## Data are *time series* so we are most suspicious about...
+
+```{r, fig.width=6.5, fig.height=3.3}
+gf_acf(~base_model)
+```
+
+---
+# A Random Effects model
+## For multiple linear regression we would have: 
+
+$$ y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ...\beta_n x_n +  \epsilon$$
+
+### Where $\epsilon \sim N(0,\sigma)$ are the normally distributed residuals with mean 0.
+
+## Now...
+
+---
+
+# Random effect candidates?
+
+- [Thermal preference](https://sldr.netlify.app/data/cold.csv)
+- [NY car crashes](https://sldr.netlify.app/data/ny_cars.csv)
+- [Sports votes](https://sldr.netlify.app/data/sports-votes-lz27.csv)
+- [PhD innovation](https://sldr.netlify.app/data/phd_innovation.csv)
+- [Wood frog abnormality](http://sldr.netlify.com/data/FrogAbnormalities.csv)
+
+---
+
+# The Formula
+## and the function: `glmmTMB()`. 
+*Many also use `lme4::(g)lmer()`*
+
+- We add random effects to the model formula with:
+
+$$ + (1|\text{ variable})$$
+
+---
+# Formula
+## Nested Random Effects
+
+$$\text{response} \sim ... + (1|\text{ variable1 }/ \text{ variable2})$$
+
+---
+## Random effect of individual whale
+
+```{r, warning = TRUE, message = TRUE}
+rem1 <- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay + 
+                  SonarA + (1|TagID),
+                data = zc_dives)
+```
+
+---
+
+# Model Assessment
+### Focus on ACF now as it was the problem for the lm()
+
+.pull-left[
+```{r, out.width = '90%'}
+gf_acf(~base_model)
+```
+]
+
+.pull-right[
+```{r, out.width = '90%'}
+gf_acf(~resid(rem1))
+```
+]
+
+### What else would we need to check?
+---
+class: smaller
+# What can we try next?
+
+```{r}
+glimpse(zc_dives)
+```
+
+---
+
+# What can we try next?
+
+```{r}
+rem2 <- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay + 
+                  SonarA +
+                  (1|TagID/TagDayPeriod), 
+                data = zc_dives)
+```
+
+---
+# Better?
+
+```{r, fig.width=6.5, fig.height=3}
+gf_acf(~resid(rem2))
+```
+
+---
+# Comparison with `lm()`?
+
+How does this model compare to the original linear regression model? 
+
+- Coefficient estimates? 
+- SEs? 
+- Additional stuff in the summary output?
+
+---
+## Coefficients
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+lm2 <- lm(DurAvg ~ DepthAvg + TimeOfDay + SonarA , 
+          data = zc_dives)
+resum <- summary(rem2)
+lmsum <- summary(lm2)
+ct <- bind_cols(names(coef(lm2)), 
+                unlist(coef(lm2)), 
+                fixef(rem2) |> unlist() |> head(-1) |> as.numeric(),
+                lmsum$coefficients[,2],
+                resum$coefficients$cond[,2])
+names(ct) <- c('Variable', 'lm() est.', 'RE est.', 'lm SE', 'RE SE') 
+ct |> knitr::kable(digits = 3)
+```
+---
+
+## Model Selection for Mixed Models
+### Standard likelihood-based model selection criteria? Well...yes, and no.  
+
+### REML or ML?
+Two different ways to fit these models:
+
+
+.pull-left[
+### ML
+<br>
+<br>
+<br>
+<br>
+]
+
+.pull-right[
+### REML
+<br>
+<br>
+<br>
+<br>
+]
+
+### *`glmmTMB()` default is: REML = FALSE*
+
+---
+class: small
+# Selection 
+## (one way)
+
+```{r, message = FALSE}
+zc_dives_noNA <- zc_dives |>
+  drop_na(DepthAvg, TimeOfDay, SonarA, TagID, TagDayPeriod) 
+rem_sonar <- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay + SonarA +
+                  (1|TagID),
+                data = zc_dives_noNA)
+rem_no_sonar <- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay +
+                  (1|TagID),
+                data = zc_dives_noNA)
+BIC(rem_sonar, rem_no_sonar)
+```
+
+---
+class: small
+
+# Random Slopes?
+
+- What we just did ("random effects") also called "random intercept" model
+- We allowed for an offset between the overall average predicted response value and that of an individual
+- We did not allow the *slope* of the relationship with any of the predictor variables to vary randomly with individual. 
+- It is possible to do this, **But it often makes interpretation difficult**.
+
+---
+## Sketch: random intercept vs. slope
+## Random slope = interaction between RE variable & predictor
+
+<br>
+<br>
+<br>
+<br>
+
+Animation: <http://mfviz.com/hierarchical-models/>
+---
+class: small
+# Before random slopes...
+## Maybe Don't. Ask yourself: 
+
+- Do you really think that there is random variation in the *slope* of the predictor with the response? 
+- Is there a strong, clear overall effect and small variations in its magnitude between individuals?
+- Will the relationship with a certain predictor have very strong and very different slopes for different individuals?
+- Is dataset big enough?
+
+---
+class: small
+# Random Slopes Formula(s)
+
+$$ ... + (\text{PredictorVariable } | \text{ REGroupingVariable})$$
+
+or equivalently
+
+$$ ... + (1 + \text{PredictorVariable } | \text{ REGroupingVariable})$$
+
+or random slope *without* the corresponding random intercept **don't ever do it...**:
+
+$$ ... + (0 + \text{PredictorVariable } | \text{ REGroupingVariable})$$
+---
+class: small
+# Coming next: 
+# Prediction Plots
+
+- Do we want to make predictions for "the average random effect grouping" (here, the average whale in the average time-block)?
+- Or do we want to make predictions *averaged across* a whole population of random effect groups (all the whales at all times)?
+- For a *linear* model, *the two are numerically equal* but for models with a link function *they are different and we have to choose.*

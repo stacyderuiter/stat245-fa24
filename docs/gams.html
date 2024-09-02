@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>GAMs (Generalized Additive Models)</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="STAT 245" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: inverse, middle, left, my-title-slide, title-slide
+
+.title[
+# GAMs (Generalized Additive Models)
+]
+.author[
+### STAT 245
+]
+
+---
+
+
+
+
+# Motivation
+
+- We can model continuous, logical, and count response variables
+- We can include quantitative and categorical predictors
+- What about nonlinear relationships?
+
+---
+class: small
+
+# Already nonlinear
+## Categorical predictor variables
+
+  - Making use of indicator variables for (all but one of the) categories, we can model a situation where each value of the predictor variable has a different effect on the response. 
+  - But...if forcing a quantitative variable to be categorical...
+    - How many categories?
+    - What about periodicity?
+    
+---
+# Already nonlinear
+## GLMs
+  - In binary or count regression, predictor-response relationship is linear on the scale of the link function ( = scale of the RHS of the equation)
+  - But non-linear on the scale of the response variable (LHS)
+  - Well - Nonlinear, but always **monotonic**
+
+
+---
+class: small
+
+# Not going there
+## Popular options that we won't pursue (and why)
+
+- Transformations of predictors or response (log, powers, etc.)
+- Polynomials (adding `\(\text{predictor}^2\)`, `\(\text{predictor}^3\)`, etc.)
+- Good *with theoretical justification*, otherwise hard to choose
+- We want one flexible solution to get any shape
+- We want easily interpretable results
+
+---
+## Non-linear, non-monotonic 
+## Example: Bat migration &amp; Weather
+
+
+
+
+
+&lt;img src="gams_files/figure-html/unnamed-chunk-3-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;img src="gams_files/figure-html/unnamed-chunk-3-2.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+class: small
+
+&lt;!-- ## Nonlinear, non-monotonic example --&gt;
+## Our case study: [GRR weather station](https://www.ncdc.noaa.gov/cdo-web/search) + [metadata](https://www.ncei.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf)
+
+
+```r
+grweather &lt;- read_csv('https://sldr.netlify.app/data/grr-weather-metric.csv',
+         show_col_types = FALSE) |&gt;
+    select(SNOW, TMIN, DATE, TSUN) |&gt;
+  mutate(MONTH = lubridate::month(DATE),
+         DAY = lubridate::yday(DATE),
+         YEAR = lubridate::year(DATE),
+         WEEK = lubridate::isoweek(DATE),
+         PREV.SNOW = lag(SNOW)) |&gt; na.omit()
+```
+
+
+
+
+```r
+gf_point(SNOW ~ DATE, data = grweather, alpha = 0.2)
+```
+
+```r
+gf_point(SNOW ~ DAY, data = grweather, alpha = 0.2)
+```
+
+```r
+gf_point(SNOW ~ TMIN, data = grweather, alpha = 0.2)
+```
+
+```r
+gf_point(SNOW ~ TSUN, data = grweather, alpha = 0.2)
+```
+
+---
+
+## Snowy Weather Case Study
+
+.pull-left[
+&lt;img src="gams_files/figure-html/unnamed-chunk-5-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;img src="gams_files/figure-html/unnamed-chunk-5-2.png" width="60%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="gams_files/figure-html/unnamed-chunk-6-1.png" width="60%" style="display: block; margin: auto;" /&gt;&lt;img src="gams_files/figure-html/unnamed-chunk-6-2.png" width="60%" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+
+# Smooth functions
+
+- Goal: predictor-response relationship can have any shape
+- linear, or nonlinear with *any* shape
+- user control of "wiggliness"
+
+---
+class: small
+
+# Basis functions
+
+- Several parts, or *basis functions*, sum to form a smooth
+- Each has simple shape
+- Scaled and added together, yield nearly any shape
+- Higher basis dimension (more functions added together) can = more wiggles 
+- Goal: enough flexibility to fit data well, without *overfitting* 
+
+---
+
+# Overfitting
+
+&lt;br&gt;
+
+&lt;img src="https://miro.medium.com/max/1400/1*iiPH0JyowvS3k12T0-W2HA.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Fitting GAMs
+## Generalized Additive Models
+
+- R Package `mgcv`, function `gam()`
+- Can fit any family (linear, binary, count) depending on response variable type
+- Smooth Types: [App](https://connect.cs.calvin.edu/DATA545/smooth/) 
+- More background ([workshop materials](https://eric-pedersen.github.io/mgcv-esa-workshop/))
+
+---
+
+&lt;iframe src="https://embed.polleverywhere.com/multiple_choice_polls/jUok92iaM7YK6VcnCerpv?controls=none&amp;short_poll=true" width="1200px" height="650px"&gt;&lt;/iframe&gt;
+
+&lt;!-- --- --&gt;
+
+&lt;!-- # Model Planning --&gt;
+&lt;!-- ## Which terms should be smooths?  --&gt;
+
+&lt;!-- - Explore the data? --&gt;
+&lt;!-- - Think it through? --&gt;
+&lt;!-- - *All* of them? --&gt;
+
+&lt;!-- - Pros: --&gt;
+&lt;!-- - Cons: --&gt;
+
+---
+
+# Model formula syntax
+## Function `s()` specifies a smooth. Inputs:
+
+- variable name(s)
+- `k` (see `?choose.k`)
+- `bs`
+- `by`
+
+How do we choose? see [App](https://connect.cs.calvin.edu/DATA545/smooth/) ; Defaults: `tp` or `cs` as default options, or `cc` for cyclic
+---
+# Break my App
+
+- What choices of smooth type and/or `k` work *well* for your variable?
+- What choices of smooth type and `k` can result in a smooth that seems overfitted, or mismatched to data in some other way?
+- What does shrinkage (`bs = _s`) do?
+
+[https://connect.cs.calvin.edu/DATA545/smooth/](https://connect.cs.calvin.edu/DATA545/smooth/)
+
+---
+
+# `gam()` Options
+We can also fit the model and smooths by different methods and with options:
+
+- ~~`method = 'GCV.Cp'`~~
+- ~~`method = 'REML'`~~
+- `method = 'ML'`
+- `select = TRUE` (or ~~`FALSE`~~)
+
+---
+
+# GAM Example - Snow
+
+
+```r
+library(mgcv)
+snow.gam &lt;- gam(SNOW ~ s(DAY, k = 20, bs = 'cc') +
+                s(TMIN, k = 5, bs = 'cs') +
+                s(YEAR, k = 5, bs = 'cs') + PREV.SNOW,
+              data = grweather,
+              method = 'ML', 
+              select = TRUE)
+```
+
+---
+
+&lt;iframe src="https://embed.polleverywhere.com/multiple_choice_polls/KEHgm1ifeimIfkcGSQPlB?controls=none&amp;short_poll=true" width="1200px" height="650px"&gt;&lt;/iframe&gt;
+---
+
+&lt;iframe src="https://embed.polleverywhere.com/multiple_choice_polls/Ojz4Y5fATI1qC1Z2qAAT2?controls=none&amp;short_poll=true" width="1200px" height="650px"&gt;&lt;/iframe&gt;
+
+---
+class: smaller
+
+
+```r
+summary(snow.gam)
+```
+
+```
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## SNOW ~ s(DAY, k = 20, bs = "cc") + s(TMIN, k = 5, bs = "cs") + 
+##     s(YEAR, k = 5, bs = "cs") + PREV.SNOW
+## 
+## Parametric coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.66340    0.31782   11.53   &lt;2e-16 ***
+## PREV.SNOW    0.24398    0.01764   13.83   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##             edf Ref.df      F p-value    
+## s(DAY)  4.62176     18  0.943 0.00109 ** 
+## s(TMIN) 3.92234      4 34.384 &lt; 2e-16 ***
+## s(YEAR) 0.01468      4  0.000 0.77947    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =  0.219   Deviance explained = 22.2%
+## -ML =  13886  Scale est. = 303.85    n = 3243
+```
+
+---
+# Choosing K?
+## Silk (big k) vs. Carpet (small k, min. ~3)
+
+&lt;img src="gams_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# Other Responses, REs
+
+- Families: gaussian, binomial, poisson, **negbin**
+- Add simple (not nested) random effects to formula: `s(variable, bs = 're')`
+- More REs in a GAM: `gamm4::gamm4()` (beyond our class/demo next week)
+
+
+---
+
+# Model Assessment
+
+- Conditions (for family used) must be met: ~~L~~INE *or* ~~L~~I, mean-variance
+- All must be checked as for `(g)lm(mTMB)()` - except linearity!
+
+---
+class: small
+## Additional Checks for GAM
+
+
+```r
+par(mar=c(4,4,2,2))
+gam.check(snow.gam)
+```
+
+```
+## 
+## Method: ML   Optimizer: outer newton
+## full convergence after 7 iterations.
+## Gradient range [-0.006501825,0.000858677]
+## (score 13886.46 &amp; scale 303.8515).
+## Hessian positive definite, eigenvalue range [0.006419922,1621.505].
+## Model rank =  28 / 28 
+## 
+## Basis dimension (k) checking results. Low p-value (k-index&lt;1) may
+## indicate that k is too low, especially if edf is close to k'.
+## 
+##              k'     edf k-index p-value
+## s(DAY)  18.0000  4.6218    1.03    0.94
+## s(TMIN)  4.0000  3.9223    1.04    0.99
+## s(YEAR)  4.0000  0.0147    1.02    0.85
+```
+
+---
+
+## Prediction Plots (as usual)
+
+
+```r
+spred &lt;- ggpredict(snow.gam,
+                   terms = c('DAY', 'YEAR[2022]')) 
+```
+
+```
+## Error in ggpredict(snow.gam, terms = c("DAY", "YEAR[2022]")): could not find function "ggpredict"
+```
+
+```r
+plot(spred) |&gt; 
+  gf_labs(title = '', 
+          y = 'Expected Snow (mm)', x = 'Day of Year')
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'spred' not found
+```
+
+---
+class: small
+##  Which fixed values were used?
+
+
+```r
+spred
+```
+
+```
+## # Predicted values of SNOW
+## 
+## DAY | Predicted |      95% CI
+## -----------------------------
+##   1 |      4.61 |  2.32, 6.90
+##  47 |      2.96 |  0.58, 5.34
+##  92 |      0.20 | -1.54, 1.93
+## 138 |      0.79 | -0.93, 2.52
+## 184 |      0.98 | -1.58, 3.54
+## 229 |      0.89 | -1.60, 3.38
+## 275 |      0.93 | -0.71, 2.57
+## 366 |      4.61 |  2.32, 6.90
+## 
+## Adjusted for:
+## *      TMIN = 4.92
+## * PREV.SNOW = 4.85
+```
+
+---
+
+# Shrinkage 
+
+- Some model selection is (or can be) done during model fitting
+- What smooth is best? Or is the relationship a line? A flat line?  
+- Using *shrinkage* basis or including `select = TRUE` allows for this
+- Our Default?
+
+---
+
+# P-value selection
+
+- Caution: **p-values are approximate!** 
+- Best when using ML (1st choice), REML (2nd choice).
+
+
+```r
+anova(snow.gam)
+```
+
+Note: use `anova()` (not `Anova()`) for GAMs - **unlike** `lm()`, `glm()`, `glmmTMB()`. Can also use `AIC()` or `BIC()` too.
+---
+class: small
+
+```r
+anova(snow.gam)
+```
+
+```
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## SNOW ~ s(DAY, k = 20, bs = "cc") + s(TMIN, k = 5, bs = "cs") + 
+##     s(YEAR, k = 5, bs = "cs") + PREV.SNOW
+## 
+## Parametric Terms:
+##           df     F p-value
+## PREV.SNOW  1 191.3  &lt;2e-16
+## 
+## Approximate significance of smooth terms:
+##              edf   Ref.df      F p-value
+## s(DAY)   4.62176 18.00000  0.943 0.00109
+## s(TMIN)  3.92234  4.00000 34.384 &lt; 2e-16
+## s(YEAR)  0.01468  4.00000  0.000 0.77947
+```
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

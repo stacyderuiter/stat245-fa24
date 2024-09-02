@@ -5,6 +5,8 @@
 # Session Data files
 .RData
 .RDataTmp
+.DS_Store
+*.Rproj
 
 # User-specific files
 .Ruserdata
@@ -39,8 +41,6 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
 
 # translation temp files
 po/*~

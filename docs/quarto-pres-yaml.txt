@@ -1,0 +1,16 @@
+
+title: "Example"
+author: "Prof DR"
+format: 
+  revealjs:
+    slide-number: c/t
+    width: 1600
+    height: 900
+    theme: [moon, 'calvin-slides.scss']
+    title-slide-attributes: 
+      data-background-image: "https://stacyderuiter.github.io/stat245-sp24/CalvinUniv-vert-full-color-NoDate.png"
+      data-background-size: 15%
+      data-background-position: 99%  90%
+      data-background-color: '#8d2232'
+    echo: true
+editor: visual

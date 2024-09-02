@@ -1,0 +1,279 @@
+---
+title: "STAT 245: Critique (Day 2)"
+author: "Stacy DeRuiter"
+date: "Aug. 31, 2023"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+```{r setup, include=FALSE}
+require(ggformula)
+library(googlesheets4)
+require(tidyverse)
+require(RColorBrewer)
+
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(echo = FALSE, fig.width = 6, fig.height = 4,
+                      fig.align = 'center', message = FALSE, warning = FALSE,
+                      out.width = '60%', dpi = 300)
+theme_set(theme_minimal(base_size = 22))
+
+```
+
+## Recap: Main Ideas
+
+- *Think* and *Imagine* before you graph
+- Choose a chart type that fits your data
+ - Categorical: bars, pies(?), Cleveland dot/lollipop
+ - Quantitative: histogram, density, boxplot
+ - Relationships: scatter plot, boxplots, facets...
+- Use color, axis limits, labels, design *to tell the story*
+
+---
+
+# Jump Start work...
+
+- Day 1 got you thinking...
+- Tutorials will fill in the details...
+- *And* give you R code tools to implement
+- Next: Constructive conversation + critique
+- Then: practice creating and critiquing
+
+---
+class: inverse middle center big-subsection
+
+# Course SLO: Communicate results of data analysis clearly and accurately
+
+---
+# Code of Ethics?
+
+- Codes, Oaths, Commandments...
+  - But why?
+  - And what's the difference?
+- Another angle: Virtue Ethics
+---
+
+# Profiles in Stats
+## [Integrated Ethics Labs](https://integratedethicslabs.org/)
+.small[
+.pull-left[
+```{r, out.width = '400px', fig.cap = 'Lori Carter'}
+knitr::include_graphics('https://viewpoint.pointloma.edu/wp-content/uploads/2020/05/Annotation-2020-05-18-152221-944x1024.jpg')
+```
+]
+]
+
+.small[
+.pull-right[
+```{r, out.width = '400px', fig.cap = 'Catherine Crockett'}
+knitr::include_graphics('https://www.pointloma.edu/sites/default/files/styles/1_1_640w/public/images/Crockett_Catherine1216.jpg?itok=y6elY3dD')
+```
+]
+]
+
+---
+class: small
+# Virtues and Values
+
+## If we will openly discuss personal values...
+
+1.	**Understand that your words have effects on others.** Speak with care. If you learn that something you have said was experienced as disrespectful or marginalizing, listen carefully and try to understand that perspective. Learn how you can do better in the future.
+2.	**Understand that others will come to these discussions with different experiences from yours.** Be careful about assumptions and generalization you make based only on your experience. Be open to hearing and learning from other perspectives.
+
+---
+class: small
+
+Your experience in college should help prepare you for your next steps in life. That means that 
+.big[you will increase in knowledge. ]
+At this university, we also are concerned that you learn to .big[apply that knowledge in a way that is 
+beneficial to society.] Sometimes it is hard to decide what will be beneficial and what will not. 
+
+---
+
+
+How do we  .big[approach decision making] when faced with an ethical dilemma? .big[When will we practice those skills?] 
+
+---
+
+
+This short exercise will ask us to .big[think about what we value] and .big[apply that knowledge to decision-making.]
+
+---
+
+# What are Values?
+<br>
+> principles or standards of behaviour: one’s judgement about what is important in life: [as in] *they internalize their parents’ rules and values*. -Oxford Dictionary of English, 2010
+
+---
+
+# What are Values?
+<br>
+> A value is something you are willing to act on.   -Ayn Rand, philosopher
+
+---
+
+# What are Values?
+<br>
+> Values are a matter of what guides you through every day, every task, every encounter with another
+human being.   -Richard Bolles, *What Color is Your Parachute*
+
+---
+
+# What are Values?
+<br>
+> a preference that is felt and/or considered to be justified – morally, by reasoning, or by aesthetic judgments, usually by two or all three of these.  -Sarah Spiekermann,  *Ethical IT*
+
+---
+
+<iframe src="https://embed.polleverywhere.com/discourses/pcgQB8NIoRcsyGqYIYosM?controls=none&short_poll=true" width="1200px" height="900px"></iframe>
+---
+
+# Choose Top Values (20-25)
+
+- [PDF handout](https://stacyderuiter.github.io/stat245-2023/VIA-virtues-character.pdf)
+
+---
+class: inverse middle center big-subsection
+
+# Mark "W" the ones that would inform your career choice after Calvin 
+
+---
+class: inverse middle center big-subsection
+
+# Choose 2 "W"s to explain
+
+---
+class: inverse middle center big-subsection
+
+# Values guide big choices *and* everyday behavior
+
+---
+
+We learned about and discussed the .big[**L**isten, **A**ffirm, **R**espond (or **R**eflect), **A**dd] method for tough conversations, which may come in useful in groups or discussing data ethics and challenging datasets
+
+---
+class: inverse middle center big-subsection
+
+# What values does L.A.R.A. put into action?
+
+---
+<iframe src="https://embed.polleverywhere.com/discourses/wqRkk85rMLyVUpTL3kwRI?controls=none&short_poll=true" width="1200px" height="900px"></iframe>
+---
+
+# Constructive Critique
+
+## Goals: Listen, think, understand, converse (not just talk!)
+
+- Focus on Description, not Judgment
+- Focus on Actions or Behaviors, not the Person
+- Balance Positive and Negative (honestly)
+- Be Concise; avoid Feedback Overload
+- Be Specific (your Reactions/Observations *and* Suggestions)
+
+<!-- half of group has whiteboard to score according to above, other half does the critique, then can try again up to 3 times. -->
+---
+
+# Do Better than This
+### Colorful, but hard to understand the main point. Axis labels need to be redone.
+
+```{r, echo = FALSE}
+gs4_auth(email = 'sld33@calvin.edu', scopes = "https://www.googleapis.com/auth/spreadsheets.readonly")
+# ssid <- as_sheets_id("https://docs.google.com/spreadsheets/d/1SpqLI8YleAYvMitqlSYC7Vw-kNWAG123KyY9lBoGKtA/edit?resourcekey#gid=1798041811")
+# 2023 data
+ssid <- as_sheets_id("https://docs.google.com/spreadsheets/d/17PBgxTVyymAkIzATmUAwZU3KJo8unfOUWIVGp1WXEcA/edit?usp=sharing")
+survey <- read_sheet(ssid)
+names(survey) <- c('time', 'full_name', 'schedule_junk',
+                   'name', 'home', 'languages',
+                   'hobby', 'feeling', 'prayer', 'year_at_calvin',
+                   'grad_year', 'major', 'minor', 
+                   'why_stat245', 'prev_stats', 
+                   'junk0', 'R', 'Python', 'C', 'Java', 'JavaScript', 'Other','Git/Github',
+                   'data_topics', 'notes') 
+
+names(survey) <- c('time', 'full_name', 'schedule_junk',
+                   'name', 'home', 'languages',
+                   'hobby', 'feeling', 'prayer', 'year_at_calvin',
+                   'grad_year', 'major', 'minor', 
+                   'why_stat245', 'prev_stats', 
+                   'junk0', 'R', 'Python', 'C', 'Java', 'JavaScript', 'Other','Git/Github',
+                   'data_topics', 'notes')
+
+survey <- survey |>
+  filter(time > lubridate::dmy_hms('1/1/2022 00:00:00'),
+         year_at_calvin < 5 & year_at_calvin > 2)
+
+why <- data.frame(for_major = mean(grepl('required for my major', survey$why_stat245)),
+                  for_minor = mean(grepl('required for my minor', survey$why_stat245)),
+                  love = mean(grepl('love', survey$why_stat245)),
+                  goals = mean(grepl('career', survey$why_stat245)),
+                  hear_good = mean(grepl('heard good', survey$why_stat245)),
+                  rstudio = mean(grepl('RStudio', survey$why_stat245)),
+                  service_learning = mean(grepl('service-learning', survey$why_stat245)),
+                  schedule = mean(grepl('schedule', survey$why_stat245))) %>%
+  pivot_longer(cols = everything(), names_to = 'reason', values_to = 'proportion') %>%
+  mutate(percent = proportion * 100)
+
+gf_col(percent ~ reason, 
+       color = 'black', fill = ~reason, 
+       data = why) 
+```
+
+---
+# Do Better than This
+### Numbers don't make sense. You messed up choosing figure type and labels are bad.
+
+```{r}
+gf_density(~feeling, data = survey)
+```
+
+---
+
+## Do Better than This
+### Ugh, this is awful. Why did you think that feelings would vary by class year? Everything is on top of each other and you forgot that scatterplots are not for this kind of data. Not good use of color.
+
+```{r}
+gf_point(year_at_calvin ~ feeling, data = survey, size = 8, alpha = 0.1) 
+```
+
+
+---
+
+# In the corrections...
+
+- Which guidelines for critique did we implement?
+- Which values are we acting on?
+
+
+---
+# A Summary
+
+## Give attention to the ways that your conversations and interactions with *classmates* and *data* reflect your *values*. Once you notice, you can keep them aligned.
+
+---
+# "Liturgical animals"
+
+.small[
+>>Let the peace of Christ rule in your hearts, since as members of one body you were called to peace. And be thankful. Let the message of Christ dwell among you richly as you teach and admonish on another with all wisdom through psalms, hymns, and songs from the Spirit, singing to God with gratitude in your hearts. (Colossians 3:15-16) 
+
+>>The orientation of the heart happens from the bottom up, through the formation of our habits of desire. Learning to love (God) takes practice. (J. Smith, *You are what you love*)
+]
+---
+
+# By the way...
+
+```{r}
+# gf_boxplot(feeling ~ factor(year_at_calvin), data = survey)
+gf_percents(~factor(year_at_calvin), fill = ~factor(feeling), position = 'stack', data = survey) %>%
+  gf_theme(scale_fill_brewer("Amount Anxiety", palette = 'Paired')) %>%
+  gf_theme(legend.position = 'top') %>%
+  gf_labs(y = 'Percent of Total', x = 'Year at Calvin')
+```

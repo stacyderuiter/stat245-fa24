@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Linear Regression: Prediction Plots, Planning</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="STAT 245" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: inverse, middle, left, my-title-slide, title-slide
+
+.title[
+# Linear Regression: Prediction Plots, Planning
+]
+.author[
+### STAT 245
+]
+.date[
+### Jan. 30 - Feb 1, 2024
+]
+
+---
+
+
+
+
+
+# Prediction Plots
+## Vary only *certain* predictor(s)
+
+- **We can't just show "data plus line"** with multiple predictors
+- New dataset with desired predictor values
+
+---
+
+# New Prediction Data
+
+
+
+```r
+fake_data &lt;- expand.grid(fWHR = seq(from = _____, 
+                                    to = _____, 
+                                    by = _____),
+                         normDS = _________,
+                         Sex = ________,
+                         Group = __________)
+```
+
+---
+
+# Generate Hypothetical Data
+## Quantitative Predictor
+
+One predictor varies; the others are held constant at median or most common or common-sense values (don't include impossible combinations!)
+---
+
+# Generate Hypothetical Data
+## Quantitative Predictor
+
+
+```r
+library(mosaic) # for mean()
+fake_data &lt;- expand_grid(
+  fWHR = seq(from = 1.05, by = 0.01, to = 1.9),
+  normDS = mean(~normDS,
+                data = bonobos,
+                na.rm = TRUE),
+  Sex = 'Female',
+  Group = 'Planckendael')
+```
+
+
+
+---
+
+# Make Predictions
+.small[
+
+
+
+```r
+fake_data &lt;- fake_data |&gt; 
+  mutate(pred = predict(m3_2q2c, 
+                         newdata = fake_data))
+glimpse(fake_data)
+```
+
+```
+## Rows: 86
+## Columns: 5
+## $ fWHR   &lt;dbl&gt; 1.05, 1.06, 1.07, 1.08, 1.09, 1.10, 1.11, 1.12, 1.13, 1.14, 1.1…
+## $ normDS &lt;dbl&gt; 2.657017, 2.657017, 2.657017, 2.657017, 2.657017, 2.657017, 2.6…
+## $ Sex    &lt;chr&gt; "Female", "Female", "Female", "Female", "Female", "Female", "Fe…
+## $ Group  &lt;chr&gt; "Planckendael", "Planckendael", "Planckendael", "Planckendael",…
+## $ pred   &lt;dbl&gt; 4.444305, 4.460851, 4.477397, 4.493943, 4.510489, 4.527036, 4.5…
+```
+
+]
+
+
+---
+
+# Prediction Plots
+## Create the Graph
+
+
+```r
+gf_line(pred ~ fWHR, data = fake_data)
+```
+
+&lt;img src="lm-pred-causal_files/figure-html/unnamed-chunk-5-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+# Prediction Plots
+## What is still missing?
+
+
+---
+
+# Confidence Intervals!
+## On predictions: a CI gives a range of plausible values for average response, taking into account uncertainty in intercept and slope estimates.
+
+Relying on the Central Limit Theorem, a simple CI is:
+
+$$ \text{estimate} \pm 1.96 * \text{standard error}$$
+
+---
+
+# SE for predictions
+## Should account for uncertainty in *all* the `\(\beta\)`s
+
+.small[
+
+```r
+preds &lt;- predict(m3_2q2c, 
+                 newdata = fake_data, 
+                 se.fit = TRUE)
+glimpse(preds)
+```
+
+```
+## List of 4
+##  $ fit           : Named num [1:86] 4.44 4.46 4.48 4.49 4.51 ...
+##   ..- attr(*, "names")= chr [1:86] "1" "2" "3" "4" ...
+##  $ se.fit        : Named num [1:86] 0.304 0.3 0.296 0.293 0.289 ...
+##   ..- attr(*, "names")= chr [1:86] "1" "2" "3" "4" ...
+##  $ df            : int 107
+##  $ residual.scale: num 0.923
+```
+]
+
+---
+# Put Preds + SEs in dataset
+
+
+```r
+fake_data &lt;- fake_data |&gt;
+  mutate(pred = preds$fit,
+         pred.se = preds$se.fit)
+```
+
+---
+
+# What did we do?
+
+
+```r
+glimpse(fake_data)
+```
+
+```
+## Rows: 86
+## Columns: 6
+## $ fWHR    &lt;dbl&gt; 1.05, 1.06, 1.07, 1.08, 1.09, 1.10, 1.11, 1.12, 1.13, 1.14, 1.…
+## $ normDS  &lt;dbl&gt; 2.657017, 2.657017, 2.657017, 2.657017, 2.657017, 2.657017, 2.…
+## $ Sex     &lt;chr&gt; "Female", "Female", "Female", "Female", "Female", "Female", "F…
+## $ Group   &lt;chr&gt; "Planckendael", "Planckendael", "Planckendael", "Planckendael"…
+## $ pred    &lt;dbl&gt; 4.444305, 4.460851, 4.477397, 4.493943, 4.510489, 4.527036, 4.…
+## $ pred.se &lt;dbl&gt; 0.3037098, 0.3000145, 0.2963808, 0.2928109, 0.2893073, 0.28587…
+```
+
+---
+
+# Convert from SE to CI
+
+.small[
+
+
+```r
+fake_data &lt;- fake_data |&gt;
+  mutate(CI_lower = pred - 1.96*pred.se,
+         CI_upper = pred + 1.96*pred.se)
+glimpse(fake_data)
+```
+
+```
+## Rows: 86
+## Columns: 8
+## $ fWHR     &lt;dbl&gt; 1.05, 1.06, 1.07, 1.08, 1.09, 1.10, 1.11, 1.12, 1.13, 1.14, 1…
+## $ normDS   &lt;dbl&gt; 2.657017, 2.657017, 2.657017, 2.657017, 2.657017, 2.657017, 2…
+## $ Sex      &lt;chr&gt; "Female", "Female", "Female", "Female", "Female", "Female", "…
+## $ Group    &lt;chr&gt; "Planckendael", "Planckendael", "Planckendael", "Planckendael…
+## $ pred     &lt;dbl&gt; 4.444305, 4.460851, 4.477397, 4.493943, 4.510489, 4.527036, 4…
+## $ pred.se  &lt;dbl&gt; 0.3037098, 0.3000145, 0.2963808, 0.2928109, 0.2893073, 0.2858…
+## $ CI_lower &lt;dbl&gt; 3.849034, 3.872823, 3.896491, 3.920034, 3.943447, 3.966726, 3…
+## $ CI_upper &lt;dbl&gt; 5.039576, 5.048880, 5.058304, 5.067853, 5.077532, 5.087345, 5…
+```
+
+]
+---
+
+
+
+# Plot Pred. w/CI
+
+
+```r
+gf_line(pred ~ fWHR, 
+        data = fake_data) |&gt; 
+  gf_labs(y='Predicted\nAssR') |&gt;
+  gf_ribbon(CI_lower + CI_upper ~ fWHR)
+```
+
+&lt;img src="lm-pred-causal_files/figure-html/unnamed-chunk-10-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Categorical Predictors?
+## Replace `line`s with `point`s and `ribbon` with `errorbar`
+
+- new fake data
+- slightly different plotting code
+
+---
+
+# Generate Hypothetical Data
+## Categorical Predictor
+
+
+```r
+fake_data &lt;- expand.grid(fWHR = 1.4,
+                         normDS = 2.4,
+                         Sex = c('Female', 'Male'),
+                         Group = 'Planckendael')
+```
+
+---
+
+
+# Make Predictions
+## Categorical Predictor
+
+.small[
+
+```r
+preds &lt;- predict(m3_2q2c, 
+                 newdata = fake_data, 
+                 se.fit = TRUE)
+glimpse(preds)
+```
+
+```
+## List of 4
+##  $ fit           : Named num [1:2] 5.01 3.77
+##   ..- attr(*, "names")= chr [1:2] "1" "2"
+##  $ se.fit        : Named num [1:2] 0.226 0.219
+##   ..- attr(*, "names")= chr [1:2] "1" "2"
+##  $ df            : int 107
+##  $ residual.scale: num 0.923
+```
+]
+
+---
+
+# Convert to CI
+## Categorical Predictor
+
+.small[
+
+```r
+fake_data &lt;- fake_data |&gt;
+  mutate(pred = preds$fit,
+         pred.se = preds$se.fit,
+         CI_lower = pred - 1.96*pred.se,
+         CI_upper = pred + 1.96*pred.se)
+glimpse(fake_data)
+```
+
+```
+## Rows: 2
+## Columns: 8
+## $ fWHR     &lt;dbl&gt; 1.4, 1.4
+## $ normDS   &lt;dbl&gt; 2.4, 2.4
+## $ Sex      &lt;fct&gt; Female, Male
+## $ Group    &lt;fct&gt; Planckendael, Planckendael
+## $ pred     &lt;dbl&gt; 5.005257, 3.771274
+## $ pred.se  &lt;dbl&gt; 0.2260898, 0.2191601
+## $ CI_lower &lt;dbl&gt; 4.562121, 3.341720
+## $ CI_upper &lt;dbl&gt; 5.448393, 4.200828
+```
+]
+
+---
+# Make Prediction Plot (code)
+## Categorical Predictor
+
+
+```r
+gf_point(pred ~ Sex, 
+        data = fake_data) |&gt; 
+  gf_labs(y='Predicted\n AssR') |&gt;
+  gf_errorbar(CI_lower + CI_upper ~ Sex)
+```
+
+---
+# The Prediction Plot
+## Categorical Predictor
+
+&lt;img src="lm-pred-causal_files/figure-html/unnamed-chunk-15-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# R so far
+## Dataset functions
+
+- `|&gt;` (pipe) for "and then..."
+- `mutate()` to add variable to dataset
+- `select()` to keep certain variables
+- `na.omit()` to remove rows w/missing data (!!)
+- `glimpse()` to peek at dataset
+- `pander::pander()` to print table
+
+---
+
+# R so far
+## Regression models
+- `lm(y ~ x1 + x2, data = ___)` to fit linear model
+- `resid(model)` to 
+- `predict(model, ...)` for prediction
+  - `se.fit = TRUE` (or `FALSE`)
+  - `newdata = ...`
+
+---  
+
+# R so far
+## New graphics
+- `gf_ribbon()` to add error band
+- `gf_errorbar()` to add error bars
+
+---
+# Causal Diagrams
+### There's more to planning than just p &lt; n/15!
+
+&lt;img src="lm-pred-causal_files/figure-html/simple-causal-diagram-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+---
+# PREKNOP Example
+## Response: Knowledge of Body (KoB) Score
+
+.pull-left[
+- Parity
+- Wish to conceive
+- Before/After course
+- Before KoB score
+]
+
+.pull-right[
+- Age
+- Education
+- Race/Ethnicity
+- Income
+- Health Insurance
+]
+---
+# Confounder
+
+---
+# Precision Covariate
+
+---
+# Mediator
+
+---
+# Moderator or Modifier
+## Also known as: *Interaction*
+---
+# Collider
+
+---
+# M-Bias
+
+&lt;img src="lm-pred-causal_files/figure-html/m-bias-diagram-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+.small[
+*Resource: Guide to Causal Inference &lt;https://doi.org/10.1098/rspb.2020.2815&gt;*
+]
+---
+
+# Your Summary
+## Linear modeling step-by-step:
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

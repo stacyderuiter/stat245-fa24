@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Count Data Regression: Negative Binomial GLMs</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="STAT 245" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: inverse, middle, left, my-title-slide, title-slide
+
+.title[
+# Count Data Regression: Negative Binomial GLMs
+]
+.author[
+### STAT 245
+]
+
+---
+
+
+
+
+
+
+
+class: small
+
+## Negative Binomial Distributions
+
+- Can be used to model count data
+- Have **two parameters**:
+  - a mean `\(\mu\)` (like the Poisson "rate" `\(\lambda\)`)
+  - dispersion parameter `\(\alpha\)` (relates `\(\mu\)` and variance)
+- NB1: variance is linear function of `\(\mu\)`
+- NB2: variance is quadratic function of `\(\mu\)`
+- Won't detail equation, likelihood as much
+
+
+---
+
+## Profiles in Stats: Mollie Brooks
+
+.pull-left[
+&lt;img src="images/mollie-brooks.jpg" width="60%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+- Developer of `glmmTMB` package
+- Techn. Uni. Denmark
+- Ecosystem-based marine management
+
+]
+
+
+---
+
+# NB Regression in R
+
+
+```r
+library(glmmTMB)
+theft_nb1 &lt;- glmmTMB(Thefts ~ NEnrollment + Location + 
+                 TrainingHours + SecurityCameras, 
+               data = sscrime,
+               family = nbinom1(link = 'log'))
+
+theft_nb2 &lt;- glmmTMB(Thefts ~ NEnrollment + Location + 
+                 TrainingHours + SecurityCameras, 
+               data = sscrime,
+           family = nbinom2(link='log'))
+```
+
+---
+class: small
+## How far off from Poisson mean = var?
+
+
+```r
+summary(theft_nb1)
+```
+
+```
+##  Family: nbinom1  ( log )
+## Formula:          
+## Thefts ~ NEnrollment + Location + TrainingHours + SecurityCameras
+## Data: sscrime
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   2587.9   2619.5  -1286.0   2571.9      373 
+## 
+## 
+## Dispersion parameter for nbinom1 family (): 8.88 
+## 
+## Conditional model:
+##                        Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)           2.146e+00  1.239e-01  17.322  &lt; 2e-16 ***
+## NEnrollment           1.998e-04  2.799e-05   7.140 9.32e-13 ***
+## LocationTown         -1.509e-01  1.418e-01  -1.065   0.2870    
+## LocationUrban Fringe -3.484e-02  1.026e-01  -0.340   0.7342    
+## LocationRural        -2.044e-01  1.218e-01  -1.678   0.0934 .  
+## TrainingHours        -1.962e-03  4.750e-02  -0.041   0.9670    
+## SecurityCamerasyes    1.044e-01  9.122e-02   1.145   0.2524    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+# NB1 vs. NB2
+## Suggestion: use scaled residual plot *or maybe* IC to choose, 
+## if no domain knowledge suggesting one
+
+
+```r
+AIC(theft_nb1, theft_nb2)
+```
+
+```
+##           df      AIC
+## theft_nb1  8 2587.926
+## theft_nb2  8 2557.284
+```
+
+**Which fits better?**
+
+---
+
+# Much better than Poiss.
+
+
+```r
+AIC(theft_pois, theft_nb1, theft_nb2)
+```
+
+```
+##            df      AIC
+## theft_pois  7 5265.603
+## theft_nb1   8 2587.926
+## theft_nb2   8 2557.284
+```
+
+*Don't use IC to compare Pois/NB; &lt;br&gt; just USE NB1 or 2, almost always.*
+
+---
+
+## Assessment w/DHARMa scaled residuals?
+### Uniform vertically -&gt; mean-var relationship well modelled
+
+
+```r
+library(DHARMa)
+nb2_sim &lt;- simulateResiduals(theft_nb2)
+plotResiduals(nb2_sim) 
+```
+
+&lt;img src="neg-binom-regression_files/figure-html/unnamed-chunk-7-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+## Assessment w/DHARMa scaled residuals?
+### Uniform vertically -&gt; mean-var relationship well modelled
+
+
+```r
+plotResiduals(nb2_sim, 
+              quantreg = FALSE) 
+```
+
+&lt;img src="neg-binom-regression_files/figure-html/unnamed-chunk-8-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+## Assessment w/DHARMa scaled residuals
+## Uniform vertically -&gt; mean-var relationship well modelled
+
+.small[
+
+```r
+sscrime &lt;- sscrime |&gt;
+  mutate(nb2_pred = 
+           rank(predict(theft_nb2, 
+                   type = 'response')),
+         nb2_scaled_resid = nb2_sim$scaledResiduals)
+
+gf_point(nb2_scaled_resid ~ 
+           nb2_pred,
+         data = sscrime)  |&gt;
+  gf_labs(y = 'Scaled Resid.', x = 'Predicted Thefts')
+```
+
+]
+
+---
+## Assessment w/scaled residuals?
+### Uniform vertically -&gt; mean-var relationship well modelled
+
+&lt;img src="neg-binom-regression_files/figure-html/unnamed-chunk-10-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## More Assessment needs doing!
+
+- Check ACF for independence of residuals
+- *No need* to check residual histogram
+- Check log(response) vs. predictors and scaled residuals vs fitted and vs predictors for trends (linearity)
+
+---
+class: huge inverse center middle subsection
+
+# Next: Offsets; Model selection; interactions
+
+---
+
+# Offsets
+## What if we need to model counts *per something*?
+
+- Thefts per school *per student* (instead of using `NEnrollment` as predictor, essentially model `Thefts` / `NEnrollment`)
+- Animal sightings *per unit effort* (sites checked; miles on trackline)
+
+---
+
+# Offsets: Math
+
+$$ log(\frac{\lambda_i}{\text{effort}}) = \beta_0 + \dots $$
+is the same as...
+
+`$$log(\lambda_i) = \beta_0 + \dots + log(\text{effort})$$`
+
+---
+
+# Offsets in R
+## (Use your smarts to decide if one is needed: **NOT** IC. Why?)
+
+
+```r
+theft_nb2_offs &lt;- glmmTMB(Thefts ~ Location + 
+                 TrainingHours + SecurityCameras +
+                 offset(log(NEnrollment)),
+                 data = sscrime,
+                 family = nbinom2(link='log'),
+                 na.action = 'na.fail')
+```
+
+---
+## Technical note: if using `dredge()` to make IC comparisons, tell `dredge()` to always include the offset term!
+
+
+```r
+theft_nb2_offs &lt;- update(theft_nb2_offs,
+                         na.action = 'na.fail')
+library(MuMIn)
+dredge(theft_nb2_offs,
+       rank = 'BIC',
+       fixed = 'cond(offset(log(NEnrollment)))')
+```
+
+## *omit the `cond()` if using a Poisson GLM fitted via `glm()`*
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

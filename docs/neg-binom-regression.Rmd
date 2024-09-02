@@ -1,0 +1,238 @@
+---
+title: "Count Data Regression: Negative Binomial GLMs"
+author: "STAT 245"
+date: ""
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+```{r, setup, include=FALSE}
+library(tidyverse)
+library(mosaic)    
+library(ggformula)
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 7, 
+                      fig.height = 3,
+                      tidy = FALSE,
+                      fig.align = 'center', 
+                      message = FALSE, 
+                      warning = FALSE,
+                      error = TRUE,
+                      out.width = '60%', 
+                      dpi = 300)
+theme_set(theme_minimal(base_size = 22))
+
+```
+
+```{r, include=FALSE}
+sscrime <- read_csv('https://sldr.netlify.app/data/sscrime.csv') |>
+  mutate(Location = fct_relevel(Location, 'City', 'Town', 'Urban Fringe', 'Rural'))
+
+theft_pois <- glm(Thefts ~ NEnrollment + Location + 
+                 TrainingHours + SecurityCameras, 
+               data = sscrime,
+               family = poisson(link = 'log'))
+```
+
+
+class: small
+
+## Negative Binomial Distributions
+
+- Can be used to model count data
+- Have **two parameters**:
+  - a mean $\mu$ (like the Poisson "rate" $\lambda$)
+  - dispersion parameter $\alpha$ (relates $\mu$ and variance)
+- NB1: variance is linear function of $\mu$
+- NB2: variance is quadratic function of $\mu$
+- Won't detail equation, likelihood as much
+
+
+---
+
+## Profiles in Stats: Mollie Brooks
+
+.pull-left[
+```{r, echo = FALSE}
+knitr::include_graphics('images/mollie-brooks.jpg')
+```
+]
+
+.pull-right[
+
+- Developer of `glmmTMB` package
+- Techn. Uni. Denmark
+- Ecosystem-based marine management
+
+]
+
+
+---
+
+# NB Regression in R
+
+```{r}
+library(glmmTMB)
+theft_nb1 <- glmmTMB(Thefts ~ NEnrollment + Location + 
+                 TrainingHours + SecurityCameras, 
+               data = sscrime,
+               family = nbinom1(link = 'log'))
+
+theft_nb2 <- glmmTMB(Thefts ~ NEnrollment + Location + 
+                 TrainingHours + SecurityCameras, 
+               data = sscrime,
+           family = nbinom2(link='log'))
+```
+
+---
+class: small
+## How far off from Poisson mean = var?
+
+```{r}
+summary(theft_nb1)
+```
+
+---
+
+# NB1 vs. NB2
+## Suggestion: use scaled residual plot *or maybe* IC to choose, 
+## if no domain knowledge suggesting one
+
+```{r}
+AIC(theft_nb1, theft_nb2)
+```
+
+**Which fits better?**
+
+---
+
+# Much better than Poiss.
+
+```{r}
+AIC(theft_pois, theft_nb1, theft_nb2)
+```
+
+*Don't use IC to compare Pois/NB; <br> just USE NB1 or 2, almost always.*
+
+---
+
+## Assessment w/DHARMa scaled residuals?
+### Uniform vertically -> mean-var relationship well modelled
+
+```{r}
+library(DHARMa)
+nb2_sim <- simulateResiduals(theft_nb2)
+plotResiduals(nb2_sim) 
+```
+
+---
+## Assessment w/DHARMa scaled residuals?
+### Uniform vertically -> mean-var relationship well modelled
+
+```{r}
+plotResiduals(nb2_sim, 
+              quantreg = FALSE) 
+```
+
+---
+## Assessment w/DHARMa scaled residuals
+## Uniform vertically -> mean-var relationship well modelled
+
+.small[
+```{r, echo = TRUE, fig.show = 'hide'}
+sscrime <- sscrime |>
+  mutate(nb2_pred = 
+           rank(predict(theft_nb2, 
+                   type = 'response')),
+         nb2_scaled_resid = nb2_sim$scaledResiduals)
+
+gf_point(nb2_scaled_resid ~ 
+           nb2_pred,
+         data = sscrime)  |>
+  gf_labs(y = 'Scaled Resid.', x = 'Predicted Thefts')
+```
+
+]
+
+---
+## Assessment w/scaled residuals?
+### Uniform vertically -> mean-var relationship well modelled
+
+```{r, echo = FALSE}
+sscrime <- sscrime |>
+  mutate(nb2_pred = 
+           rank(predict(theft_nb2, 
+                   type = 'response')),
+         nb2_scaled_resid = nb2_sim$scaledResiduals)
+
+gf_point(nb2_scaled_resid ~ 
+           nb2_pred,
+         data = sscrime) |>
+  gf_labs(y = 'Scaled Resid.', x = 'Predicted Thefts')
+```
+
+---
+
+## More Assessment needs doing!
+
+- Check ACF for independence of residuals
+- *No need* to check residual histogram
+- Check log(response) vs. predictors and scaled residuals vs fitted and vs predictors for trends (linearity)
+
+---
+class: huge inverse center middle subsection
+
+# Next: Offsets; Model selection; interactions
+
+---
+
+# Offsets
+## What if we need to model counts *per something*?
+
+- Thefts per school *per student* (instead of using `NEnrollment` as predictor, essentially model `Thefts` / `NEnrollment`)
+- Animal sightings *per unit effort* (sites checked; miles on trackline)
+
+---
+
+# Offsets: Math
+
+$$ log(\frac{\lambda_i}{\text{effort}}) = \beta_0 + \dots $$
+is the same as...
+
+$$log(\lambda_i) = \beta_0 + \dots + log(\text{effort})$$
+
+---
+
+# Offsets in R
+## (Use your smarts to decide if one is needed: **NOT** IC. Why?)
+
+```{r}
+theft_nb2_offs <- glmmTMB(Thefts ~ Location + 
+                 TrainingHours + SecurityCameras +
+                 offset(log(NEnrollment)),
+                 data = sscrime,
+                 family = nbinom2(link='log'),
+                 na.action = 'na.fail')
+```
+
+---
+## Technical note: if using `dredge()` to make IC comparisons, tell `dredge()` to always include the offset term!
+
+```{r, results = 'hide', message = FALSE}
+theft_nb2_offs <- update(theft_nb2_offs,
+                         na.action = 'na.fail')
+library(MuMIn)
+dredge(theft_nb2_offs,
+       rank = 'BIC',
+       fixed = 'cond(offset(log(NEnrollment)))')
+```
+
+## *omit the `cond()` if using a Poisson GLM fitted via `glm()`*

@@ -1,0 +1,107 @@
+---
+title: "This is your project title"
+author: "Student and partner names go here"
+format: 
+  html:
+    embed-resources: true
+    code-tools: true
+    theme: lux
+    page-layout: custom
+    fontsize: '80%'
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(ggformula)
+library(ggforce)
+
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      fig.width = 7,
+                      fig.height = 5
+                      )
+theme_set(theme_minimal(base_size = 20))
+```
+
+<!-- style notes... -->
+<!-- we used the "lux" theme - see more at: -->
+<!-- https://quarto.org/docs/output-formats/html-themes.html -->
+<!-- consider more customization of colors, etc. - some options at
+<!-- https://quarto.org/docs/output-formats/html-themes.html -->
+<!-- or use css if you know how -->
+
+
+::: {.grid}
+
+::: {.g-col-4}
+<!-- This column takes 1/3 of the page -->
+# Introduction
+
+- Text or bullet points giving context
+  - Describe your partner organization, 
+  - your data, and 
+  - the question(s) you're trying to answer. 
+- **Refer here to the bibliographic resources you named in your Statement of Work!**
+
+# Data
+- Present key graphs of your data 
+  - Include text (or titles!) clarifying the main point of each graph. 
+  - Graphs should score well on our [graphics critique checklist](https://moodle.calvin.edu/pluginfile.php/2373925/mod_page/intro/Graphics%20Critique%20Checklist.pdf)!
+- Consider replacing **Data** with a more-informative header...
+
+```{r, echo = FALSE, out.width='95%'}
+gf_boxplot(mpg ~ factor(cyl), data = mtcars,
+        color = ~(cyl==8)) |>
+  gf_sina() |>
+  gf_labs(x = 'Cylinders',
+          y = 'Miles per Gallon',
+          title = '8-Cylider cars guzzle gas') |>
+  gf_refine(scale_color_brewer('',
+                               palette = 'Set2')) |>
+  gf_theme(legend.position = 'none') 
+```
+:::
+
+::: {.g-col-4}
+<!-- This column takes 1/3 of the page -->
+# Statistical Modeling
+
+- Code-free description of the model you fitted. 
+  - Short! 
+  - In words! 
+  - See the [literature papers you worked on](https://stacyderuiter.github.io/stat245-sp24/re-lit-examples.html) for inspiration (Additional examples will be given.)
+
+# Main Findings
+
+- Interpretation of model results. What are the answers to your research question(s)? 
+- You might briefly refer to model selection results or assessment but they should probably not be shown in detail. 
+- You may show prediction plot(s) or you may just refer back to graphs of the data
+:::
+
+::: {.g-col-4}
+<!-- This column takes 1/3 of the page -->
+# Your experience
+
+- What were the biggest challenges and triumphs working on this project?
+  - These might be technical, or not. 
+  - Include here the kind of things you'd say if you were describing what you learned from this experience as part of a job interview, 
+  - or giving advice to a student about to take STAT 245 in the future...
+
+# References & Acknowledgements
+
+- Thank your partner?
+- Include a bibliography (any consistent style is ok; here is [a guide for MLA style.](https://owl.purdue.edu/owl/research_and_citation/mla_style/mla_formatting_and_style_guide/mla_formatting_and_style_guide.html))
+
+## Works Cited 
+
+::: {style="font-size: 70%;"}
+Alford, K. R., L. K. Walls, S. L. DeRuiter, R Pruim, J. E. VanHorn, M. Bone, J. Deighton, J. Koeman, S. Kornoelje, A. Koroma, R. LeTourneau, B. Lika, K. Rosendale, and N. Wang. 2023. "Reduction in Diarrhoea Rates after Household Water Filter Distribution in Small and Remote Communities in Liberia." Cogent Public Health 10, no. 1. doi:10.1080/27707571.2023.2205716.
+:::
+
+:::
+
+:::

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Interactions (Moderators)</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="STAT 245" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: inverse, middle, left, my-title-slide, title-slide
+
+.title[
+# Interactions (Moderators)
+]
+.author[
+### STAT 245
+]
+
+---
+
+
+
+
+class: huge center inverse subsection
+
+# Interactions Defined
+
+Two predictors **interact** when you need to know values of *both* in order to make an accurate prediction of the response variable value. One variable *modulates* or *alters* the effect of the other *on the response*.
+
+(Interaction is AKA Moderation!)
+
+---
+class: huge center inverse subsection
+
+# Interaction Note
+
+Predictors can interact in *any* type of regression model (so this chapter could really be placed almost anywhere in our course).
+
+---
+
+# Video #1
+
+&lt;iframe width="896" height="504" src="https://www.youtube.com/embed/3CCkeFShB3U?si=YunTWwImluB0wxH6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen&gt;&lt;/iframe&gt;
+
+---
+# Video #2
+
+&lt;iframe width="896" height="504" src="https://www.youtube.com/embed/Xn3B_YI1JQw?si=BZq0peRxCCuPv_Sa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen&gt;&lt;/iframe&gt;
+
+---
+# SET Example
+
+.small[
+.pull-left[
+- Dataset: `teach_beauty`
+- Course evaluation scores (`eval`) for many profs. 
+- From Gelman -- Columbia?
+]]
+
+.small[
+.pull-right[
+
+Dataset includes:
+
+- `native_language`
+- `beauty` (?)
+- `age`
+- is dress `formal`?
+- is prof `female`?
+- is prof white/caucasian? (`race_eth`)
+
+]
+]
+
+---
+# More Background
+
+- [Spooren et al. 2013](https://doi.org/10.3102/0034654313496870), 
+- [Hornstein 2017](https://www.tandfonline.com/doi/full/10.1080/2331186X.2017.1304016)
+- [Kreitzer &amp; Sweet-Cushman 2022](https://link.springer.com/article/10.1007/s10805-021-09400-w)
+
+---
+## Night Science - We can Peek!
+### A Categorical-Quantitative Interaction?
+
+&lt;img src="interactions_files/figure-html/unnamed-chunk-1-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+  
+---
+## Night Science - We can Peek!
+### A Categorical-Categorical Interaction?
+
+&lt;img src="interactions_files/figure-html/SET-graph-2-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+class: huge center inverse subsection
+# Quant-Quant interactions?
+
+Let's not go there...
+
+---
+## Interactions in R Model Formula: * not +
+
+
+
+```r
+beauty_mod &lt;- lm(eval ~ 
+                   beauty * female + 
+                   formal * female, 
+                 data = teach_beauty)
+```
+
+## Consistent Diagram?
+
+
+---
+# `summary()` w/Interaction
+
+.small[
+
+```r
+msummary(beauty_mod)
+```
+
+```
+##                                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                            3.84839    0.10813  35.591   &lt;2e-16 ***
+## beauty                                 0.09021    0.04744   1.902   0.0578 .  
+## femalenot female                       0.27615    0.13130   2.103   0.0360 *  
+## formalInformal Dress                   0.05751    0.11574   0.497   0.6195    
+## beauty:femalenot female                0.10841    0.06452   1.680   0.0936 .  
+## femalenot female:formalInformal Dress -0.08378    0.14276  -0.587   0.5576    
+## 
+## Residual standard error: 0.5371 on 457 degrees of freedom
+## Multiple R-squared:  0.07326,	Adjusted R-squared:  0.06312 
+## F-statistic: 7.226 on 5 and 457 DF,  p-value: 1.587e-06
+```
+]
+
+---
+## `summary()` w/Interaction -- Equation?
+
+.smaller[
+
+```r
+msummary(beauty_mod)
+```
+
+```
+##                                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                            3.84839    0.10813  35.591   &lt;2e-16 ***
+## beauty                                 0.09021    0.04744   1.902   0.0578 .  
+## femalenot female                       0.27615    0.13130   2.103   0.0360 *  
+## formalInformal Dress                   0.05751    0.11574   0.497   0.6195    
+## beauty:femalenot female                0.10841    0.06452   1.680   0.0936 .  
+## femalenot female:formalInformal Dress -0.08378    0.14276  -0.587   0.5576    
+## 
+## Residual standard error: 0.5371 on 457 degrees of freedom
+## Multiple R-squared:  0.07326,	Adjusted R-squared:  0.06312 
+## F-statistic: 7.226 on 5 and 457 DF,  p-value: 1.587e-06
+```
+]
+
+---
+## Selection using ANOVA
+
+.small[
+
+```r
+car::Anova(beauty_mod)
+```
+
+```
+## Anova Table (Type II tests)
+## 
+## Response: eval
+##                Sum Sq  Df F value    Pr(&gt;F)    
+## beauty          6.180   1 21.4252   4.8e-06 ***
+## female          4.303   1 14.9167 0.0001286 ***
+## formal          0.000   1  0.0013 0.9713449    
+## beauty:female   0.815   1  2.8238 0.0935599 .  
+## female:formal   0.099   1  0.3444 0.5575709    
+## Residuals     131.818 457                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+]
+
+---
+## Selection using AIC
+
+.small[
+
+```r
+m2 &lt;- lm(eval ~ beauty + female + formal * female, 
+                 data = teach_beauty)
+m3 &lt;- lm(eval ~ beauty * female + formal + female, 
+                 data = teach_beauty)
+AIC(beauty_mod, m2)
+```
+
+```
+##            df      AIC
+## beauty_mod  7 746.2676
+## m2          6 747.1197
+```
+
+```r
+AIC(beauty_mod, m3)
+```
+
+```
+##            df      AIC
+## beauty_mod  7 746.2676
+## m3          6 744.6164
+```
+]
+
+---
+class: huge center inverse subsection
+
+# Cautionary note
+If you include an interaction in a regression model, you **must** also include the corresponding "fixed effects" (It would take effort to mess this up in R).
+
+---
+## Another Example: Bees
+
+### We will use data from a 2019 paper by Adam Dolezal and colleagues, entitled *Interacting stressors matter: diet quality and virus infection in honeybee health* (&lt;https://doi.org/10.1098/rsos.181803&gt;).
+
+---
+## Bees
+
+.small[
+&gt;&gt;Honeybee population declines have been linked to multiple stressors, including reduced diet diversity and increased exposure to understudied viruses. Despite interest in these factors, few experimental studies have explored the interaction between diet diversity and viral infection in honeybees... In laboratory experiments, we found that high-quality diets have the potential to reduce mortality in the face of infection with Israeli acute paralysis virus (IAPV).
+
+]
+---
+## Data Prep
+
+.small[
+
+```r
+bees &lt;- read_csv('https://sldr.netlify.app/data/bee-virus.csv') |&gt;
+  rename(Cage_id = `Cage Number`,
+         Virus = `Virus Treatment`,
+         Food = `Pollen Treatment`,
+         Experiment_id = `Experimental replicate code`,
+         Mortality = `72 hpi proportion mortality`) |&gt;
+  drop_na(Virus, Food, Mortality)
+
+glimpse(bees)
+```
+
+```
+## Rows: 117
+## Columns: 5
+## $ Cage_id       &lt;dbl&gt; 351, 352, 353, 354, 355, 357, 359, 360, 361, 362, 363, 3…
+## $ Virus         &lt;chr&gt; "None", "Virus", "None", "None", "Virus", "Virus", "Viru…
+## $ Food          &lt;chr&gt; "None", "Poly", "Poly", "Castanea", "Castanea", "Cistus"…
+## $ Experiment_id &lt;dbl&gt; 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, …
+## $ Mortality     &lt;dbl&gt; 0.02857143, 0.11428571, 0.02857143, 0.05555556, 0.171428…
+```
+]
+
+---
+class: huge center inverse subsection
+
+# Categorical-Quantitative Interaction of `Virus` and `Food`?
+
+---
+## Categorical-Quantitative Interaction
+
+
+```r
+gf_boxplot(Mortality ~ Virus | Food, 
+           data = bees)
+```
+
+&lt;img src="interactions_files/figure-html/bee-plot-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+## Bee Model
+
+.small[
+
+```r
+bee_int_model &lt;- lm(Mortality ~ 
+                      Virus * Food, 
+                    data = bees)
+msummary(bee_int_model)
+```
+
+```
+##                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)            0.04470    0.03202   1.396 0.165533    
+## VirusVirus             0.17462    0.04452   3.922 0.000154 ***
+## FoodCistus             0.07966    0.04452   1.789 0.076326 .  
+## FoodNone               0.04699    0.04452   1.055 0.293548    
+## FoodPoly              -0.01016    0.04528  -0.224 0.822810    
+## VirusVirus:FoodCistus  0.01846    0.06241   0.296 0.767981    
+## VirusVirus:FoodNone    0.15731    0.06241   2.521 0.013165 *  
+## VirusVirus:FoodPoly   -0.01704    0.06350  -0.268 0.788894    
+## 
+## Residual standard error: 0.1198 on 109 degrees of freedom
+## Multiple R-squared:  0.5502,	Adjusted R-squared:  0.5213 
+## F-statistic: 19.05 on 7 and 109 DF,  p-value: &lt; 2.2e-16
+```
+]
+
+---
+# Selection
+## What's it mean?
+
+.small[
+
+```r
+car::Anova(bee_int_model)
+```
+
+```
+## Anova Table (Type II tests)
+## 
+## Response: Mortality
+##             Sum Sq  Df F value    Pr(&gt;F)    
+## Virus      1.35948   1 94.7322 &lt; 2.2e-16 ***
+## Food       0.42364   3  9.8402 8.491e-06 ***
+## Virus:Food 0.14103   3  3.2758   0.02385 *  
+## Residuals  1.56423 109                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+]
+
+---
+class: huge center inverse subsection
+# Pred Plots
+
+If predictors interact in a model, you shouldn't show a prediction plot with *any* **of them unless it shows** *all* **of them**
+---
+## Pred Plot - How?
+
+---
+## Pred Plot Shortcut
+### (NOT allowed for use on Test 1!)
+
+
+```r
+library(ggeffects)
+ggpredict(bee_int_model,
+          terms = c('Virus', 'Food')) |&gt;
+  plot()
+```
+
+---
+## Pred Plot Shortcut
+### (NOT allowed for use on Test 1!)
+
+&lt;img src="interactions_files/figure-html/bee-pred-plot1b-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+## Pred Plot Shortcut
+### (NOT allowed for use on Test 1!)
+### *Order matters*
+
+
+```r
+library(ggeffects)
+ggpredict(bee_int_model,
+          terms = c('Food', 'Virus')) |&gt;
+  plot()
+```
+
+---
+## Pred Plot Shortcut
+### (NOT allowed for use on Test 1!)
+
+&lt;img src="interactions_files/figure-html/bee-pred-plot2b-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "4:3"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

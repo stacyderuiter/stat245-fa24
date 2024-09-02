@@ -1,0 +1,217 @@
+---
+title: "Tables and Summary Stats in R"
+date: "April 24, 3023"
+format: 
+  html:
+    toc: true
+    embed-resources: true
+    code-tools: true
+editor: visual
+---
+
+```{r setup, include=FALSE}
+require(mosaic)
+require(tidyverse)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data: Pilot Whale Dives
+
+```{r, message = FALSE}
+pw <- read_csv('https://sldr.netlify.app/data/pwd.csv')
+```
+
+# Tabulate One Categorical Variable
+
+How many dives are in the dataset for each individual?
+
+```{r}
+tally(~individual, data = pw) |> # make table
+  knitr::kable() # print it nicely
+```
+
+# Customizing `kable()` Tables
+
+## Custom `col.names`
+
+```{r}
+tally(~individual, data = pw) |> # make table
+  knitr::kable(col.names = c('Whale ID',
+                             'Count')) # print it nicely
+```
+
+## Flip the table: `t()`
+
+```{r}
+tally(~individual, data = pw) |>
+  t() |>
+  knitr::kable()
+```
+
+(hmm, maybe not a good idea in this case...)
+
+## Alignment in cells: `align = ...`
+
+`align = 'c'` for center, `align = 'r'` for right, `align = 'l'` for
+left.
+
+```{r}
+tally(~individual, data = pw) |> # make table
+  knitr::kable(align = 'c') # print it nicely
+```
+
+## Add caption
+
+```{r}
+tally(~individual, data = pw) |> # make table
+  knitr::kable(caption = 'This table is about some stuff.') # print it nicely
+```
+
+## Percentages or Proportions
+
+What if we want proportions or percentages rather than counts? We add
+input: `format = 'proportion'` or `format = 'percent'`:
+
+```{r}
+tally(~individual, data = pw,
+      format = 'proportion') |> # make table
+  knitr::kable(col.names = c('Whale ID',
+                             'Proportion')) # print it nicely
+```
+
+## Control rounding
+
+set the input `digits` to `knitr::kable()` to the number of digits you
+want after the decimal place. You can enter a list of values (one for
+each column) if desired. For example, if there are 3 columns and the
+first column should have 3 decimal places and the others 1,
+`digits = c(3, 1, 1)`.
+
+```{r}
+tally(~individual, data = pw,
+      format = 'percent') |> # make table
+  knitr::kable(digits = 1,
+               col.names = c('Whale ID',
+                             'Percent')) # print it nicely
+```
+
+# Tabulate Two categorical variables
+
+Use formula like `y ~ x` or `~x | z` to make two-way tables.
+
+```{r}
+tally(dive_state ~ individual, 
+      data = pw) |>
+  knitr::kable()
+```
+
+Flip the formula to flip the table.
+
+```{r}
+tally(individual ~ dive_state, 
+      data = pw) |>
+  knitr::kable()
+```
+
+If using proportions or percentages, they total to 100% by column.
+
+```{r}
+tally(dive_state ~ individual, 
+      data = pw,
+      format = 'proportion', 
+      margins = TRUE) |>
+  knitr::kable(digits = 2)
+```
+
+# Tabulate Summary Stats for Quantitative Variables: `df_stats()`
+
+## Overall Statistics
+
+For this to work, let's assume that you have R functions available to
+compute the summary stats that you want to show. Some common ones might
+be `mean()`, `median()`, `sd()`, `iqr()`, `min()`, `max()`. They all
+allow you to add input `na.rm = TRUE` to ignore NAs (without that, if
+there are NAs in the variable, the answer will always be NA too).
+
+```{r}
+mean(~duration, data = pw)
+max(~depth, data = pw)
+```
+
+**Making the table:**
+
+Use a one-sided formula. List the names of the *functions* you want to
+apply to each of the variables at the end of the inputs to `df_stats()`.
+
+```{r}
+df_stats(~duration + depth + ODBA + group_size, 
+         data = pw,
+         mean,
+         sd,
+         median,
+         IQR) |>
+  knitr::kable(digits = 2)
+```
+
+## By groups
+
+At the end of your formula, add `| grouping_variable` or
+`| grouping_variable1 + grouping_2...`
+
+```{r}
+df_stats(~duration + depth | ind_size, 
+         data = pw,
+         mean,
+         sd,
+         median,
+         IQR) |>
+  knitr::kable(digits = 1,
+               align = c('l', 'l', 'r', 'r', 'r', 'r' ))
+```
+
+```{r}
+df_stats(~duration + depth | ind_size + dive_state, 
+         data = pw,
+         mean,
+         sd,
+         median,
+         IQR) |>
+  knitr::kable(digits = 1)
+```
+
+## Reordering table: `arrange()`
+
+This works for quantitative variables. To sort the entire table:
+
+```{r}
+df_stats(~duration + depth | dive_state, 
+         data = pw,
+         mean,
+         sd,
+         median,
+         IQR) |>
+  arrange(median) |>
+  knitr::kable(digits = 1)
+```
+
+To keep the variables (`depth` and `duration` here) together (always use
+`arrange(response, ...)`):
+
+```{r}
+df_stats(~duration + depth | dive_state, 
+         data = pw,
+         mean,
+         sd,
+         median,
+         IQR) |>
+  arrange(response, median) |>
+  knitr::kable(digits = 1)
+```
+
+# More
+
+If you want more control/options, you may want to explore:
+
+-   package `janitor` and its function `tabyl()`
+-   package `xtable` if you are a LaTeX fan and knitting to PDF
+-   package `kableExtra` for more options to format the "pretty" table

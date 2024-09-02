@@ -1,0 +1,348 @@
+---
+title: "GAMs (Generalized Additive Models)"
+author: "STAT 245"
+date: ""
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+```{r, setup-gams, include=FALSE}
+library(mosaic) 
+library(tidyverse)
+library(ggformula)
+library(s245)
+# theme_set(theme_minimal(base_size=14))
+# knitr::opts_chunk$set(
+#   tidy=FALSE, echo=TRUE, 
+#   size="small", message=FALSE, results='markup',
+#   fig.width=6, fig.height=3.5, cache=FALSE)
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 7, 
+                      fig.height = 3,
+                      tidy = FALSE,
+                      fig.align = 'center', 
+                      message = FALSE, 
+                      warning = FALSE,
+                      error = TRUE,
+                      cache = TRUE,
+                      out.width = '60%', 
+                      dpi = 300)
+theme_set(theme_minimal(base_size = 22))
+```
+
+# Motivation
+
+- We can model continuous, logical, and count response variables
+- We can include quantitative and categorical predictors
+- What about nonlinear relationships?
+
+---
+class: small
+
+# Already nonlinear
+## Categorical predictor variables
+
+  - Making use of indicator variables for (all but one of the) categories, we can model a situation where each value of the predictor variable has a different effect on the response. 
+  - But...if forcing a quantitative variable to be categorical...
+    - How many categories?
+    - What about periodicity?
+    
+---
+# Already nonlinear
+## GLMs
+  - In binary or count regression, predictor-response relationship is linear on the scale of the link function ( = scale of the RHS of the equation)
+  - But non-linear on the scale of the response variable (LHS)
+  - Well - Nonlinear, but always **monotonic**
+
+
+---
+class: small
+
+# Not going there
+## Popular options that we won't pursue (and why)
+
+- Transformations of predictors or response (log, powers, etc.)
+- Polynomials (adding $\text{predictor}^2$, $\text{predictor}^3$, etc.)
+- Good *with theoretical justification*, otherwise hard to choose
+- We want one flexible solution to get any shape
+- We want easily interpretable results
+
+---
+## Non-linear, non-monotonic 
+## Example: Bat migration & Weather
+
+```{r, include = FALSE}
+bats <- read.csv('https://ndownloader.figshare.com/files/9348010')
+```
+
+```{r, include = FALSE}
+    # old url: 'http://rsbl.royalsocietypublishing.org/highwire/filestream/33982/field_highwire_adjunct_files/2/rsbl20170395supp3.csv')
+```
+
+```{r, echo = FALSE}
+gf_boxplot(relativehumid ~ factor(migration), data = bats)
+
+bats <- bats |>
+  mutate(humid_bins = cut(bats$relativehumid, breaks=7))
+
+bats2 <- bats |>
+   group_by(humid_bins) |>
+  summarize(migration_prop = prop(~migration == 1),
+            median_hum = median(relativehumid)) |>
+  ungroup()
+
+gf_point(migration_prop ~ median_hum, data = bats2) |> 
+  gf_labs(x='Relative Humidity', y='Proportion\nMigrating') |>
+  gf_smooth(method = 'gam', formula = y ~ s(x, k = 4, bs = "cs"), color = 'grey84') 
+```
+
+---
+class: small
+
+<!-- ## Nonlinear, non-monotonic example -->
+## Our case study: [GRR weather station](https://www.ncdc.noaa.gov/cdo-web/search) + [metadata](https://www.ncei.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf)
+
+```{r}
+grweather <- read_csv('https://sldr.netlify.app/data/grr-weather-metric.csv',
+         show_col_types = FALSE) |>
+    select(SNOW, TMIN, DATE, TSUN) |>
+  mutate(MONTH = lubridate::month(DATE),
+         DAY = lubridate::yday(DATE),
+         YEAR = lubridate::year(DATE),
+         WEEK = lubridate::isoweek(DATE),
+         PREV.SNOW = lag(SNOW)) |> na.omit()
+```
+
+```{r, old-data, include = FALSE, echo = FALSE}
+# ozone2 <- read_csv('https://faculty.washington.edu/heagerty/Books/Biostatistics/DATA/ozone.csv')
+# # old data - defunct
+# oz <- read.csv('http://geog.uoregon.edu/GeogR/data/csv/ozone.csv')
+```
+
+```{r, snow-figs1, message = FALSE, fig.show = 'hide'}
+gf_point(SNOW ~ DATE, data = grweather, alpha = 0.2)
+gf_point(SNOW ~ DAY, data = grweather, alpha = 0.2)
+```
+```{r, snow-figs2, message = FALSE, fig.show = 'hide'}
+gf_point(SNOW ~ TMIN, data = grweather, alpha = 0.2)
+gf_point(SNOW ~ TSUN, data = grweather, alpha = 0.2)
+```
+
+---
+
+## Snowy Weather Case Study
+
+.pull-left[
+```{r, ref.label= 'snow-figs1', fig.height=2.5, fig.width = 4,  echo = FALSE, fig.show = 'hold'}
+```
+]
+
+.pull-right[
+```{r, ref.label= 'snow-figs2', fig.height=2.5, fig.width = 4,  echo = FALSE, fig.show = 'hold'}
+```
+]
+
+
+
+---
+
+# Smooth functions
+
+- Goal: predictor-response relationship can have any shape
+- linear, or nonlinear with *any* shape
+- user control of "wiggliness"
+
+---
+class: small
+
+# Basis functions
+
+- Several parts, or *basis functions*, sum to form a smooth
+- Each has simple shape
+- Scaled and added together, yield nearly any shape
+- Higher basis dimension (more functions added together) can = more wiggles 
+- Goal: enough flexibility to fit data well, without *overfitting* 
+
+---
+
+# Overfitting
+
+<br>
+
+```{r, echo = FALSE, out.width = '95%'}
+knitr::include_graphics('https://miro.medium.com/max/1400/1*iiPH0JyowvS3k12T0-W2HA.png')
+```
+
+---
+
+# Fitting GAMs
+## Generalized Additive Models
+
+- R Package `mgcv`, function `gam()`
+- Can fit any family (linear, binary, count) depending on response variable type
+- Smooth Types: [App](https://connect.cs.calvin.edu/DATA545/smooth/) 
+- More background ([workshop materials](https://eric-pedersen.github.io/mgcv-esa-workshop/))
+
+---
+
+<iframe src="https://embed.polleverywhere.com/multiple_choice_polls/jUok92iaM7YK6VcnCerpv?controls=none&short_poll=true" width="1200px" height="650px"></iframe>
+
+<!-- --- -->
+
+<!-- # Model Planning -->
+<!-- ## Which terms should be smooths?  -->
+
+<!-- - Explore the data? -->
+<!-- - Think it through? -->
+<!-- - *All* of them? -->
+
+<!-- - Pros: -->
+<!-- - Cons: -->
+
+---
+
+# Model formula syntax
+## Function `s()` specifies a smooth. Inputs:
+
+- variable name(s)
+- `k` (see `?choose.k`)
+- `bs`
+- `by`
+
+How do we choose? see [App](https://connect.cs.calvin.edu/DATA545/smooth/) ; Defaults: `tp` or `cs` as default options, or `cc` for cyclic
+---
+# Break my App
+
+- What choices of smooth type and/or `k` work *well* for your variable?
+- What choices of smooth type and `k` can result in a smooth that seems overfitted, or mismatched to data in some other way?
+- What does shrinkage (`bs = _s`) do?
+
+[https://connect.cs.calvin.edu/DATA545/smooth/](https://connect.cs.calvin.edu/DATA545/smooth/)
+
+---
+
+# `gam()` Options
+We can also fit the model and smooths by different methods and with options:
+
+- ~~`method = 'GCV.Cp'`~~
+- ~~`method = 'REML'`~~
+- `method = 'ML'`
+- `select = TRUE` (or ~~`FALSE`~~)
+
+---
+
+# GAM Example - Snow
+
+```{r, fig.show='hold', fig.width=2.2, fig.height=2.25, results='markup'}
+library(mgcv)
+snow.gam <- gam(SNOW ~ s(DAY, k = 20, bs = 'cc') +
+                s(TMIN, k = 5, bs = 'cs') +
+                s(YEAR, k = 5, bs = 'cs') + PREV.SNOW,
+              data = grweather,
+              method = 'ML', 
+              select = TRUE)
+```
+
+---
+
+<iframe src="https://embed.polleverywhere.com/multiple_choice_polls/KEHgm1ifeimIfkcGSQPlB?controls=none&short_poll=true" width="1200px" height="650px"></iframe>
+---
+
+<iframe src="https://embed.polleverywhere.com/multiple_choice_polls/Ojz4Y5fATI1qC1Z2qAAT2?controls=none&short_poll=true" width="1200px" height="650px"></iframe>
+
+---
+class: smaller
+
+```{r}
+summary(snow.gam)
+```
+
+---
+# Choosing K?
+## Silk (big k) vs. Carpet (small k, min. ~3)
+
+```{r, echo = FALSE, out.width = '70%'}
+gf_segment(0 + SNOW ~ DAY + DAY,
+           alpha = 0.2, data = grweather) |>
+  gf_labs(y = 'Snow (mm)', x = 'Day of Year')
+```
+
+---
+# Other Responses, REs
+
+- Families: gaussian, binomial, poisson, **negbin**
+- Add simple (not nested) random effects to formula: `s(variable, bs = 're')`
+- More REs in a GAM: `gamm4::gamm4()` (beyond our class/demo next week)
+
+
+---
+
+# Model Assessment
+
+- Conditions (for family used) must be met: ~~L~~INE *or* ~~L~~I, mean-variance
+- All must be checked as for `(g)lm(mTMB)()` - except linearity!
+
+---
+class: small
+## Additional Checks for GAM
+
+```{r, fig.show='hide', fig.width=5.5, fig.height=3.5, results='markup'}
+par(mar=c(4,4,2,2))
+gam.check(snow.gam)
+```
+
+---
+
+## Prediction Plots (as usual)
+
+```{r, fig.width = 6, fig.height = 2, out.width = '80%'}
+spred <- ggpredict(snow.gam,
+                   terms = c('DAY', 'YEAR[2022]')) 
+plot(spred) |> 
+  gf_labs(title = '', 
+          y = 'Expected Snow (mm)', x = 'Day of Year')
+```
+
+---
+class: small
+##  Which fixed values were used?
+
+```{r}
+spred
+```
+
+---
+
+# Shrinkage 
+
+- Some model selection is (or can be) done during model fitting
+- What smooth is best? Or is the relationship a line? A flat line?  
+- Using *shrinkage* basis or including `select = TRUE` allows for this
+- Our Default?
+
+---
+
+# P-value selection
+
+- Caution: **p-values are approximate!** 
+- Best when using ML (1st choice), REML (2nd choice).
+
+```{r, results = 'hide'}
+anova(snow.gam)
+```
+
+Note: use `anova()` (not `Anova()`) for GAMs - **unlike** `lm()`, `glm()`, `glmmTMB()`. Can also use `AIC()` or `BIC()` too.
+---
+class: small
+```{r}
+anova(snow.gam)
+```
+

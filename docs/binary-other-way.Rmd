@@ -1,0 +1,283 @@
+---
+title: "Binary Regression - The other way"
+author: "STAT 245"
+date: "March 19, 2024"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '4:3'
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(mosaic)
+library(glmmTMB)
+library(cluster)
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 7, 
+                      fig.height = 3,
+                      tidy = FALSE,
+                      fig.align = 'center', 
+                      message = FALSE, 
+                      warning = FALSE,
+                      error = TRUE,
+                      out.width = '60%', 
+                      dpi = 300)
+theme_set(theme_minimal(base_size = 22))
+```
+
+
+class: small
+
+## Adjustment to our $\frac{n}{15}$ Rule
+### For **all binary** regression models
+
+- We will definitely need a bigger dataset to estimate the probability of "success" *when success is very rare*
+- Let $s$ be the total number of successes in the dataset, and $f$ the number of failures.
+- Limiting sample size $m$ is $min(s, f)$
+- Number of coefficients we can estimate is about $\frac{m}{15}$
+
+---
+
+# Thermal Preference
+
+- Data from wearable sensors 
+- Can they predict whether people are cold?  
+- Define: success = to "Prefer Warmer"
+
+---
+class: small
+
+# Original Data
+## Like we're already used to
+
+```{r}
+cold <- read.csv('https://sldr.netlify.com/data/cold.csv') |>
+  na.omit()  |>
+  glimpse()
+```
+
+---
+
+## How many coefficients can we estimate?
+
+```{r}
+mosaic::tally(~therm_pref, data = cold)
+```
+
+---
+
+# Data "The Other Way"
+
+.small[
+- Especially if we have categorical predictors, we can...
+  - *group observations* and 
+  - tally up the **number of successes** and **number of observations** for all cases with *identical predictor variable values*.
+  ]
+  
+---
+## Data "The Other Way"
+### Multiple trials per row
+
+```{r, echo = FALSE, message = FALSE}
+cold2 <- readr::read_csv('https://sldr.netlify.app/data/cold2.csv') |>
+  na.omit()
+cold2 <- cold2 |>
+  mutate(exercise_amount = clara(exercise_hours, k = 3)$clustering,
+         ambient_temp_n = clara(mean.temperature_60, k = 2)$clustering,
+         BMI = weight / height^2)
+
+cold2 <- cold2 |>
+  mutate(exercise = case_when(exercise_amount == which.min(mean(exercise_hours | exercise_amount, data = cold2)) ~ 'Low',
+          exercise_amount == which.max(mean(~exercise_hours | exercise_amount, data = cold2)) ~ 'High',
+          TRUE ~ 'Moderate'),
+         
+         ambient_temp = ifelse(ambient_temp_n == which.min(mean(~mean.temperature_60 | ambient_temp_n, data = cold2)), 'Cool', 'Warm'),
+         
+         BMI_cat = case_when(BMI < 18.5 ~ 'Underweight',
+                             BMI >= 18.5 & BMI < 24.9 ~ 'Moderate',
+                             BMI >=24.9 & BMI < 29.9 ~ 'Overweight',
+                             BMI >= 29.9 ~ 'Obese')) |>
+  select(therm_pref, location, sex, exercise, 
+         ambient_temp, BMI_cat) |>
+  mutate(therm_pref = factor(therm_pref))
+
+cold2 <- cold2 |>
+  group_by(location, sex, exercise, ambient_temp, BMI_cat) |>
+  summarise(pref_warmer = count(therm_pref == 'Prefer Warmer'),
+            comfortable = n() - pref_warmer) |> 
+  ungroup()
+```
+
+```{r, echo = FALSE}
+glimpse(cold2)
+```
+
+---
+
+# Why???
+
+- Maybe it came that way 
+- Easier to look at *proportion "success"* as a function of each predictor.
+
+---
+## Easier Graphs
+
+.small[
+```{r, echo = TRUE}
+gf_boxplot((pref_warmer / (pref_warmer + comfortable)) ~ 
+             ambient_temp, 
+           data = cold2) |> 
+  gf_labs(y = 'Proportion\nPrefer Warmer', 
+          x = 'Ambient Temp')
+```
+]
+
+---
+
+## And linearity checking, too!
+### (If we had any quantitative predictors.)
+
+.small[
+```{r, echo = TRUE, eval= FALSE}
+gf_boxplot(logit(pref_warmer / (pref_warmer + comfortable)) ~ 
+             quant_predictor, 
+           data = cold2) |> 
+  gf_labs(y = 'logit(Proportion\nPrefer Warmer)', 
+          x = 'Quant Predictor')
+```
+]
+
+
+---
+
+## Binary Regression Setup
+### Multiple trials per row data
+
+### Use `cbind()` to group together the *number of successes* and *number of failures* to create the response variable.
+
+.small[
+```{r}
+cold_logit <- 
+  glmmTMB(cbind(pref_warmer, comfortable) ~
+            location + sex + exercise +
+            ambient_temp + BMI_cat,
+          data = cold2,
+          family  = binomial(link = 'logit'))
+```
+]
+
+---
+
+## Logistic Regression - Results
+## `msummary()` - more concise than `summary()`
+
+.smaller[
+```{r}
+msummary(cold_logit)
+```
+]
+
+---
+
+# The original way
+## One trial per row
+
+```{r}
+old_cold_logit <- 
+  glmmTMB(factor(therm_pref) ~
+        location + sex + exercise +
+        ambient_temp + BMI_cat,
+      data = cold,
+      family  = binomial(link = 'logit'))
+```
+
+---
+
+## Summary, original way
+## One trial per row
+
+.smaller[
+```{r}
+msummary(old_cold_logit)
+```
+]
+
+---
+
+## Compare coefficients (and SEs)
+
+.small[
+```{r, echo = FALSE}
+all_coefs <- cbind(fixef(cold_logit)$cond, 
+                   fixef(old_cold_logit)$cond
+                   )
+colnames(all_coefs) <- c('Multi Trial' ,
+                         'Single Trial')
+all_coefs
+```
+]
+
+---
+class: small
+
+## One vs. Many Trials-per-row (don't do both!)
+
+- Parameter estimates and SEs **identical**
+- IC-based model selection *not identical*
+  - Should we treat each observation of a success/failure as a draw from a binomial distribution with $n = 1$?
+  - Should we treat each *set of trials with same predictor values* as a draw from a binomial distribution with $n \geq 1$?
+  - Right answer depends on context, experimental design (beyond scope of our class?)
+
+---
+class: small
+
+## Pause: Odds Practice
+
+The model equation for our model is:
+
+$$logit(p) = log\bigg{(}\frac{p}{(1-p)}\bigg{)} = \beta_0 + \beta_1 I_{outdoor} + \dots$$
+
+Where $I_{outdoor}$ is an indicator variable that is 1 when outside and 0 when inside, and our estimate of $\beta_1$ is $\hat{\beta}_1 = 0.745$ (from the model summary).
+
+How do the odds of "Prefer warmer" change, when outside instead of inside?
+
+---
+## Verification of Odds Interpretation
+
+.small[
+```{r, fig.width = 6.5, fig.height = 2.2}
+ggeffects::ggpredict(old_cold_logit, 
+                     terms = 'location') |>
+  plot() |>
+  gf_lims(y = c(0,1))
+```
+]
+
+*Notice: simpler to* **just use predictions...** *plus odds when necessary*
+
+---
+
+## Model Assessment, Selection... 
+
+## methods *same* regardless of data set-up :)
+
+## Other Links?
+- may still use probit, cloglog if desired
+
+---
+# Binary vs Count!
+
+.small[
+- Multi-trials-per-row binary data *can be mistaken for count data*
+- For count data  
+  - **there is no "ceiling" (max possible count)**
+- For binary data 
+  - **the number of trials is the "ceiling"**
+  ]

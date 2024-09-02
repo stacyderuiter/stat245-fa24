@@ -1,0 +1,263 @@
+---
+title: "Linear Regression (Revisited): Multiple Regression"
+author: "STAT 245"
+date: "Jan. 23-25, 2024"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+```{r, setup-lm1, include=FALSE}
+library(ggformula)
+library(tidyverse)
+library(dagitty)
+library(CalvinBayes)
+
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 7, 
+                      fig.height = 3,
+                      tidy = FALSE,
+                      fig.align = 'center', 
+                      message = FALSE, 
+                      warning = FALSE,
+                      error = TRUE,
+                      out.width = '60%', 
+                      dpi = 300)
+theme_set(theme_minimal(base_size = 22))
+
+bonobos <- read_csv(file='http://sldr.netlify.app/data/bonobo_faces.csv')
+# add one missing for demo purposes
+bonobos[28, 'normDS'] <- NA
+
+m1_simple <- lm(AssR ~ fWHR, data = bonobos)
+```
+
+# Multiple regression
+
+- Rarely does our response variable **really** depend on only one predictor. 
+- Can we expand our formulation to include more predictors? (Example: `normDS` also predicts `AssR`?) 
+- In R, it's super easy:
+
+```{r, mult-reg, fig.show='hold'}
+m2_2q <- lm(AssR ~ fWHR + normDS, 
+          data = bonobos)
+```
+
+---
+
+## Summary + Equation
+
+.small[
+```{r, echo = FALSE}
+summary(m2_2q)
+```
+]
+
+---
+
+# Prediction Practice
+
+.pull-left[
+```{r, mult-reg-plots, echo=FALSE, warning = FALSE, out.width = '85%', fig.height = 4}
+my_points <- c(8,25,41,65)
+bonobos$three <- 'no'
+bonobos$three[my_points] <- 'yes'
+gf_point(AssR ~ fWHR, data = bonobos, color = ~three, shape = ~three, size = 4,
+         show.legend=FALSE) 
+```
+]
+
+.pull-right[
+```{r, mult-reg-plots-2, echo=FALSE, warning = FALSE, out.width = '85%', fig.height = 4}
+gf_point(AssR ~ normDS, data = bonobos, shape = ~three,
+         color = ~three, size = 4,
+         show.legend=FALSE) 
+```
+]
+
+---
+
+# Prediction Practice
+
+.small[
+```{r, three-points, echo=FALSE}
+bonobos |>
+  slice(my_points) |>
+  select(fWHR, AssR, normDS) |>
+  DT::datatable()
+```
+]
+
+
+---
+
+# Choosing Predictors, Again
+
+- Here: build simple -> complex *to show math machinery*
+- In practice: **Think before you model**
+  - Rule of thumb (from Harrell): $p < \frac{n}{15}$
+  - $p$ is number of parameters want to estimate; $n$ is sample size (rows in data)
+
+---
+
+# How Fitting Happened
+## Simple Linear Regression Residuals
+
+```{r, echo = FALSE, out.width = '90%'}
+bonobos <- bonobos |>
+  mutate(sr = resid(m1_simple),
+         sp = predict(m1_simple))
+gf_point(AssR ~ fWHR, 
+         data = bonobos) |> 
+  gf_lm(color = 'black', 
+        size = 2) |>
+  gf_segment(AssR + sp ~ fWHR + fWHR, 
+             color = 'brown2', 
+             size = 0.6)
+```
+
+---
+
+# Least Squares Estimation
+
+Minimize:
+
+$$SSE = \sum_{i=1}^{n} e_i = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
+
+---
+
+# Multiple Predictors?
+
+- Harder to draw
+- Just as easy to compute $\hat{y}$ ...
+- and thus compute the observed residuals $e_i$
+- and the sum of squared residuals
+
+See: <https://setosa.io/ev/ordinary-least-squares-regression/>
+
+---
+
+
+# Predictors with 2 categories
+```{r, echo=FALSE, out.width = '80%'}
+gf_boxplot(AssR ~ Sex, 
+           data = bonobos) |>
+  gf_refine(coord_flip())
+```
+
+---
+
+# Predictors with 2 categories
+
+```{r}
+m3_2q1b <- lm(AssR ~ fWHR + normDS + Sex, 
+           data = bonobos)
+coef(m3_2q1b)
+```
+
+---
+
+## Predictors with 2 categories
+
+.small[
+```{r, echo = FALSE}
+summary(m3_2q1b)
+```
+]
+
+---
+
+## Predictors with 2 categories, Mathematically?
+
+
+---
+
+## More categories
+
+```{r, fig.width=6.5, fig.height=3.5}
+gf_boxplot(Group ~ AssR, 
+           data = bonobos) 
+```
+
+
+---
+# More Categories
+
+```{r}
+m3_2q2c <- lm(AssR ~ fWHR + normDS + Sex + Group, 
+           data = bonobos)
+```
+
+---
+
+## More Categories
+.small[
+```{r, echo = FALSE}
+summary(m3_2q2c)
+```
+]
+
+---
+
+## Predictors with more categories, Mathematically?
+
+
+---
+
+
+.small[
+```{r, echo = FALSE}
+summary(m3_2q2c)
+```
+]
+
+---
+# Model Equation, Again
+
+---
+
+# Predictions by Hand
+## What is the expected `AssR` (according to this model) for 30 kg female bonobos at the Wilhelma zoo with `fWHR` of 1.5 and `normDS` of 2.5?
+
+---
+# Predictions in R
+## Caution: missing data
+
+```{r, echo=TRUE, error = TRUE}
+bonobos <- bonobos |> 
+  mutate(preds = predict(m3_2q2c))
+```
+
+---
+
+# Predictions in R
+## For ALL data points *in model*
+
+```{r}
+b2 <- bonobos |>
+  select(fWHR, normDS, AssR, Sex, Group) |>
+  na.omit() |>
+  mutate(preds = predict(m3_2q2c))
+```
+
+---
+
+# Plotting Predictions
+## Uh-oh, useless. Why?
+
+.small[
+```{r}
+gf_point(AssR ~ fWHR, 
+         data = b2) |>
+  gf_line(preds ~ fWHR)
+```
+]
+

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Linear Regression ‘Selection’ &amp; Inference</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="STAT 245" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: inverse, middle, left, my-title-slide, title-slide
+
+.title[
+# Linear Regression ‘Selection’ &amp; Inference
+]
+.author[
+### STAT 245
+]
+
+---
+
+
+
+
+class: huge center inverse subsection
+# If INFERENCE is your goal...
+
+---
+class: small
+## CIs Beyond Prediction Plots
+### Slope coefficient of 0 (or CI crossing 0) means: 
+
+
+```r
+my_model &lt;- lm(response ~ pred1 + pred2, data = my_data)
+summary(my_model)
+```
+
+```
+## 
+## Call:
+## lm(formula = response ~ pred1 + pred2, data = my_data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.75871 -0.73156 -0.06018  1.04880  1.85244 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)   1.9823     1.6326   1.214  0.25011   
+## pred1        -0.7523     0.2419  -3.110  0.00992 **
+## pred2B        1.5970     0.9752   1.638  0.12976   
+## pred2C        0.4770     0.9913   0.481  0.63980   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.542 on 11 degrees of freedom
+## Multiple R-squared:  0.5293,	Adjusted R-squared:  0.4009 
+## F-statistic: 4.123 on 3 and 11 DF,  p-value: 0.03467
+```
+
+---
+## CIs Beyond Prediction Plots
+### Slope coefficient of 0 (or CI crossing 0) means: 
+
+
+```r
+my_model &lt;- lm(response ~ pred1 + pred2, data = my_data)
+confint(my_model)
+```
+
+```
+##                  2.5 %     97.5 %
+## (Intercept) -1.6111048  5.5756121
+## pred1       -1.2845856 -0.2199575
+## pred2B      -0.5494036  3.7433632
+## pred2C      -1.7048502  2.6589223
+```
+
+---
+
+## Hypothesis Tests
+### *May* use but see later IC slides for alternative
+
+
+```r
+car::Anova(my_model)
+```
+
+```
+## Anova Table (Type II tests)
+## 
+## Response: response
+##            Sum Sq Df F value   Pr(&gt;F)   
+## pred1     23.0010  1  9.6749 0.009917 **
+## pred2      6.7005  2  1.4092 0.285193   
+## Residuals 26.1512 11                    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+# ~~`pred1` is significant~~
+
+# no no nopeity no no never!
+
+---
+## Judge *your* strength of evidence 
+## (~~significance threshold~~)
+
+
+&lt;img src="https://images.squarespace-cdn.com/content/v1/64c4f5cffc1a5952f996c322/9bf085ec-4546-476c-b132-02705ed9adff/p-value.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+
+&lt;img src="https://mtstateintrostats.github.io/IntroStatTextbook/images/soe_gradient_gray.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+.smaller[Images: left, [analythical.com](https://analythical.com/blog/understanding-p-values); right, [MT State intro stat](https://mtstateintrostats.github.io/IntroStatTextbook/foundations-randomization.html?q=p-value#p-value-stat-signif)]
+
+---
+## ~~`pred1` is significant (p-value &lt; 0.05)~~
+
+### There is strong evidence (p-value = 0.0099) that `pred1` is associated with `response`, with the expected `response` increasing by about  \_\_\_\_ (95% CI: \_\_\_\_ to \_\_\_\_) when `pred1` increases by 1 (if `pred2` doesn't change).
+
+*To present `Anova()` results, use your `summary()`, equation, and ESPECIALLY prediction plot to tell the story in context!*
+
+---
+class: small
+
+# Data
+
+&lt;img src="images/duke-bechdel.jpeg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Bechdel Test Model
+## What is WRONG here?
+
+
+```r
+movie_mod &lt;- lm(roi ~ clean_test + 
+                  budget_2013 +
+                  title,
+                data = bechdel_13)
+```
+
+---
+
+## Better-planned Model
+
+
+```r
+bechdel_mod &lt;- lm(roi ~ clean_test + 
+                    budget_2013,  
+                data = bechdel_13)
+coef(bechdel_mod) 
+```
+
+```
+##       (Intercept) clean_testdubious     clean_testmen  clean_testnotalk 
+##        6.89076912        2.71983184        1.17133411        0.04824852 
+## clean_testnowomen       budget_2013 
+##        1.18334508       -0.03661270
+```
+
+
+---
+
+## Selection w/ Information Criteria
+### Why ICs? Balance conflicting goals
+
+.small[
+- Want model that *fits the data as well as possible* (which pushes us toward more predictors)
+- Want *truth, efficiency* (correctly judging when predictors aren't associated with the response).  
+- Solution: **minimize** the quantity `\(-(2ln(\mathcal{L}) - \text{penalty}) = -2ln(\mathcal{L}) + \text{penalty}\)`
+
+]
+---
+
+# AIC Defined
+
+.small[
+- `\(\mathcal{L}\)` is the "Likelihood" of data given model
+- In R: `logLik(model)` gives `\(ln(\mathcal{L})\)`
+- AIC: `\(-2 ln(\mathcal{L}) + 2k\)`
+  - `\(k\)` is the number of coefficients being estimated (don't forget `\(\sigma\)`!)
+  - **Smaller AIC is better.**
+- In R: `AIC(model)` or `AIC(model1, model2, model3...)`
+]
+  
+---
+
+# BIC Defined
+
+.small[
+- BIC: `\(-2ln(\mathcal{L}) + ln(n)k\)`
+ - `\(n\)` is the number of rows in dataset
+ - `\(k\)` is the number of coefficients estimated.
+ - **Smaller BIC is better.**
+- In R: `BIC(fitted_model)` or `BIC(model1, model2, model3...)`
+]
+---
+class: small
+
+## Comprehension Check: Verify BIC
+
+
+```r
+coef(bechdel_mod)
+```
+
+```
+##       (Intercept) clean_testdubious     clean_testmen  clean_testnotalk 
+##        6.89076912        2.71983184        1.17133411        0.04824852 
+## clean_testnowomen       budget_2013 
+##        1.18334508       -0.03661270
+```
+
+```r
+nrow(bechdel_13)
+```
+
+```
+## [1] 1600
+```
+
+```r
+logLik(bechdel_mod)
+```
+
+```
+## 'log Lik.' -6962.028 (df=7)
+```
+
+## Verify that the BIC for this model is 13976.
+
+---
+
+# Decisions with ICs
+## Rules of thumb (**not** laws) for decisions with ICs
+
+.small[
+- IC *lower by at least 3 units* = notably better
+- If 2+ models have ICs *within* 3 IC units of each other, they fit about same 
+- If `\(\Delta IC &lt; 3 \text{ or so}\)`: model with smallest `\(k\)` (fewest predictors) is better
+]
+
+---
+
+# All-subsets selection
+## Avoid in favor of interpreting the full model or comparing a few key models if possible
+
+.small[
+- Use `dredge()` function (`MuMIn` package) to get and display ICs for every possible combo of predictors.
+- First ensure dataset has no missing values, 
+- then set `na.action = 'na.fail'` input for our model (with `update()` or in `lm()`).
+]
+---
+
+# `dredge()` example
+
+
+```r
+require(MuMIn)
+bechdel_mod &lt;- bechdel_mod |&gt; 
+  update(na.action = 'na.fail')
+bechdel_dredge &lt;- dredge(bechdel_mod, 
+                         rank = 'BIC')
+bechdel_dredge 
+```
+
+---
+class: small
+
+# `dredge()` example
+## What is the best model according to BIC, for this dataset?
+
+
+
+```
+## Global model call: lm(formula = roi ~ clean_test + budget_2013, data = bechdel_13, 
+##     na.action = "na.fail")
+## ---
+## Model selection table 
+##   (Int) bdg_2013 cln_tst df    logLik     BIC delta weight
+## 2 7.282 -0.03589          3 -6963.452 13949.0  0.00  0.996
+## 1 5.220                   2 -6972.569 13959.9 10.86  0.004
+## 4 6.891 -0.03661       +  7 -6962.028 13975.7 26.66  0.000
+## 3 5.157                +  6 -6971.235 13986.7 37.70  0.000
+## Models ranked by BIC(x)
+```
+
+
+---
+
+# Which IC to use?
+
+.small[
+- AIC and BIC (and `Anova()`) may yield different conclusions, especially if the dataset is large. 
+- Recommendation: choose **one** to use *a priori* (before making calculations). 
+- Prefer BIC to be "more conservative" (larger penalty means predictor must improve fit *more* before we judge it worthwhile)
+  ]
+---
+
+## Quantities derived from (A)IC
+
+- `\(\Delta AIC\)` is the AIC for a given model, minus the AIC of the best one in the dataset. (Same for `\(\Delta BIC\)`)
+- *Akaike* or *BIC weights* are values (ranging from 0-1) that measure the weight of evidence suggesting that a model is the best one (given that there is one best one in the set)
+
+---
+
+# Important Caution
+
+- **Very important**: IC can **ONLY** be compared for models...
+  - With the exact same response variable...
+  - and the exact same rows of data.
+
+---
+# Conclusions
+## Evidence of association?
+### Evidence the arrow (in causal diagram) is strongly, detectably *there*?
+
+
+```r
+no_bechdel_mod &lt;- lm(roi ~ budget_2013,  
+                data = bechdel_13)
+AIC(bechdel_mod, no_bechdel_mod)
+```
+
+```
+##                df      AIC
+## bechdel_mod     7 13938.06
+## no_bechdel_mod  3 13932.90
+```
+
+---
+## ~~`pred1` is significant~~
+
+### There is strong evidence (AIC lower by about 5) that a movie's return on investment is associated with its Bechdel test score. Specifically, after controlling for any effect of budget, model results suggest that...[use pred plot here to say which test scores predict more/less ROI!].
+
+*To present IC results, use your `summary()`, equation, and ESPECIALLY prediction plot to tell the story in context!*
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "4:3"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

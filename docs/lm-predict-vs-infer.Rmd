@@ -1,0 +1,114 @@
+---
+title: "Prediction vs. Inference"
+author: "STAT 245"
+date: ""
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '4:3'
+---
+
+```{r, setup-lm1, include=FALSE}
+require(mosaic)   # Load additional packages here 
+require(ggformula)
+require(tidyverse)
+
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 7, 
+                      fig.height = 3,
+                      tidy = FALSE,
+                      fig.align = 'center', 
+                      message = FALSE, 
+                      warning = FALSE,
+                      error = TRUE,
+                      out.width = '60%', 
+                      dpi = 300)
+theme_set(theme_minimal(base_size = 22))
+
+options(scipen = 999)
+
+set.seed(4)
+my_data <- data_frame(predictor = rnorm(15, mean = 5, sd = 2),
+                      pred1 = predictor,
+                      pred2 = gl(3, 5, length = 15, labels = c("A", "B", "C")),
+                 response = 1.3 - 0.7* predictor + rnorm(15, 0, 2))
+
+my_model <- lm(response ~ pred1 + pred2, data = my_data)
+```
+
+# Where are we?
+
+- Is model appropriate for data?
+- **Now: Are predictors really associated with response?**
+
+---
+
+# Our way: ONE Model
+
+.pull-left[
+
+```{r, echo = FALSE, out.width = '95%'}
+knitr::include_graphics('http://1.bp.blogspot.com/-mXCJsnICEGw/Uwf5wi-JOvI/AAAAAAAAKiA/PU58DCUwazM/s1600/ring.jpg')
+```
+
+]
+
+.small[
+.pull-right[
+
+- Choose predictors/response wisely
+- Fit one full model
+- Report equation, CIs, prediction plots
+]
+]
+
+---
+
+# Why ONE Model?
+
+- Data-based changes to model (especially simplifications) change CIs, p-values
+- Bias toward larger model, overfitting
+- Keep your brain "on" at all times
+
+---
+## Goals + Selection Approaches Oversimplified
+
+.small[
+```{r, echo = FALSE}
+sel_tab <- tibble::tibble(Goal = c('Inference (Hyp. Test, CI)',
+                           'Out-of-set Prediction',
+                           'Parsimony?'),
+                  Selection = c('One model',
+                                'Cross-validation, model averaging',
+                                '~~Stepwise selection~~'),
+                  Who = c('Statistics+',
+                          'Data Science+',
+                          'Eep, could be any of us'))
+knitr::kable(sel_tab)
+```
+
+]
+
+---
+# Day & Night Science
+### From [Itai Yanai and Martin Lercher 2019, *What is the Question?*](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1902-1)
+
+```{r, echo = FALSE, out.width = '90%'}
+knitr::include_graphics('https://media.springernature.com/full/springer-static/image/art%3A10.1186%2Fs13059-019-1902-1/MediaObjects/13059_2019_1902_Fig2_HTML.png')
+```
+
+---
+
+# Profiles in Stats: 
+# Itai Yanai
+
+```{r, out.width = '90%', echo = FALSE}
+knitr::include_graphics('images/itai-yanai.png')
+```

@@ -1,0 +1,10 @@
+---
+title: "Showcase Poster Presentation Tips"
+format: html
+editor: visual
+---
+
+- <https://www.stemcell.com/efficient-research/scientific-poster-presentations>
+- [Ten simple rules for a good poster presentation](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1876493/)
+- [NYU Libraries' guide to poster presentations](https://guides.nyu.edu/posters)
+- [Tips on poster design from a Nobel-winning team](https://www.rsc.org/news-events/articles/2022/aug/how-do-i-make-a-scientific-poster-six-tips-from-a-nobel-prize-winning-team/)

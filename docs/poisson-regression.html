@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Count Data Regression: Poisson GLMs</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="STAT 245" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: inverse, middle, left, my-title-slide, title-slide
+
+.title[
+# Count Data Regression: Poisson GLMs
+]
+.author[
+### STAT 245
+]
+
+---
+
+
+
+
+
+
+# School Survey on Crime
+Today's dataset was collected by surveying school administrators across the US about crimes and violent incidents that took place in their school (as well as some characteristics of each school).  We will try to fit a model to predict the number of **thefts** reported at each school.
+
+---
+
+# Plan: Candidate Predictors
+
+.pull-left[
+- `Security` 
+- `SecurityCameras`
+- `Lockers`
+- `LockedGates`
+]
+
+.pull-right[
+- `Location` (City, Town, Urban Fringe, Rural)
+- `NEnrollment` (number of students)
+- `TrainingHours` for staff on prevention
+]
+
+---
+
+# Graphs
+
+
+```r
+gf_point(Thefts ~ TrainingHours, data = sscrime)
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Graphs
+
+
+```r
+gf_boxplot(Location ~ Thefts,
+           data = sscrime)
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-3-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Graphs
+
+
+```r
+gf_point(Thefts ~ NEnrollment, data = sscrime)
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-4-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Graphs
+
+
+```r
+gf_boxplot(Thefts ~ Lockers | LockedGates,
+           data = sscrime) |&gt;
+  gf_jitter(color = 'grey44', alpha = 0.1)
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-5-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+
+# Multiple Linear Regression
+## This is NOT going to go well...
+## doing it to show why we need a new kind of model
+
+
+```r
+theft_lm &lt;- lm(Thefts ~ NEnrollment + Location + 
+                 TrainingHours + SecurityCameras, 
+               data = sscrime)
+```
+
+---
+class: smaller
+
+
+```r
+summary(theft_lm)
+```
+
+```
+## 
+## Call:
+## lm(formula = Thefts ~ NEnrollment + Location + TrainingHours + 
+##     SecurityCameras, data = sscrime)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -17.181  -7.720  -3.109   3.038  63.427 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)           8.398596   2.074867   4.048 6.29e-05 ***
+## NEnrollment           0.003130   0.000829   3.775 0.000186 ***
+## LocationTown         -3.894781   2.213527  -1.760 0.079304 .  
+## LocationUrban Fringe -0.978436   1.682101  -0.582 0.561136    
+## LocationRural        -4.670431   1.908254  -2.447 0.014845 *  
+## TrainingHours        -0.265514   0.721441  -0.368 0.713057    
+## SecurityCamerasyes    2.257084   1.395293   1.618 0.106583    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 12.8 on 374 degrees of freedom
+## Multiple R-squared:  0.08738,	Adjusted R-squared:  0.07274 
+## F-statistic: 5.968 on 6 and 374 DF,  p-value: 5.684e-06
+```
+
+---
+## Response vs Fitted: *optional* way to see goodness of fit
+
+
+```r
+gf_point(Thefts ~ fitted(theft_lm), 
+         data = sscrime) |&gt;
+  gf_abline(intercept = 0, slope = 1)
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-8-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+.smaller[*What would this graph look like if `\(R^2\)` were 1?*]
+
+---
+
+# Assessment
+
+
+```r
+gf_point(resid(theft_lm) ~ fitted(theft_lm))
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-9-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Assessment
+
+
+```r
+gf_histogram(~resid(theft_lm))
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-10-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Problems
+
+---
+# Solution: Count Regression
+
+## Adjust regression equation so that the model *expects* count data as the response
+
+## Which distribution(s) may come in handy?
+
+---
+
+# Poisson Regression
+## (The math)
+
+---
+# Poisson Regression - R
+## this is a GLM = "Generalized Linear Model"
+
+
+```r
+theft_pois &lt;- glm(Thefts ~ NEnrollment + Location + 
+                 TrainingHours + SecurityCameras, 
+               data = sscrime,
+               family = poisson(link = 'log'))
+```
+
+---
+# Poisson Regression - R
+## Another way to do SAME thing - more extensible
+
+
+```r
+library(glmmTMB)
+theft_pois &lt;- glmmTMB(Thefts ~ NEnrollment + Location + 
+                 TrainingHours + SecurityCameras, 
+               data = sscrime,
+               family = poisson(link = 'log'))
+```
+
+---
+class: smaller
+
+
+```r
+summary(theft_pois)
+```
+
+```
+##  Family: poisson  ( log )
+## Formula:          
+## Thefts ~ NEnrollment + Location + TrainingHours + SecurityCameras
+## Data: sscrime
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   5265.6   5293.2  -2625.8   5251.6      374 
+## 
+## 
+## Conditional model:
+##                        Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)           2.147e+00  4.544e-02   47.25  &lt; 2e-16 ***
+## NEnrollment           2.633e-04  9.646e-06   27.29  &lt; 2e-16 ***
+## LocationTown         -4.007e-01  5.630e-02   -7.12 1.11e-12 ***
+## LocationUrban Fringe -8.364e-02  3.673e-02   -2.28   0.0228 *  
+## LocationRural        -5.145e-01  4.905e-02  -10.49  &lt; 2e-16 ***
+## TrainingHours        -2.480e-02  1.740e-02   -1.43   0.1540    
+## SecurityCamerasyes    2.019e-01  3.229e-02    6.25 4.01e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+# Response vs Fitted
+
+
+```r
+gf_point(Thefts ~ fitted(theft_pois), 
+         data = sscrime) |&gt;
+  gf_abline(intercept = 0, slope = 1)
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-14-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Assessment for Poisson Regression (Conditions)
+
+- Response ( `\(y\)` ) is *count data*
+- (log)-Linearity: `\(log(\lambda_{i})\)` is a linear function of the covariates `\(x_1\)`, `\(x_2\)`, ... `\(x_n\)`
+- Mean-variance relationship: Mean (of response) = Variance (of residuals)
+- Independence (of residuals)
+- **NO** Normal condition or other PDF residuals should follow
+
+---
+
+# Poisson vs. Linear Model
+
+&lt;img src="https://bookdown.org/roback/bookdown-bysh/bookdown-bysh_files/figure-html/OLSpois-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+*[Roback and Legler Section 4.2.2](https://bookdown.org/roback/bookdown-bysh/ch-poissonreg.html)*
+
+---
+
+# Assessment
+## Independence - check it same as before
+
+
+```r
+s245::gf_acf(~resid(theft_pois)) |&gt; gf_lims(y = c(-1,1))
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-16-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Assessment
+## Linearity (for quantitative predictors)
+
+
+```r
+gf_point(log(Thefts) ~ NEnrollment, 
+         data =sscrime)
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-17-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Assessment
+## Linearity (for quantitative predictors)
+
+
+```r
+gf_point(log(Thefts) ~ TrainingHours, 
+         data =sscrime)
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-18-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Assessment: Error Variance
+### Error Variance **is equal to mean predicted count**
+
+
+```r
+gf_point(resid(theft_pois, type = 'response') ~ 
+           fitted(theft_pois)) |&gt;
+  gf_labs(y = 'Response Residuals', x = 'Fitted Values')
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-19-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+## Assessment: Error Variance
+### DON'T REALLY USE THIS
+### Pearson residuals: scale each residual by expected variance
+
+
+```r
+gf_point(resid(theft_pois, type = 'pearson') ~ 
+           fitted(theft_pois)) |&gt;
+  gf_labs(y = 'Pearson Residuals', x = 'Fitted Values')
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-20-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+## Assessment: Error Variance
+### DON'T REALLY USE THIS
+### Bin residuals and plot mean, var for each bin
+
+
+```r
+resid_mean_var &lt;- sscrime |&gt;
+  mutate(preds = fitted(theft_pois),
+         resids = resid(theft_pois, type = 'response'),
+         pred_bins = cut(preds, 15)) |&gt;
+  group_by(pred_bins) |&gt;
+  summarize(mean_pred = mean(preds),
+            var_resid = var(resids))
+```
+
+---
+## Assessment: Error Variance
+### DON'T REALLY USE THIS
+### Bin residuals and plot mean, var for each bin
+
+
+```r
+gf_point(var_resid ~ mean_pred,
+         data = resid_mean_var) |&gt;
+  gf_abline(intercept = 0, slope = 1)
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-22-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Oh My Goodness Help
+### (and it will only get worse)
+### We need [a **better way**](https://cran.r-project.org/web/packages/DHARMa/vignettes/DHARMa.html#motivation) to check mean-variance conditions henceforth.
+
+- Simulate new data from fitted model
+- Repeat to get expected distribution for each residual
+- Standardize residuals on 0-1 scale .smaller[(0 = all simulated resid are larger than real resid; 0.5 means half of simulated resids are larger than real resid).]
+- Standardized resids should be Uniform (0, 1)
+
+---
+
+# Profiles in Statistics
+## Florian Hartig, University of Regensburg
+
+&lt;img src="http://florianhartig.files.wordpress.com/2012/11/fh-std-web-sw.jpg" width="25%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Visually:
+
+&lt;img src="images/dharma-scaling.png" width="45%" style="display: block; margin: auto;" /&gt;
+
+.smaller[
+*from [https://cran.r-project.org/web/packages/DHARMa/vignettes/DHARMa.html](https://cran.r-project.org/web/packages/DHARMa/vignettes/DHARMa.html)*
+]
+
+---
+# DHARMa Scaled Residuals
+## We can use for all models from now on! (even `lm()` ones!)
+
+
+```r
+library(DHARMa)
+pois_sim &lt;- simulateResiduals(theft_pois)
+plotResiduals(pois_sim) 
+```
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-25-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# DHARMa Scaled Residuals
+## How it *should* look if all is well: UNIFORM, trendless
+
+
+
+&lt;img src="poisson-regression_files/figure-html/unnamed-chunk-27-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Status: Limited Succeses
+## Poisson model seems *a bit* better for count data
+
+- never predicts negative counts
+- expects some "trumpet"
+- New method to check resid vs fitted when not "normal, constant variance"
+
+---
+# Status
+## Remaining Issues
+
+- **Overdispersion common** (variance &gt; mean: "super-trumpet"; Poisson's not good enough)
+- Offsets?  Counts per *what?* (Thefts per capita or per school?)
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

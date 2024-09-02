@@ -1,0 +1,116 @@
+---
+title: "Random Effects Literature Presentation Instructions"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: visual
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Instructions
+
+Each group should choose one paper to study and present. For many
+groups, there should be one with similarities to your project. Each
+group should try to choose a different paper.
+
+# Paper Options
+
+-   [Parenting intervention in Sure Start services for children at risk
+    of developing conduct disorder: pragmatic randomised controlled
+    trial](https://www.bmj.com/content/334/7595/678.short)
+
+-   [Water, Sanitation, and Hygiene Facilities and Hygiene Practices
+    Associated with Diarrhea and Vomiting in Monastic Schools,
+    Myanmar](https://www.ajtmh.org/content/journals/10.4269/ajtmh.15-0290)
+
+-   [Reduction in diarrhoea rates after household water filter
+    distribution in small and remote communities in
+    Liberia](https://www.tandfonline.com/doi/full/10.1080/27707571.2023.2205716)
+
+-   [Identification of distinct movement patterns in Pacific leatherback
+    turtle populations influenced by ocean
+    conditions](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1890/11-0633)
+
+    -   *Note: Focus on "Analysis of foraging and migration behavior"
+        and "Effects of ocean conditions". The "State space model" is
+        well beyond the scope of our course; it was used first to
+        classify tracks. At each time point along a track, the
+        state-space model estimates whether or not the turtle is in
+        feeding mode (also referred to in the paper as Area Restricted
+        Search (ARS) or "mode 2").*
+
+-   [The relationship between body mass and field metabolic rate among
+    individual birds and
+    mammals](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/1365-2656.12086)
+
+-   [A randomised controlled trial to test the effect of promoting
+    caregiver contingent talk on language development in infants from
+    diverse socioeconomic status
+    backgrounds](https://acamh.onlinelibrary.wiley.com/doi/abs/10.1111/jcpp.12725)
+
+-   [Non-randomized intervention study of naloxone co-prescription for
+    primary care patients on long-term opioid therapy for
+    pain](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5783639/pdf/nihms916740.pdf)
+
+    -   *Note: Focus on "Feasibility Analyses" (which is a random
+        effects model). If you have time to consider the "Analysis of ED
+        Use" and/or "Analysis of Opioid Dose" as well, know that GEEs
+        are an alternative mathematical formulation that, like random
+        effects models, can also make regression work in the presence of
+        non-independent residuals. So if you have time/interest, you can
+        try to figure out: what would a random effects version of these
+        GEE models look like?*
+
+-   [Evaluating filter functionality and user competence after a hollow
+    fiber membrane filter intervention in
+    Liberia](https://iwaponline.com/washdev/article/doi/10.2166/washdev.2022.075/91932/Evaluating-filter-functionality-and-user)
+
+    -   This article features Calvin student authors from summer
+        research projects and a STAT 245 project!
+
+-   [Non-destructively predicting leaf area, leaf mass and specific leaf
+    area based on a linear mixed-effect model for broadleaf
+    species](https://kd.nsfc.gov.cn/paperDownload/19907772847.pdf)
+
+-   [Delirium is a good predictor for poor outcomes from coronavirus
+    disease 2019 (COVID-19) pneumonia: A systematic review,
+    meta-analysis, and
+    meta-regression](https://doi.org/10.1016/j.jpsychires.2021.08.031)
+
+-   [Practices and perceptions at the COVID-19 transition in
+    undergraduate animal science
+    courses](https://acsess.onlinelibrary.wiley.com/doi/full/10.1002/nse2.20039)
+
+-   [Racial Discrimination in the U.S. Housing and Mortgage Lending
+    Markets: A Quantitative Review of Trends,
+    1976–2016](https://link.springer.com/article/10.1007/s12552-019-09276-x)
+
+-   [Kids Out; evaluation of a brief multimodal cluster randomized
+    intervention integrated in health education lessons to increase
+    physical activity and reduce sedentary behavior among eighth
+    graders](https://link.springer.com/article/10.1186/s12889-019-6737-x)
+
+-   [Social and genetic interactions drive fitness variation in a
+    free-living dolphin
+    population](https://www.pnas.org/doi/full/10.1073/pnas.1007997107)
+
+-   [Allometric scaling of metabolic rate and cardiorespiratory
+    variables in aquatic and terrestrial
+    mammals](https://pubmed.ncbi.nlm.nih.gov/37271741/)
+
+-   [Dynamic Edge Effects in Small Mammal Communities across a
+    Conservation-Agricultural Interface in
+    Swaziland](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0074520)
+
+-   [How Much Is Enough? Minimal Responses of Water Quality and Stream
+    Biota to Partial Retrofit Stormwater Management in a Suburban
+    Neighborhood](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0085011)
+
+-   [The Influence of Institutional Retention Climates on Student
+    Persistence to Degree Completion: A Multilevel
+    Approach](https://link.springer.com/article/10.1007/s11162-009-9134-y)

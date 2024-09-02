@@ -1,0 +1,214 @@
+---
+title: "Take Control of Quarto!"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+## Motivation
+
+- You will do work in Quarto files for your project
+- Your final report (or other output) for your partner will probably not show any code or model assessment - just text, figures, and tables
+- But your Prof will want to see all the code and model assessment
+- With a few new tricks, you can easily make both with fewer files, less copy/paste, and minimal changes and repetitive work
+
+## Show/Hide All R Code
+
+The knitr setting `echo` (`TRUE` or `FALSE`) determines whether code is shown or hidden.
+
+- In the settings chunk, you can set `echo` for the whole document:
+
+```{r, echo = TRUE, eval = FALSE}
+# show code
+knitr::opts_chunk$set(echo = TRUE)
+# hide code
+knitr::opst_chunk$set(echo = FALSE)
+```
+
+## Show/Hide Code in 1 Chunk
+
+You can also set `echo` in the header of an individual chunk to control **that chunk only**:
+
+
+\`\`\`{r, echo = TRUE}
+
+or, in the first line of the code chunk, add:
+
+`#| echo: true`
+
+## Show/Hide Figures 
+
+In the whole document (not generally useful):
+
+```{r, echo = TRUE, eval = FALSE}
+# show graphs
+knitr::opts_chunk$set(fig.show = 'asis')
+# hide graphs
+knitr::opts_chunk$set(fig.show = 'hide')
+```
+
+Or for one chunk, put the `fig.show` setting in the chunk header, like:
+
+\`\`\`{r, fig.show = 'hide'}
+
+or equivalently in the first line of the R code chunk, like
+
+`#| fig-show: 'hide'`
+
+## Figure Alignment
+
+You can set `fig.align` to `'left'`, `'right'`, or `'center'` to control figure placement.
+
+\`\`\`{r, fig.align = 'left'}
+
+You can also set this in the first  line(s) of the R code chunk like:
+
+`#| fig-align: 'left'`
+
+or something like this:
+
+```{r}
+knitr::opts_chunk$set(fig.align = 'left')
+```
+
+(to set the option for the whole document)
+
+## Saving Image Files of Figures
+
+- It may be useful to provide your partner with a folder of high-resolution image files of all your figures.
+- In your settings chunk, you can specify what kind of file(s) to save with `dev`, and where to save them with `fig.path`.  
+- Choices of `dev` include `'png'`, `'jpeg'`, `'pdf'`, and `'svg'`. If you don't know what you need, `'jpeg'` or `'png'` is probably a good default. For bitmap output (png and jpeg) you should probably also specify desired resolution, like `dpi = 300`.
+- `fig.path` is the (relative) path the the directory in which to save the files, and it will be created if it does not already exist.
+- File names will be composed of `fig.path`, and then the R chunk label, and then a number (1, 2, 3, etc.)
+
+## Saving Images - Example
+
+For example, to save PDF and png images in folder called "figs" that is a subfolder of the one where the Quarto is located, you'd add this code to your setup R code chunk:
+
+```{r, echo = TRUE, eval = FALSE}
+knitr::opts_chunk$set(dev = c('pdf', 'png'),
+                      fig.path = 'figs/our-project-')
+```
+
+## Figure and Font Sizes
+
+You probably already know how to control figure size and font size in figures, but to refresh you...
+
+Set `fig.height` and `fig.width` (in inches) in the settings chunk or R code chunk header:
+
+\`\`\`{r, fig.height = 4, fig.width = 6}
+
+or in the initial lines of the code chunk like:
+
+`|# fig-height: 4`
+`|# fig-width: 6`
+
+Control font size in the `ggformula` or `ggplot` "theme", using the `base_size()` (which is in points, with a default of 11); for example
+
+```{r, echo = TRUE, eval = FALSE}
+theme_set(theme_minimal(base_size = 12))
+```
+
+## Chunk Labels
+
+- Especially if you are saving figures, it can be useful to label your R code chunks
+- Chunk labels show up in the console when rendering (so you can track progress)
+- Figure file names include chunk labels (plus numbers, if there is more than one figure created in the chunk)
+- The default name is "unnamed-chunk-1" etc. which is rarely ideal
+- Your chunk label should have *no spaces or special characters other than -*, and describe what happens in the chunk
+
+\`\`\`{r, this-is-my-chunk-label, echo = TRUE, fig.show = 'asis'}
+
+or in the first  line(s) of the chunk,
+
+`#| label: this-is-my-label`
+
+## Trick: Toggle `echo` or `fig.show`
+
+- Prof wants code and model assessment plots; partner not so much. (Can you just submit the Quarto file to your prof only? Sure. Or...if you need versions of your report *with* and *without* certain parts, read on...)
+- Turn all code on/off by changing *only* the `knitr::opts_chunk$set(echo = ___)` in the settings chunk
+
+## Trick: Toggle `echo` or `fig.show`
+
+- Toggle certain figures on/off by having a variable like `current.fig.show` in the settings chunk:
+
+```{r}
+# for partner version, settings chunk has:
+current.fig.show = 'hide'
+# or for prof version, change to this before knitting:
+current.fig.show = 'asis'
+```
+
+- Then in all R code chunks with prof-only figures, use:
+
+\`\`\`{r, fig.show = current.fig.show}
+
+- *They will* **all** *be shown or hidden together; you only ever need change the settings chunk.*
+
+## Trick: Prof-only text
+
+- Maybe you have some text that should only appear in the Prof's version (for example, discussion of whether model conditions are met)
+- *This solution is a little hack-y, but most better ones use html and/or javascript*
+- First put a variable in your settings chunk `extra_text` which will be `'asis'` to show the extra text, or `'hide'` to hide it.
+- Make an R code chunk with `echo = FALSE` and `results = extra_text`
+
+\`\`\`{r, my-prof-only-text-chunk, echo = FALSE, results = extra_text}
+
+## Prof-only Text Example
+```{r, echo = TRUE, eval = TRUE, results = 'asis'}
+cat('This is the extra text that will only show up \n\n',
+    '(that was a line break)', 
+    'if `extra_text = "asis"`',
+    'You can break up the text for easier reading in the chunk,',
+    'but it all gets printed as one block.',
+    'You can use Rmd markup like',
+    '*italics* and **boldface** and even \n\n### Section Headers.')
+```
+
+## Table of Contents
+
+- To add a table of contents to your file, add "toc: true" to the YAML header (that part at the very start of the file between the - - -)
+- Ensure you match the example's spacing and capitalization (2 more spaces per line). *Any* deviations in the YAML header will throw errors.
+
+```{r, echo = FALSE, eval = TRUE, out.width = '50%'}
+knitr::include_graphics('images/quarto-toc.png')
+```
+
+- You can have pdf html depending on the default output format you want.
+
+
+## Suppress Messages, Warnings
+
+- Note: only do this *after* you have verified that there are no warnings or messages that are important and need fixing.
+- But, things like the messages you get from loading a package or using `read_csv()` should almost never be included in your knitted file.
+
+\`\`\`{r, message = FALSE, warning = FALSE}
+
+or alternatively, in the first line(s) of the code chunk,
+
+`#| message: false`
+`#| warning: false`
+
+- *Note: can you also do this for a whole file, in the setup chunk, with `knitr::opts_chunk$set()`? Yes, but not really recommended.*
+
+## To Save Time, Cache Output
+
+- You can set `cache = TRUE` and R will cache results (for example, if you have data processing or model fitting operations that take a long time). 
+- If you have to knit your file repeatedly, it will only take a long time *once*.
+- Sometimes this can be glitchy and fail to "notice" changes - if you sense an issue turn off caching and delete the entire cache folder and try again.
+
+```{r, echo = TRUE, eval = FALSE}
+knitr::opts_chunk$set(cache = TRUE)
+```
+
+
+## For More Info
+
+<https://r4ds.hadley.nz/quarto>
+
+<https://quarto.org/docs/guide/>
+
+

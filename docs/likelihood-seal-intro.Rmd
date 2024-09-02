@@ -1,0 +1,202 @@
+---
+title: "Likelihood (and Seals)"
+author: "STAT 245"
+date: ""
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+```{r, setup, include=FALSE}
+require(tidyverse)
+require(mosaic)    
+require(ggformula)
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 7, 
+                      fig.height = 3,
+                      tidy = FALSE,
+                      fig.align = 'center', 
+                      message = FALSE, 
+                      warning = FALSE,
+                      error = TRUE,
+                      out.width = '60%', 
+                      dpi = 300)
+theme_set(theme_minimal(base_size = 22))
+
+set.seed(9)
+harp_seals <- data.frame(ice_cover = runif(18, min = 10, max = 80)) |>
+  mutate(strandings = 75.22 - 0.88*ice_cover + rnorm(18, 0, 16)) |>
+  mutate(strandings = ifelse(strandings < 0, -strandings, strandings))
+
+```
+
+
+# Harp Seal Strandings
+### Johnston *et al.,* ["Effects of Climate Change on Harp Seals"](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0029158#s4)
+.pull-left[
+.small[Harp seals use seasonal sea ice as a place to breed. Does climate change affect their survival? How many young-of-year are found stranded (dead) annually?]
+]
+
+.pull-right[
+```{r, out.width = '100%', echo = FALSE}
+knitr::include_graphics('https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcQwWjz3zKdh83FpMyKqJ2FgcZFceYZlK5eRyVlDal4VZo3iMSFUzcOYp9TmTH2c-waEG-4V5QJXB-OaWEI')
+```
+
+.smaller[Tier Und Naturfotografie J und C Sohns / Getty Images]
+]
+---
+
+# Annual Strandings
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=6}
+gf_dhistogram(~strandings, data = harp_seals,
+              binwidth = 20) |>
+  gf_lims(x = c(-25, 115)) |>
+  gf_labs(x='Young-of-Year Stranded Harp Seals', 
+          y='Probability\nDensity') |>
+  gf_fitdistr(dist = 'dnorm', size = 1.3) 
+```
+
+---
+
+# Normal probability density function (PDF)
+$$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} $$
+
+---
+
+# A simple model
+
+- Stranding distribution description:
+<br><br>
+
+```{r}
+df_stats(~strandings, data = harp_seals, mean, sd) 
+```
+
+---
+
+# Model-based Predictions
+
+.small[
+- Guess the number of strandings that will happen this year.
+- Is it more likely that there will be 40 or 80 strandings? 
+- How much more likely?
+- What is the *probability* of there being 47 strandings this year?
+]
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=2.5}
+gf_dhistogram(~strandings, data = harp_seals,
+              binwidth = 20) |>
+  gf_lims(x = c(-25, 115)) |>
+  gf_labs(x='Young-of-Year Stranded Harp Seals', 
+          y='Probability\nDensity') |>
+  gf_fitdistr(dist = 'dnorm', size = 1.3) 
+```
+
+---
+
+# Likelihood to the Rescue!
+## Which is **more likely?**
+
+- **Three years with 36, 41, and 43 strandings**
+- Three years with 60, 41, and 40 strandings
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=2.5}
+gf_dhistogram(~strandings, data = harp_seals,
+              binwidth = 20) |>
+  gf_lims(x = c(-25, 115)) |>
+  gf_labs(x='Young-of-Year Stranded Harp Seals', 
+          y='Probability\nDensity') |>
+  gf_fitdistr(dist = 'dnorm', size = 1.3) 
+```
+
+---
+
+# Likelihood approach
+- How did you:
+  - Find the likelihood of each observation?
+  <br>
+  - Combine the likelihoods of a set of three observations?
+  <br>
+  - What did you have to assume about the set of observations?
+  
+---
+class: huge center middle inverse subsection
+
+# How does all this seal stuff relate to linear regression?
+
+---
+# Likelihood and `lm()`
+## How can we rewrite our model as a linear regression?
+
+```{r}
+lm_version <- lm(strandings ~ 1, 
+                 data = harp_seals)
+```
+
+---
+class: small
+
+# Model Equation
+
+```{r}
+summary(lm_version)
+```
+
+---
+
+# Compare models w/Likelihood
+## it's likelihood *of the data, given a particular model*
+
+---
+
+# Compare Models
+## w/Likelihood - Class example (teamwork problem)
+
+```{r}
+gf_point(strandings ~ ice_cover,
+         data = harp_seals)
+```
+---
+
+```{r}
+lm_version_2 <- lm(strandings ~ ice_cover, 
+                           data = harp_seals)
+msummary(lm_version_2)
+```
+
+---
+## Model Comparison Challenge
+### *joint likelihood* of residuals given $\sigma$
+
+```{r}
+harp_seals <- harp_seals |>
+  mutate(resid1 = resid(lm_version),
+         resid2 = resid(lm_version_2))
+
+```
+
+```{r, echo = FALSE}
+harp_seals <- harp_seals |>
+  mutate(across(where(is.numeric), round, digits = 1))
+write_csv(harp_seals, 'harp_seal_likelihood.csv')
+```
+
+<https://cutt.ly/seal-likelihood>
+.small[<https://www.danielsoper.com/statcalc/calculator.aspx?id=54>]
+
+---
+
+# Likelihood...
+
+- Can be used to measure model-data match
+- (...and then as ingredient to AIC/BIC)
+- What about *other* probability distributions?
+- [Next...] Can be used to *fit* one model: which parameter estimates are "best"?

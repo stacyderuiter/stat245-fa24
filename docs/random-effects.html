@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Hierarchical Models: Random Effects</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="STAT 245" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="slides.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: inverse, middle, left, my-title-slide, title-slide
+
+.title[
+# Hierarchical Models: Random Effects
+]
+.author[
+### STAT 245
+]
+
+---
+
+
+
+
+# Random Effects
+
+- What if residuals are *not independent*?
+- In other words: we have "dependent data"...
+- A solution (with many names): hierarchical models, multi-level models, random effects models, or mixed effects models.
+
+---
+
+# Dataset
+From: [Falcone et al. 2017, *Diving behaviour of Cuvier’s beaked whales exposed to two types of military sonar*](http://rsos.royalsocietypublishing.org/content/royopensci/4/8/170629.full.pdf)
+
+.small[
+Satellite tags were used to record dive data and movements of 16 Cuvier's beaked whales for up to 88 days each. The whales were incidentally exposed to different types of naval sonar exercises during the study. How did characteristics of their dives change during sonar exposure? We will look specifically at shallow dive duration as a response variable.
+]
+---
+class: small
+# Dataset
+
+
+
+```r
+zc_dives &lt;- read.csv('http://sldr.netlify.com/data/zshal.csv') |&gt;
+  mutate(SonarA = factor(SonarA)) |&gt;
+  mutate(DurAvg = DurAvg / 60,
+         DepthAvg = DepthAvg) |&gt;
+  rename(TimeOfDay = TransClass)
+glimpse(zc_dives)
+```
+
+```
+## Rows: 6,183
+## Columns: 14
+## $ TagID             &lt;int&gt; 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, …
+## $ DurAvg            &lt;dbl&gt; 0.29300000, 0.32850000, 0.30183333, 0.34633333, 0.33…
+## $ StartTime         &lt;chr&gt; "2011-01-06 20:45:30", "2011-01-06 22:13:23", "2011-…
+## $ DepthAvg          &lt;dbl&gt; 335.5, 351.5, 287.5, 279.5, 359.5, 311.5, 263.5, 303…
+## $ TimeOfDay         &lt;chr&gt; "Day", "Day", "Day", "Day", "Day", "Dusk", "Dusk", "…
+## $ SonarA            &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ SonarB            &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ SonarAMinKm.fill  &lt;dbl&gt; 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 50…
+## $ SonarBMinKm.fill  &lt;dbl&gt; 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 50…
+## $ SonarAPercOL.fill &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ SonarBPercOL.fill &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ TagDay            &lt;chr&gt; "2011-01-06", "2011-01-06", "2011-01-06", "2011-01-0…
+## $ Period            &lt;chr&gt; "(18,20]", "(20,22]", "(20,22]", "(20,22]", "[0,2]",…
+## $ TagDayPeriod      &lt;chr&gt; "2011-01-06.(18,20]", "2011-01-06.(20,22]", "2011-01…
+```
+
+---
+class: small
+# Plan/Exploration
+### We are especially interested in how dive duration depends on sonar exposure. We also need to control for effects of other variables like depth and time of day.
+
+.pull-left[
+&lt;img src="random-effects_files/figure-html/unnamed-chunk-2-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+]
+
+
+.pull-right[
+&lt;img src="random-effects_files/figure-html/unnamed-chunk-3-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+class: small
+# Plan/Exploration
+### We are especially interested in how dive duration depends on sonar exposure. We also need to control for effects of other variables like depth and time of day.
+
+&lt;img src="random-effects_files/figure-html/unnamed-chunk-4-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# What goes WRONG 
+## if we use a `lm()`? 
+## (RE also work for count, binary data)
+
+.small[
+
+```r
+base_model &lt;- lm(DurAvg ~ DepthAvg + TimeOfDay + SonarA, 
+                 data = zc_dives)
+```
+]
+
+---
+
+class: small
+
+
+```r
+mosaic::msummary(base_model)
+```
+
+```
+##                  Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     1.833e-01  5.134e-03  35.712  &lt; 2e-16 ***
+## DepthAvg        6.446e-04  9.640e-06  66.863  &lt; 2e-16 ***
+## TimeOfDayDay   -1.073e-02  4.558e-03  -2.355   0.0186 *  
+## TimeOfDayDusk  -3.356e-02  5.941e-03  -5.649 1.69e-08 ***
+## TimeOfDayNight -4.046e-02  4.552e-03  -8.890  &lt; 2e-16 ***
+## SonarA1         6.273e-02  1.085e-02   5.781 7.80e-09 ***
+## 
+## Residual standard error: 0.08808 on 6177 degrees of freedom
+## Multiple R-squared:  0.4757,	Adjusted R-squared:  0.4753 
+## F-statistic:  1121 on 5 and 6177 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+# Model assessment
+## Data are *time series* so we are most suspicious about...
+
+
+```r
+gf_acf(~base_model)
+```
+
+&lt;img src="random-effects_files/figure-html/unnamed-chunk-7-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# A Random Effects model
+## For multiple linear regression we would have: 
+
+$$ y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ...\beta_n x_n +  \epsilon$$
+
+### Where `\(\epsilon \sim N(0,\sigma)\)` are the normally distributed residuals with mean 0.
+
+## Now...
+
+---
+
+# Random effect candidates?
+
+- [Thermal preference](https://sldr.netlify.app/data/cold.csv)
+- [NY car crashes](https://sldr.netlify.app/data/ny_cars.csv)
+- [Sports votes](https://sldr.netlify.app/data/sports-votes-lz27.csv)
+- [PhD innovation](https://sldr.netlify.app/data/phd_innovation.csv)
+- [Wood frog abnormality](http://sldr.netlify.com/data/FrogAbnormalities.csv)
+
+---
+
+# The Formula
+## and the function: `glmmTMB()`. 
+*Many also use `lme4::(g)lmer()`*
+
+- We add random effects to the model formula with:
+
+$$ + (1|\text{ variable})$$
+
+---
+# Formula
+## Nested Random Effects
+
+`$$\text{response} \sim ... + (1|\text{ variable1 }/ \text{ variable2})$$`
+
+---
+## Random effect of individual whale
+
+
+```r
+rem1 &lt;- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay + 
+                  SonarA + (1|TagID),
+                data = zc_dives)
+```
+
+---
+
+# Model Assessment
+### Focus on ACF now as it was the problem for the lm()
+
+.pull-left[
+
+```r
+gf_acf(~base_model)
+```
+
+&lt;img src="random-effects_files/figure-html/unnamed-chunk-9-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+```r
+gf_acf(~resid(rem1))
+```
+
+&lt;img src="random-effects_files/figure-html/unnamed-chunk-10-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+### What else would we need to check?
+---
+class: smaller
+# What can we try next?
+
+
+```r
+glimpse(zc_dives)
+```
+
+```
+## Rows: 6,183
+## Columns: 14
+## $ TagID             &lt;int&gt; 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, …
+## $ DurAvg            &lt;dbl&gt; 0.29300000, 0.32850000, 0.30183333, 0.34633333, 0.33…
+## $ StartTime         &lt;chr&gt; "2011-01-06 20:45:30", "2011-01-06 22:13:23", "2011-…
+## $ DepthAvg          &lt;dbl&gt; 335.5, 351.5, 287.5, 279.5, 359.5, 311.5, 263.5, 303…
+## $ TimeOfDay         &lt;chr&gt; "Day", "Day", "Day", "Day", "Day", "Dusk", "Dusk", "…
+## $ SonarA            &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ SonarB            &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ SonarAMinKm.fill  &lt;dbl&gt; 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 50…
+## $ SonarBMinKm.fill  &lt;dbl&gt; 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 50…
+## $ SonarAPercOL.fill &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ SonarBPercOL.fill &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ TagDay            &lt;chr&gt; "2011-01-06", "2011-01-06", "2011-01-06", "2011-01-0…
+## $ Period            &lt;chr&gt; "(18,20]", "(20,22]", "(20,22]", "(20,22]", "[0,2]",…
+## $ TagDayPeriod      &lt;chr&gt; "2011-01-06.(18,20]", "2011-01-06.(20,22]", "2011-01…
+```
+
+---
+
+# What can we try next?
+
+
+```r
+rem2 &lt;- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay + 
+                  SonarA +
+                  (1|TagID/TagDayPeriod), 
+                data = zc_dives)
+```
+
+---
+# Better?
+
+
+```r
+gf_acf(~resid(rem2))
+```
+
+&lt;img src="random-effects_files/figure-html/unnamed-chunk-13-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Comparison with `lm()`?
+
+How does this model compare to the original linear regression model? 
+
+- Coefficient estimates? 
+- SEs? 
+- Additional stuff in the summary output?
+
+---
+## Coefficients
+
+
+|Variable       | lm() est.| RE est.| lm SE| RE SE|
+|:--------------|---------:|-------:|-----:|-----:|
+|(Intercept)    |     0.183|   0.177| 0.005| 0.009|
+|DepthAvg       |     0.001|   0.001| 0.000| 0.000|
+|TimeOfDayDay   |    -0.011|  -0.003| 0.005| 0.004|
+|TimeOfDayDusk  |    -0.034|  -0.021| 0.006| 0.006|
+|TimeOfDayNight |    -0.040|  -0.038| 0.005| 0.004|
+|SonarA1        |     0.063|   0.048| 0.011| 0.012|
+---
+
+## Model Selection for Mixed Models
+### Standard likelihood-based model selection criteria? Well...yes, and no.  
+
+### REML or ML?
+Two different ways to fit these models:
+
+
+.pull-left[
+### ML
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+]
+
+.pull-right[
+### REML
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+]
+
+### *`glmmTMB()` default is: REML = FALSE*
+
+---
+class: small
+# Selection 
+## (one way)
+
+
+```r
+zc_dives_noNA &lt;- zc_dives |&gt;
+  drop_na(DepthAvg, TimeOfDay, SonarA, TagID, TagDayPeriod) 
+rem_sonar &lt;- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay + SonarA +
+                  (1|TagID),
+                data = zc_dives_noNA)
+rem_no_sonar &lt;- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay +
+                  (1|TagID),
+                data = zc_dives_noNA)
+BIC(rem_sonar, rem_no_sonar)
+```
+
+```
+##              df       BIC
+## rem_sonar     8 -13482.98
+## rem_no_sonar  7 -13441.11
+```
+
+---
+class: small
+
+# Random Slopes?
+
+- What we just did ("random effects") also called "random intercept" model
+- We allowed for an offset between the overall average predicted response value and that of an individual
+- We did not allow the *slope* of the relationship with any of the predictor variables to vary randomly with individual. 
+- It is possible to do this, **But it often makes interpretation difficult**.
+
+---
+## Sketch: random intercept vs. slope
+## Random slope = interaction between RE variable &amp; predictor
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+Animation: &lt;http://mfviz.com/hierarchical-models/&gt;
+---
+class: small
+# Before random slopes...
+## Maybe Don't. Ask yourself: 
+
+- Do you really think that there is random variation in the *slope* of the predictor with the response? 
+- Is there a strong, clear overall effect and small variations in its magnitude between individuals?
+- Will the relationship with a certain predictor have very strong and very different slopes for different individuals?
+- Is dataset big enough?
+
+---
+class: small
+# Random Slopes Formula(s)
+
+$$ ... + (\text{PredictorVariable } | \text{ REGroupingVariable})$$
+
+or equivalently
+
+$$ ... + (1 + \text{PredictorVariable } | \text{ REGroupingVariable})$$
+
+or random slope *without* the corresponding random intercept **don't ever do it...**:
+
+$$ ... + (0 + \text{PredictorVariable } | \text{ REGroupingVariable})$$
+---
+class: small
+# Coming next: 
+# Prediction Plots
+
+- Do we want to make predictions for "the average random effect grouping" (here, the average whale in the average time-block)?
+- Or do we want to make predictions *averaged across* a whole population of random effect groups (all the whales at all times)?
+- For a *linear* model, *the two are numerically equal* but for models with a link function *they are different and we have to choose.*
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

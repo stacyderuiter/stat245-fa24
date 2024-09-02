@@ -1,0 +1,116 @@
+```{r}
+#| label: 'setup'
+#| include: false
+#| echo: true
+#| fig-show: asis
+```
+
+## YAML Header
+If you grab the example quarto presentation file, it seems the YAML header isn't preserved. 
+
+Here is how it should look:
+
+```{r, echo = FALSE, out.width='40%'}
+knitr::include_graphics('https://stacyderuiter.github.io/stat245-sp24/quarto-pres-header.png')
+```
+
+## Slides in Quarto
+
+-   Delete this slide once your presentation is done.
+-   Leave blank line before and after a bulleted list.
+-   Each new slide starts with a level-2 header: **2 hashtags, space,
+    your title**
+-   To learn more about Quarto presentations see
+    <https://quarto.org/docs/presentations/>. Much more customization is
+    possible, but we're trying to keep it simpler!
+-   If you want the Calvin colors/theme/logo, download the file
+    <https://stacyderuiter.github.io/stat245-sp24/calvin-slides.scss>
+    and save it to the same directory as your quarto file
+
+## Instructions: RE Lit Presentation
+
+-   Delete this slide once you understand your task.
+-   Fill in this template with answers gleaned from your reading of your
+    paper.
+-   You are **not reading and interpreting the whole paper**. You are
+    taking a first look at it and mining it for specific information.
+-   I recommend reading the abstract, then focusing on the methods
+    section, reviewing all figures, and also checking the results
+    section as needed. This is an high-level overview, not a deep read.
+
+## The Big Question
+
+-   Replace the title of this slide with a brief statement of the
+    *topic* of your paper
+-   List as a bullet point (or more than one, if your paper has multiple
+    RE models) the *scientific question* that your paper tries to answer
+    with a RE model. Try to write the question as simply as possible -
+    in words a 6th-grader could understand!
+
+>> If you would like to include a direct quote from the paper, you can do it like this -- start with two greater-than signs, and then add the text you want to quote. It will be formatted like a block quote (check out the rendered version to see the effect).
+
+## Best Figure - Interp!
+
+-   Choose the best figure in the paper (easiest to understand,
+    communicating the most information, ideally relevant to your
+    question of interest).
+-   In a bullet, say what you learn from the figure (what trends or
+    patterns are illustrated?)
+-   In a bullet, explain what design features you love about this figure
+    that made it best
+-   Maybe move this slide *after* the actual figure.
+
+## Best Figure - Figure!
+
+![](https://esajournals.onlinelibrary.wiley.com/cms/asset/87aadcb2-de34-49a8-a730-6e2e6b675c2e/eap2012223735-fig-0001-m.jpg){width="80%"}
+
+*Note, if you don't have a URL to the image file, you can screenshot it
+and upload it to the same directory as your Quarto file.*
+
+## Random Effects Model Description
+
+Fill in as many list items as you possibly can:
+
+-   Response variable - description and type (continuous, binary,
+    count...)
+-   Model type (family and link function)
+-   Fixed effects predictors
+-   Interactions (if any)
+-   Random effects
+-   Random slopes (if any)
+
+## Modeling Process Checklist
+
+Which of the following items are **described and presented in the
+paper**? (~~Cross out~~ things you can't find)
+
+-   Model planning, causal diagram
+-   Plots of the data
+-   Coefficients, model summary information
+-   Model assessment
+-   Model selection
+-   Model interpretation - what results mean
+-   Prediction plots
+
+## Answer to the Question
+
+What, according to the paper, is the answer to the question (that you
+identified on an earlier slide, and that the authors used an RE model to
+answer)?
+
+## Your Questions
+
+-   List here any thing you are confused or curious about.
+-   What was hard to figure out?
+-   Is there anything you wish authors had added to the paper (details,
+    figures...)?
+-   What questions do you have about the authors' approach?
+
+## Submit!
+
+-   Don't forget to **Submit your rendered slides on Moodle at the end of
+    class.**
+-   *Submit whatever you have finished during class time - you are not
+    required to finish on your own time.*
+-   You may present work in class Tuesday - plan for this as a group!
+-   Delete this slide once you understand.
