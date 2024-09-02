@@ -1,7 +1,7 @@
 ---
 title: "STAT 245: Day 1"
 author: "Stacy DeRuiter"
-date: "January 16, 2024"
+date: "Sept. 3, 2024"
 output:
   xaringan::moon_reader:
     css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
@@ -20,7 +20,6 @@ library(wordcloud)
 library(RColorBrewer)
 library(ggformula)
 library(googlesheets4)
-library(rgdal)
 library(leaflet)
 library(tidyverse)
 
@@ -44,6 +43,8 @@ wordcloud(words = d$word, freq = d$freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per = 0, fixed.asp = FALSE,
           colors=brewer.pal(8, "YlGnBu")[4:8])
 }
+
+# googlesheets4::gs4_auth(email = 'sld33@calvin.edu')
 ```
 
 
@@ -134,7 +135,7 @@ class: bigger
 ---
 class: bigger
 
-# Project: **Questions** and **Answers**
+# **Questions** and **Answers**
 ## With **models** as reality check
 
 <p class="aligncenter">
@@ -178,7 +179,7 @@ class: bigger
 
 - [r.cs.calvin.edu](https://r.cs.calvin.edu/)
 - (Stand-alone [install](https://connect.cs.calvin.edu/DATA545/install-R/))
-- Self-paced tutorials - assignment for Tuesday next week
+- Self-paced tutorials - assignment for next week
 
 
 ---
@@ -194,7 +195,11 @@ class: bigger
 
 # R/RStudio
 
-- Start intro/graphics tutorials this week (for next Tuesday night)!
+- Start intro/graphics tutorials *now*
+- Next Tuesday: Work (without me)!
+- Coming: 
+  - More help sessions from me (TBA)
+  - Study sessions: Tu/Th, NH 261, 7-9pm
 
 ---
 class: bigger
@@ -212,13 +217,13 @@ class: bigger
 ]
 
 ---
-# Weekly Schedule
+# Usual Weekly Schedule
 
-- **Data analysis** due Tues. nights
-- **Readings** due before Thurs. class
+- **Readings** due Tues. nights
+- **Data analysis** due Thurs. nights
 - In-class **Quizzes** Thursdays
-- **Project work** due Thurs. nights
-- Every class will include group practice
+- **Project milestones** weekly
+- Every class will include team practice
 
 
 ---
@@ -239,6 +244,7 @@ class: bigger
 - Take-home (1 week)
 - Work...*together*???
 - Open resource (except outsourcing)
+- No late work
 
 
 ---
@@ -246,10 +252,10 @@ class: bigger
 
 # Final (Not-Exam)
 
-- Project showcase 4/25. *Public?*
+- Project showcase 12/19. *Public!*
   - Work you did
   - Experience with partner & team
-- Project revisions & reflections 5/2.
+- Project revisions & reflections 12/19.
   - Not in-person
 
 ---

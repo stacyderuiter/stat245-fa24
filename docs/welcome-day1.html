@@ -4,8 +4,7 @@
     <title>STAT 245: Day 1</title>
     <meta charset="utf-8" />
     <meta name="author" content="Stacy DeRuiter" />
-    <meta name="date" content="2024-01-16" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="slides.css" type="text/css" />
@@ -21,7 +20,7 @@ class: inverse, middle, left, my-title-slide, title-slide
 ### Stacy DeRuiter
 ]
 .date[
-### January 16, 2024
+### Sept. 3, 2024
 ]
 
 ---
@@ -117,7 +116,7 @@ class: bigger
 ---
 class: bigger
 
-# Project: **Questions** and **Answers**
+# **Questions** and **Answers**
 ## With **models** as reality check
 
 &lt;p class="aligncenter"&gt;
@@ -157,7 +156,7 @@ class: bigger
 
 - [r.cs.calvin.edu](https://r.cs.calvin.edu/)
 - (Stand-alone [install](https://connect.cs.calvin.edu/DATA545/install-R/))
-- Self-paced tutorials - assignment for Tuesday next week
+- Self-paced tutorials - assignment for next week
 
 
 ---
@@ -171,7 +170,11 @@ class: bigger
 
 # R/RStudio
 
-- Start intro/graphics tutorials this week (for next Tuesday night)!
+- Start intro/graphics tutorials *now*
+- Next Tuesday: Work (without me)!
+- Coming: 
+  - More help sessions from me (TBA)
+  - Study sessions: Tu/Th, NH 261, 7-9pm
 
 ---
 class: bigger
@@ -189,13 +192,13 @@ class: bigger
 ]
 
 ---
-# Weekly Schedule
+# Usual Weekly Schedule
 
-- **Data analysis** due Tues. nights
-- **Readings** due before Thurs. class
+- **Readings** due Tues. nights
+- **Data analysis** due Thurs. nights
 - In-class **Quizzes** Thursdays
-- **Project work** due Thurs. nights
-- Every class will include group practice
+- **Project milestones** weekly
+- Every class will include team practice
 
 
 ---
@@ -216,6 +219,7 @@ class: bigger
 - Take-home (1 week)
 - Work...*together*???
 - Open resource (except outsourcing)
+- No late work
 
 
 ---
@@ -223,10 +227,10 @@ class: bigger
 
 # Final (Not-Exam)
 
-- Project showcase 4/25. *Public?*
+- Project showcase 12/19. *Public!*
   - Work you did
   - Experience with partner &amp; team
-- Project revisions &amp; reflections 5/2.
+- Project revisions &amp; reflections 12/19.
   - Not in-person
 
 ---
@@ -368,7 +372,7 @@ class: inverse middle center big-subsection
 
 
 
-```r
+``` r
 gf_col(percentage ~ year, fill = ~faculty_type, 
        position = 'stack',
        data = staff_long) 
@@ -384,7 +388,7 @@ gf_col(percentage ~ year, fill = ~faculty_type,
 # Lines?
 
 
-```r
+``` r
 gf_line(percentage ~ year, 
         color = ~faculty_type,
         data = staff_long)
@@ -402,7 +406,7 @@ gf_line(percentage ~ year,
 # Lines (actually)
 
 
-```r
+``` r
 gf_line(percentage ~ parse_number(year), 
         color = ~faculty_type,
         data = staff_long)
@@ -421,7 +425,7 @@ gf_line(percentage ~ parse_number(year),
 # Color to Highlight
 
 
-```r
+``` r
 staff_long &lt;- staff_long |&gt;
   mutate(part_time = 
            fct_other(faculty_type,
@@ -432,7 +436,7 @@ staff_long &lt;- staff_long |&gt;
 # Color to Highlight
 
 
-```r
+``` r
 grey_lines &lt;- gf_path(percentage ~ parse_number(year), 
                       color = ~part_time,
                       group = ~faculty_type,
@@ -446,7 +450,7 @@ grey_lines &lt;- gf_path(percentage ~ parse_number(year),
 ---
 ## Color to Highlight
 
-```r
+``` r
 grey_lines
 ```
 
@@ -456,7 +460,7 @@ grey_lines
 # Better Labels
 
 
-```r
+``` r
 grey_lines |&gt;
   gf_labs(y = "Percent", x = '', 
           title = 'Part-time Faculty Increasing') |&gt;
