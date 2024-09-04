@@ -1,0 +1,41 @@
+---
+title: "The Tehran Glucose Study - Metadata"
+format: pdf
+editor: source
+---
+
+
+```{r setup-child, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data Access
+
+You can find this data at: <https://sldr.netlify.app/data/TGS.csv>
+
+
+## Context
+
+For this problem you will make use of a simulated version of the data from a [paper presenting findings from the Tehran Glucose Study](https://link.springer.com/content/pdf/10.1186/s12889-020-09595-4.pdf).  The authors state,
+
+>> Background: Coronary heart disease (CHD) is one of the leading causes of death. Alarmingly, Iranian populations had a high rank of CHD worldwide. The current study aimed to assess the prevalence of CHD across different  glycemic categories. Methods: This study was conducted on 7718 Tehranian participants (Men = 3427) aged ≥ 30 years from 2008 to 2011. They were categorized based on glycemic status. The prevalence of CHD was calculated in each group  separately... The association of different glycemic categories with CHD was calculated..., compared with [a] normal fasting glucose/normal glucose tolerance (NFG/NGT) group as reference.
+
+Variables included in the dataset:
+
+- `sex` ("Male" or "Female")
+- `age` in years
+- `glycemic category`: "NFG/NGT" (which means "Normal Fasting Glucose, Normal Glucose Tolerance" - the healthiest category), "Prediabetes," or "Diabetes mellitus" (has diabetes)
+- `BMI`, body mass index in kg/m$^2$
+- `WHR100`, waist-to-hip ratio times 100
+- `SBP`, systolic blood pressure in mm Hg
+- `DBP`, diastolic blood pressure in mm Hg
+- `Total cholesterol` in mmol/L
+- `HDL-C` ("good" cholesterol) in mmol/L
+- `triglyceride` content in blood, in mmol/L
+- `smoking` status: "Never", "Past", or "Current"
+- `education` level: "< 6 years", "6-12 years", or ">12 years" of education
+- `low_activity`: whether the person has a low physical activity level
+- `CVD_history`: whether there's a family history of early cardiovascular disease
+- `lipid_lowering_meds`: whether the person is on lipid lowering medications
+- `anti_hyptertensive_meds`: whether the person is on anti-hypertensive medication
+

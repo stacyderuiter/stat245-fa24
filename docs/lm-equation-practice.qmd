@@ -1,0 +1,96 @@
+---
+title: "Linear Model Equation Practice"
+format: 
+  pdf: default
+  html:
+    embed-resources: true
+    format-links: true
+editor: visual
+---
+
+Metadata available at: <https://stacyderuiter.github.io/stat245-fa24/tehran-glucose-meta.html>
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+
+TGS <- read_csv('https://sldr.netlify.app/data/tgs.csv')
+```
+
+```{r}
+chol_model <- lm(total_cholesterol ~ age,
+                 data = TGS)
+summary(chol_model)
+```
+
+1.  What are the predictor and response variables?
+2.  What question can this model answer?
+3.  Write the model equation, using information from the model
+    `summary()`.
+
+\newpage
+
+```{r}
+bp_model <- lm(SBP ~ triglyceride, 
+               data = TGS)
+summary(bp_model)
+```
+
+1.  What are the predictor and response variables?
+2.  What question can this model answer?
+3.  Write the model equation, using information from the model
+    `summary()`.
+
+\newpage
+
+```{r}
+tri_model <- lm(triglyceride ~ age, 
+               data = TGS)
+summary(tri_model)
+```
+
+1.  What are the predictor and response variables?
+2.  What question can this model answer?
+3.  Write the model equation, using information from the model
+    `summary()`.
+
+\newpage
+
+```{r}
+tri_model2 <- lm(triglyceride ~ total_cholesterol, 
+               data = TGS)
+summary(tri_model2)
+```
+
+1.  What are the predictor and response variables?
+2.  What question can this model answer?
+3.  Write the model equation, using information from the model
+    `summary()`.
+
+\newpage
+
+```{r}
+bmi_model <- lm(BMI ~ age, 
+               data = TGS)
+summary(bmi_model)
+```
+
+1.  What are the predictor and response variables?
+2.  What question can this model answer?
+3.  Write the model equation, using information from the model
+    `summary()`.
+
+\newpage
+
+```{r}
+whr_model <- lm(SBP ~ WHR100, 
+               data = TGS)
+summary(whr_model)
+```
+
+1.  What are the predictor and response variables?
+2.  What question can this model answer?
+3.  Write the model equation, using information from the model
+    `summary()`.
