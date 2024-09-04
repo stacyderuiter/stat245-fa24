@@ -1,7 +1,7 @@
 ---
 title: "Linear Regression (Revisited)"
 author: "STAT 245"
-date: "January 23, 2024"
+date: "Sept 5, 2024"
 output:
   xaringan::moon_reader:
     css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
@@ -11,14 +11,12 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-      ratio: '16:9'
+      ratio: '4:3'
 ---
 
 ```{r, setup-lm1, include=FALSE}
 library(ggformula)
 library(tidyverse)
-library(dagitty)
-library(CalvinBayes)
 
 
 knitr::opts_chunk$set(echo = TRUE, 
@@ -34,12 +32,13 @@ knitr::opts_chunk$set(echo = TRUE,
 theme_set(theme_minimal(base_size = 22))
 ```
 
-# Data
+## Data
 We will consider a small dataset from an article by J.S. Martin and colleagues, titled [*Facial width-to-height ratio is associated with agonistic and affiliative dominance in bonobos (**Pan paniscus**)*](https://royalsocietypublishing.org/doi/suppl/10.1098/rsbl.2019.0232)
 
 .small[
 ```{r data-in, message = FALSE}
-bonobos <- read_csv(file='http://sldr.netlify.app/data/bonobo_faces.csv')
+bonobos <- 
+  read_csv(file='http://sldr.netlify.app/data/bonobo_faces.csv')
 ```
 ]
 
@@ -50,7 +49,7 @@ bonobos[28, 'normDS'] <- NA
 
 ---
 
-# Facial Width-Height Ratio
+## Facial Width-Height Ratio
 
 ```{r bonobo-fwhr-image, echo = FALSE, out.width = '45%'}
 knitr::include_graphics('images/bonobo-face-measures.jpg')
@@ -59,8 +58,9 @@ knitr::include_graphics('images/bonobo-face-measures.jpg')
 
 ---
 
-# Data: Variables
-
+## Data: Variables
+### We *will* explore data - let's think a bit first.
+.small[
 .pull-left[
 - `Name` of the individual
 - `Group`: zoo where the individual lives
@@ -74,21 +74,23 @@ knitr::include_graphics('images/bonobo-face-measures.jpg')
 - `normDS`, another dominance score
 - `weight` in kilograms
 ]
+]
 
-(we *will* explore data - let's think a bit first.)
+
+
 
 
 ---
 
-# Simple Linear Regression
-## ("Simple" means "one predictor")
+## Simple Linear Regression
+### ("Simple" means "one predictor")
 
 $$ y = \text{  ?} $$
 <!-- $$\beta_0 + \beta_1 x \dots$$ -->
 
 ---
 
-# Choosing Response
+## Choosing Response
 
 - Response is the variable of greatest interest
 - Response is what you may want to *predict*
@@ -96,7 +98,7 @@ $$ y = \text{  ?} $$
 
 ---
 
-# Choosing Predictor(s)
+## Choosing Predictor(s)
 
 - Response may be harder to measure, and predictor easier
 - (Should have data on predictor)
@@ -104,14 +106,14 @@ $$ y = \text{  ?} $$
 
 ---
 
-# For Bonobos:
+## For Bonobos:
 
 - Response
 - Predictor
 
 ---
 
-# Plan. STOP! Explore.
+## Plan. STOP! Explore.
 
 ```{r}
 gf_point(AssR ~ fWHR, data = bonobos)
@@ -120,7 +122,7 @@ gf_point(AssR ~ fWHR, data = bonobos)
 
 ---
 
-# To fit model: `lm()`
+## To fit model: `lm()`
 
 ```{r hidden-fit-m1_simple, include = FALSE}
 m1_simple <- lm(AssR ~ fWHR, data = bonobos)
@@ -132,8 +134,8 @@ m1_simple <- lm(AssR ~ fWHR,
 ```
 
 ---
-# Print Results
-## Just Parameter Estimates
+## Print Results
+### Just Parameter Estimates
 
 ```{r, lm-coef, fig.width=6.5, fig.height=4, echo=TRUE}
 coef(m1_simple)
@@ -141,8 +143,8 @@ coef(m1_simple)
 
 ---
 
-# Print Results
-## Full Summary
+## Print Results
+### Full Summary
 
 ```{r, results= 'hide'}
 summary(m1_simple)
@@ -163,13 +165,13 @@ summary(m1_simple)
 
 ---
 
-# (Part of) Regression Equation
+## (Part of) Regression Equation
 
 $$ y = \rule{1cm}{0.15mm} + \rule{1cm}{0.15mm} x \dots$$
 
 ---
 
-# But the Line isn't Perfect
+## But the Line isn't Perfect
 
 There is some error $\epsilon$ in our model for the data, so we should keep track of it.
 
@@ -177,16 +179,16 @@ $$ y = \beta_0 + \beta_1 x + \epsilon$$
 
 ---
 
-# $\epsilon$ is **NOT** *one number*
+## $\epsilon$ is **NOT** *one number*
 
-## The amount of error is different for (almost) every data point! 
+### The amount of error is different for (almost) every data point! 
 
 - How can we express this mathematically?
 
 
 ---
 
-# Regression Residuals = "errors"
+## Regression Residuals = "errors"
 
 ```{r, echo = FALSE, out.width = '90%'}
 bonobos <- bonobos |>
@@ -203,7 +205,7 @@ gf_point(AssR ~ fWHR,
 
 ---
 
-# Summarize: Distribution?
+## Summarize: Distribution?
 
 ```{r}
 gf_histogram(~resid(m1_simple), 
@@ -213,7 +215,7 @@ gf_histogram(~resid(m1_simple),
 
 ---
 
-# Back to Summary
+## Back to Summary
 
 .small[
 
@@ -237,7 +239,8 @@ $$ \epsilon \sim N(0, \sigma)$$
 
 ## Bonobo Regression Equation
 
-$$ y = \rule{2.5cm}{0.15mm} + \rule{2.5cm}{0.15mm} x  + \epsilon, \text{ where } \epsilon \sim N(0, \rule{2.5cm}{0.15mm})$$
+$$ y = \rule{2.5cm}{0.15mm} + \rule{2.5cm}{0.15mm} x  + \epsilon,$$
+$$\text{ where } \epsilon \sim N(0, \rule{2.5cm}{0.15mm})$$
 
 <!-- $$ y = 1.31 + 0.029 x + \epsilon, \text{ where } \epsilon \sim N(0, 0.169)$$ -->
 
