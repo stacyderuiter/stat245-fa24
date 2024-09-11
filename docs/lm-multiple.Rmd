@@ -1,7 +1,7 @@
 ---
 title: "Linear Regression (Revisited): Multiple Regression"
 author: "STAT 245"
-date: "Jan. 23-25, 2024"
+date: "Sept. 12, 2024"
 output:
   xaringan::moon_reader:
     css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
@@ -17,8 +17,6 @@ output:
 ```{r, setup-lm1, include=FALSE}
 library(ggformula)
 library(tidyverse)
-library(dagitty)
-library(CalvinBayes)
 
 
 knitr::opts_chunk$set(echo = TRUE, 
@@ -165,17 +163,13 @@ coef(m3_2q1b)
 
 ---
 
-## Predictors with 2 categories
+## Predictors with 2 categories - Summary, Equation
 
 .small[
 ```{r, echo = FALSE}
 summary(m3_2q1b)
 ```
 ]
-
----
-
-## Predictors with 2 categories, Mathematically?
 
 
 ---
@@ -198,29 +192,12 @@ m3_2q2c <- lm(AssR ~ fWHR + normDS + Sex + Group,
 
 ---
 
-## More Categories
+## More Categories: Summary, Equation
 .small[
 ```{r, echo = FALSE}
 summary(m3_2q2c)
 ```
 ]
-
----
-
-## Predictors with more categories, Mathematically?
-
-
----
-
-
-.small[
-```{r, echo = FALSE}
-summary(m3_2q2c)
-```
-]
-
----
-# Model Equation, Again
 
 ---
 
@@ -251,7 +228,7 @@ b2 <- bonobos |>
 ---
 
 # Plotting Predictions
-## Uh-oh, useless. Why?
+### Uh-oh, SO USELESS. Why should you *never do this*?
 
 .small[
 ```{r}
@@ -261,3 +238,13 @@ gf_point(AssR ~ fWHR,
 ```
 ]
 
+---
+# `gf_lm()`: NEVER Do This Either
+### well, almost never -- why?
+
+.small[
+```{r}
+gf_point(AssR ~ fWHR, data = b2) |>
+  gf_lm()
+```
+]

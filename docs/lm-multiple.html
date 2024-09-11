@@ -4,17 +4,18 @@
     <title>Linear Regression (Revisited): Multiple Regression</title>
     <meta charset="utf-8" />
     <meta name="author" content="STAT 245" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+    <link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
     <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-    <script src="libs/datatables-binding-0.30/datatables.js"></script>
+    <script src="libs/datatables-binding-0.33/datatables.js"></script>
     <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-    <link href="libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
-    <script src="libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
-    <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-    <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+    <link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="slides.css" type="text/css" />
   </head>
@@ -29,7 +30,7 @@ class: inverse, middle, left, my-title-slide, title-slide
 ### STAT 245
 ]
 .date[
-### Jan. 23-25, 2024
+### Sept. 12, 2024
 ]
 
 ---
@@ -44,7 +45,7 @@ class: inverse, middle, left, my-title-slide, title-slide
 - In R, it's super easy:
 
 
-```r
+``` r
 m2_2q &lt;- lm(AssR ~ fWHR + normDS, 
           data = bonobos)
 ```
@@ -96,8 +97,8 @@ m2_2q &lt;- lm(AssR ~ fWHR + normDS,
 # Prediction Practice
 
 .small[
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-af423cf607451f87fe5b" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-af423cf607451f87fe5b">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4"],[1.880866426,1.798387097,1.591439689,1.545018647],[4.74,5.38,3.97,4.87],[3.035,4.421,4.453,3.044]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>fWHR<\/th>\n      <th>AssR<\/th>\n      <th>normDS<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-457fdd319d0f87626de8" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-457fdd319d0f87626de8">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4"],[1.880866426,1.798387097,1.591439689,1.545018647],[4.74,5.38,3.97,4.87],[3.035,4.421,4.453,3.044]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>fWHR<\/th>\n      <th>AssR<\/th>\n      <th>normDS<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"fWHR","targets":1},{"name":"AssR","targets":2},{"name":"normDS","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 ]
 
 
@@ -147,7 +148,7 @@ See: &lt;https://setosa.io/ev/ordinary-least-squares-regression/&gt;
 # Predictors with 2 categories
 
 
-```r
+``` r
 m3_2q1b &lt;- lm(AssR ~ fWHR + normDS + Sex, 
            data = bonobos)
 coef(m3_2q1b)
@@ -160,7 +161,7 @@ coef(m3_2q1b)
 
 ---
 
-## Predictors with 2 categories
+## Predictors with 2 categories - Summary, Equation
 
 .small[
 
@@ -189,17 +190,13 @@ coef(m3_2q1b)
 ```
 ]
 
----
-
-## Predictors with 2 categories, Mathematically?
-
 
 ---
 
 ## More categories
 
 
-```r
+``` r
 gf_boxplot(Group ~ AssR, 
            data = bonobos) 
 ```
@@ -211,14 +208,14 @@ gf_boxplot(Group ~ AssR,
 # More Categories
 
 
-```r
+``` r
 m3_2q2c &lt;- lm(AssR ~ fWHR + normDS + Sex + Group, 
            data = bonobos)
 ```
 
 ---
 
-## More Categories
+## More Categories: Summary, Equation
 .small[
 
 ```
@@ -250,49 +247,6 @@ m3_2q2c &lt;- lm(AssR ~ fWHR + normDS + Sex + Group,
 ## F-statistic: 7.375 on 8 and 107 DF,  p-value: 8.86e-08
 ```
 ]
-
----
-
-## Predictors with more categories, Mathematically?
-
-
----
-
-
-.small[
-
-```
-## 
-## Call:
-## lm(formula = AssR ~ fWHR + normDS + Sex + Group, data = bonobos)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -2.5148 -0.5901 -0.0118  0.6610  1.5405 
-## 
-## Coefficients:
-##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)        2.16779    0.79783   2.717  0.00768 ** 
-## fWHR               1.65461    0.56485   2.929  0.00415 ** 
-## normDS             0.07067    0.08782   0.805  0.42277    
-## SexMale           -1.23398    0.18576  -6.643 1.32e-09 ***
-## GroupFrankfurt    -0.61604    0.34951  -1.763  0.08083 .  
-## GroupPlanckendael  0.35141    0.31958   1.100  0.27398    
-## GroupTwycross      0.09313    0.30547   0.305  0.76105    
-## GroupWilhelma     -0.08112    0.33549  -0.242  0.80940    
-## GroupWuppertal     0.47304    0.32545   1.453  0.14901    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 0.9232 on 107 degrees of freedom
-##   (1 observation deleted due to missingness)
-## Multiple R-squared:  0.3554,	Adjusted R-squared:  0.3072 
-## F-statistic: 7.375 on 8 and 107 DF,  p-value: 8.86e-08
-```
-]
-
----
-# Model Equation, Again
 
 ---
 
@@ -304,7 +258,7 @@ m3_2q2c &lt;- lm(AssR ~ fWHR + normDS + Sex + Group,
 ## Caution: missing data
 
 
-```r
+``` r
 bonobos &lt;- bonobos |&gt; 
   mutate(preds = predict(m3_2q2c))
 ```
@@ -322,7 +276,7 @@ bonobos &lt;- bonobos |&gt;
 ## For ALL data points *in model*
 
 
-```r
+``` r
 b2 &lt;- bonobos |&gt;
   select(fWHR, normDS, AssR, Sex, Group) |&gt;
   na.omit() |&gt;
@@ -332,19 +286,32 @@ b2 &lt;- bonobos |&gt;
 ---
 
 # Plotting Predictions
-## Uh-oh, useless. Why?
+### Uh-oh, SO USELESS. Why should you *never do this*?
 
 .small[
 
-```r
+``` r
 gf_point(AssR ~ fWHR, 
          data = b2) |&gt;
   gf_line(preds ~ fWHR)
 ```
 
-&lt;img src="lm-multiple_files/figure-html/unnamed-chunk-12-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lm-multiple_files/figure-html/unnamed-chunk-11-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 ]
 
+---
+# `gf_lm()`: NEVER Do This Either
+### well, almost never -- why?
+
+.small[
+
+``` r
+gf_point(AssR ~ fWHR, data = b2) |&gt;
+  gf_lm()
+```
+
+&lt;img src="lm-multiple_files/figure-html/unnamed-chunk-12-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
