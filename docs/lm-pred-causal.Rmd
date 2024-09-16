@@ -1,7 +1,7 @@
 ---
 title: "Linear Regression: Prediction Plots, Planning"
 author: "STAT 245"
-date: "Jan. 30 - Feb 1, 2024"
+date: "Sept 16-18, 2024"
 output:
   xaringan::moon_reader:
     css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
@@ -11,7 +11,7 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-      ratio: '16:9'
+      ratio: '4:3'
 ---
 
 ```{r, setup-lm1, include=FALSE}
@@ -53,23 +53,24 @@ m3_2q2c <- lm(AssR ~ fWHR + normDS + Sex + Group,
 
 
 ```{r, echo=TRUE, eval = FALSE}
-fake_data <- expand.grid(fWHR = seq(from = _____, 
-                                    to = _____, 
-                                    by = _____),
-                         normDS = _________,
-                         Sex = ________,
-                         Group = __________)
+fake_data <- 
+  expand.grid(fWHR = seq(from = _____, 
+                         to = _____, 
+                         by = _____),
+              normDS = _________,
+              Sex = ________,
+              Group = __________)
 ```
 
 ---
 
-# Generate Hypothetical Data
+# Hypothetical Data
 ## Quantitative Predictor
 
 One predictor varies; the others are held constant at median or most common or common-sense values (don't include impossible combinations!)
 ---
 
-# Generate Hypothetical Data
+# Hypothetical Data
 ## Quantitative Predictor
 
 ```{r, message = FALSE}
@@ -112,17 +113,13 @@ glimpse(fake_data)
 gf_line(pred ~ fWHR, data = fake_data)
 ```
 
----
-
-
-# Prediction Plots
-## What is still missing?
+## BUT What is still missing?
 
 
 ---
 
-# Confidence Intervals!
-## On predictions: a CI gives a range of plausible values for average response, taking into account uncertainty in intercept and slope estimates.
+# Uncertainty!
+## On predictions: a confidence interval gives a range of plausible values for average response, taking into account uncertainty in intercept and slope estimates.
 
 Relying on the Central Limit Theorem, a simple CI is:
 
@@ -143,7 +140,8 @@ glimpse(preds)
 ]
 
 ---
-# Put Preds + SEs in dataset
+# Put Preds + SEs 
+# *in dataset*
 
 ```{r}
 fake_data <- fake_data |>
@@ -153,7 +151,7 @@ fake_data <- fake_data |>
 
 ---
 
-# What did we do?
+# Result?
 
 ```{r}
 glimpse(fake_data)
@@ -161,7 +159,7 @@ glimpse(fake_data)
 
 ---
 
-# Convert from SE to CI
+# From SE to CI
 
 .small[
 
@@ -196,14 +194,15 @@ gf_line(pred ~ fWHR,
 
 ---
 
-# Generate Hypothetical Data
+# Hypothetical Data
 ## Categorical Predictor
 
 ```{r}
-fake_data <- expand.grid(fWHR = 1.4,
-                         normDS = 2.4,
-                         Sex = c('Female', 'Male'),
-                         Group = 'Planckendael')
+fake_data <- 
+  expand.grid(fWHR = 1.4,
+              normDS = 2.4,
+              Sex = c('Female', 'Male'),
+              Group = 'Planckendael')
 ```
 
 ---
@@ -226,7 +225,7 @@ glimpse(preds)
 # Convert to CI
 ## Categorical Predictor
 
-.small[
+.smaller[
 ```{r}
 fake_data <- fake_data |>
   mutate(pred = preds$fit,
@@ -238,7 +237,7 @@ glimpse(fake_data)
 ]
 
 ---
-# Make Prediction Plot (code)
+# Prediction Plot (code)
 ## Categorical Predictor
 
 ```{r, fig.show = 'hide'}
@@ -252,7 +251,7 @@ gf_point(pred ~ Sex,
 # The Prediction Plot
 ## Categorical Predictor
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, out.width='95%'}
 gf_point(pred ~ Sex, 
         data = fake_data) |> 
   gf_labs(y='Predicted\n AssR') |>
@@ -261,30 +260,28 @@ gf_point(pred ~ Sex,
 
 ---
 
-# R so far
-## Dataset functions
+# R so far: for data
 
 - `|>` (pipe) for "and then..."
 - `mutate()` to add variable to dataset
 - `select()` to keep certain variables
 - `na.omit()` to remove rows w/missing data (!!)
 - `glimpse()` to peek at dataset
-- `pander::pander()` to print table
+- *`pander::pander()` to print table*
 
 ---
 
-# R so far
-## Regression models
+# R so far: for models
+
 - `lm(y ~ x1 + x2, data = ___)` to fit linear model
 - `resid(model)` to 
 - `predict(model, ...)` for prediction
   - `se.fit = TRUE` (or `FALSE`)
   - `newdata = ...`
 
----  
+---
 
-# R so far
-## New graphics
+# R so far: graphics
 - `gf_ribbon()` to add error band
 - `gf_errorbar()` to add error bars
 
@@ -308,7 +305,7 @@ gg_dag(causal_diagram_1, size = 16)
 - Parity
 - Wish to conceive
 - Before/After course
-- Before KoB score
+- "Pre" KoB score
 ]
 
 .pull-right[
@@ -334,7 +331,8 @@ gg_dag(causal_diagram_1, size = 16)
 # Collider
 
 ---
-# M-Bias
+# Can get complex
+## M-Bias
 
 ```{r, m-bias-diagram, echo = FALSE, out.width='85%'}
 # create the DAG object
@@ -348,7 +346,11 @@ causal_diagram_2 <- dagitty("dag{
 # plot it
 gg_dag(causal_diagram_2, size = 16, highlight = c('X', 'Y'))
 ```
+
 .small[
+*Look back: which variables are "in" a PREKNOP model?*
+]
+.smaller[
 *Resource: Guide to Causal Inference <https://doi.org/10.1098/rspb.2020.2815>*
 ]
 ---

@@ -4,7 +4,7 @@
     <title>Linear Regression: Prediction Plots, Planning</title>
     <meta charset="utf-8" />
     <meta name="author" content="STAT 245" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="slides.css" type="text/css" />
@@ -20,7 +20,7 @@ class: inverse, middle, left, my-title-slide, title-slide
 ### STAT 245
 ]
 .date[
-### Jan. 30 - Feb 1, 2024
+### Sept 16-18, 2024
 ]
 
 ---
@@ -41,28 +41,29 @@ class: inverse, middle, left, my-title-slide, title-slide
 
 
 
-```r
-fake_data &lt;- expand.grid(fWHR = seq(from = _____, 
-                                    to = _____, 
-                                    by = _____),
-                         normDS = _________,
-                         Sex = ________,
-                         Group = __________)
+``` r
+fake_data &lt;- 
+  expand.grid(fWHR = seq(from = _____, 
+                         to = _____, 
+                         by = _____),
+              normDS = _________,
+              Sex = ________,
+              Group = __________)
 ```
 
 ---
 
-# Generate Hypothetical Data
+# Hypothetical Data
 ## Quantitative Predictor
 
 One predictor varies; the others are held constant at median or most common or common-sense values (don't include impossible combinations!)
 ---
 
-# Generate Hypothetical Data
+# Hypothetical Data
 ## Quantitative Predictor
 
 
-```r
+``` r
 library(mosaic) # for mean()
 fake_data &lt;- expand_grid(
   fWHR = seq(from = 1.05, by = 0.01, to = 1.9),
@@ -82,7 +83,7 @@ fake_data &lt;- expand_grid(
 
 
 
-```r
+``` r
 fake_data &lt;- fake_data |&gt; 
   mutate(pred = predict(m3_2q2c, 
                          newdata = fake_data))
@@ -108,23 +109,19 @@ glimpse(fake_data)
 ## Create the Graph
 
 
-```r
+``` r
 gf_line(pred ~ fWHR, data = fake_data)
 ```
 
 &lt;img src="lm-pred-causal_files/figure-html/unnamed-chunk-5-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
----
-
-
-# Prediction Plots
-## What is still missing?
+## BUT What is still missing?
 
 
 ---
 
-# Confidence Intervals!
-## On predictions: a CI gives a range of plausible values for average response, taking into account uncertainty in intercept and slope estimates.
+# Uncertainty!
+## On predictions: a confidence interval gives a range of plausible values for average response, taking into account uncertainty in intercept and slope estimates.
 
 Relying on the Central Limit Theorem, a simple CI is:
 
@@ -137,7 +134,7 @@ $$ \text{estimate} \pm 1.96 * \text{standard error}$$
 
 .small[
 
-```r
+``` r
 preds &lt;- predict(m3_2q2c, 
                  newdata = fake_data, 
                  se.fit = TRUE)
@@ -156,10 +153,11 @@ glimpse(preds)
 ]
 
 ---
-# Put Preds + SEs in dataset
+# Put Preds + SEs 
+# *in dataset*
 
 
-```r
+``` r
 fake_data &lt;- fake_data |&gt;
   mutate(pred = preds$fit,
          pred.se = preds$se.fit)
@@ -167,10 +165,10 @@ fake_data &lt;- fake_data |&gt;
 
 ---
 
-# What did we do?
+# Result?
 
 
-```r
+``` r
 glimpse(fake_data)
 ```
 
@@ -187,12 +185,12 @@ glimpse(fake_data)
 
 ---
 
-# Convert from SE to CI
+# From SE to CI
 
 .small[
 
 
-```r
+``` r
 fake_data &lt;- fake_data |&gt;
   mutate(CI_lower = pred - 1.96*pred.se,
          CI_upper = pred + 1.96*pred.se)
@@ -220,7 +218,7 @@ glimpse(fake_data)
 # Plot Pred. w/CI
 
 
-```r
+``` r
 gf_line(pred ~ fWHR, 
         data = fake_data) |&gt; 
   gf_labs(y='Predicted\nAssR') |&gt;
@@ -239,15 +237,16 @@ gf_line(pred ~ fWHR,
 
 ---
 
-# Generate Hypothetical Data
+# Hypothetical Data
 ## Categorical Predictor
 
 
-```r
-fake_data &lt;- expand.grid(fWHR = 1.4,
-                         normDS = 2.4,
-                         Sex = c('Female', 'Male'),
-                         Group = 'Planckendael')
+``` r
+fake_data &lt;- 
+  expand.grid(fWHR = 1.4,
+              normDS = 2.4,
+              Sex = c('Female', 'Male'),
+              Group = 'Planckendael')
 ```
 
 ---
@@ -258,7 +257,7 @@ fake_data &lt;- expand.grid(fWHR = 1.4,
 
 .small[
 
-```r
+``` r
 preds &lt;- predict(m3_2q2c, 
                  newdata = fake_data, 
                  se.fit = TRUE)
@@ -281,9 +280,9 @@ glimpse(preds)
 # Convert to CI
 ## Categorical Predictor
 
-.small[
+.smaller[
 
-```r
+``` r
 fake_data &lt;- fake_data |&gt;
   mutate(pred = preds$fit,
          pred.se = preds$se.fit,
@@ -307,11 +306,11 @@ glimpse(fake_data)
 ]
 
 ---
-# Make Prediction Plot (code)
+# Prediction Plot (code)
 ## Categorical Predictor
 
 
-```r
+``` r
 gf_point(pred ~ Sex, 
         data = fake_data) |&gt; 
   gf_labs(y='Predicted\n AssR') |&gt;
@@ -322,34 +321,32 @@ gf_point(pred ~ Sex,
 # The Prediction Plot
 ## Categorical Predictor
 
-&lt;img src="lm-pred-causal_files/figure-html/unnamed-chunk-15-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lm-pred-causal_files/figure-html/unnamed-chunk-15-1.png" width="95%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# R so far
-## Dataset functions
+# R so far: for data
 
 - `|&gt;` (pipe) for "and then..."
 - `mutate()` to add variable to dataset
 - `select()` to keep certain variables
 - `na.omit()` to remove rows w/missing data (!!)
 - `glimpse()` to peek at dataset
-- `pander::pander()` to print table
+- *`pander::pander()` to print table*
 
 ---
 
-# R so far
-## Regression models
+# R so far: for models
+
 - `lm(y ~ x1 + x2, data = ___)` to fit linear model
 - `resid(model)` to 
 - `predict(model, ...)` for prediction
   - `se.fit = TRUE` (or `FALSE`)
   - `newdata = ...`
 
----  
+---
 
-# R so far
-## New graphics
+# R so far: graphics
 - `gf_ribbon()` to add error band
 - `gf_errorbar()` to add error bars
 
@@ -366,7 +363,7 @@ gf_point(pred ~ Sex,
 - Parity
 - Wish to conceive
 - Before/After course
-- Before KoB score
+- "Pre" KoB score
 ]
 
 .pull-right[
@@ -392,10 +389,15 @@ gf_point(pred ~ Sex,
 # Collider
 
 ---
-# M-Bias
+# Can get complex
+## M-Bias
 
 &lt;img src="lm-pred-causal_files/figure-html/m-bias-diagram-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
 .small[
+*Look back: which variables are "in" a PREKNOP model?*
+]
+.smaller[
 *Resource: Guide to Causal Inference &lt;https://doi.org/10.1098/rspb.2020.2815&gt;*
 ]
 ---
@@ -409,7 +411,7 @@ gf_point(pred ~ Sex,
 "highlightStyle": "github",
 "highlightLines": true,
 "countIncrementalSlides": false,
-"ratio": "16:9"
+"ratio": "4:3"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
