@@ -84,7 +84,7 @@ We believe that the purpose of Sunday is Monday, and that the purpose of the chu
 knitr::include_graphics('images/dml-people.png')
 ```
 
-### Contact Person: Renita Reed-Thompson
+### Contact Person: Renita Reed-Thomson
 
 ### Data and Questions
 
