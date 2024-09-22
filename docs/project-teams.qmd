@@ -1,0 +1,103 @@
+---
+title: "Fall 2024 STAT 245 Project Teams"
+format: 
+  html:
+    embed-resources: true
+editor: visual
+---
+
+```{r}
+#| include: false
+#| label: setup
+
+library(tidyverse)
+```
+
+## Information
+
+In creating project teams, I balance preferred projects and teammates
+and schedules, working as hard as I could to make sure all teams have
+some outside-class meeting times available each week.
+
+I also have to make that every project is staffed, and that teams are
+balanced in terms of personalities and strengths (as best I know them so
+early in the semester). Please know it's a complex balancing act and I
+did my best to maximize all teams' chances of success and happiness.
+
+**Please check your team assignment and reach out to me right away in
+case of a mistake or problem. I will do my best to address any
+concerns.**
+
+## What's Next?
+
+1.  Around mid-day Monday Sept. 23**, I will send an email to introduce
+    each team** to their partner organization/contact person.
+
+2.  **Before emailing the partner/contact person**, student teams should
+    communicate among themselves to make some initial decisions. You
+    will have time to confer in class on 9/24 but that would be
+    wonderful if you confer via email etc. Monday. To help get started,
+    emails are included in the table below.
+
+    -   **Elect a point-of-contact**: Choose one team member who is
+        willing, organized, responsible, and comfortable writing
+        professional emails. ***They will be the one student responsible
+        for email communication with the partner.*** (This avoids
+        confusion - the partner knows who to contact and won't ever get
+        redundant or contradictory messages from different students.)
+
+    -   **Identify some possible meeting times** - ideally during
+        business hours - when you may be able to have your initial
+        meeting with your partner.
+
+        -   Target meeting during the week of Sept 23-27 or Sept 30 -
+            Oct 4. (Hopefully it won't be later than this, but if your
+            partners travel/work schedule requires a delay, just keep
+            Prof DR informed.)
+
+        -   *At this first meeting, you will learn about your partner's
+            work, as well as hearing about project background and goals.
+            Try to meet in person if feasible, either on campus or in
+            town. If not, a videoconference is ok.*
+
+        -   *Do your best to accommodate your partner org's busy
+            schedule! You will likely only meet with them in-person
+            twice, at the start and end of the project, so do your very
+            best to ensure everyone can attend.*
+
+        -   *Prof DR will not attend these (unless she's the partner) -
+            you are in charge!*
+
+3.  Once you have a point-of-contact student and some proposed times
+    identified, have the point-of-contact student reply to the partner
+    to introduce themselves and propose/arrange meeting times.
+
+4.  Also try to block out one or more weekly meeting times you can all
+    commit to. (Plan to meet weekly and you can always cancel if a
+    meeting really isn't needed some week.)
+
+5.  You will get more information in class on Sept 24+. If you somehow
+    arrange to meet with your partner *before* the 24th and have
+    questions*,* please let Prof DR know so she can share additional
+    info and advice.
+
+## Teams
+
+```{r}
+#| echo: false
+#| label: team-table
+
+teamz <- readr::read_csv('project-teams.csv', show_col_types = FALSE) |>
+  mutate(Name = paste(`First name`, `Last name`)) |>
+  rename(Email = `Email address`) |>
+  select(Name, Project, Email) |> 
+  mutate(Email = stringr::str_remove_all(Email, "@calvin.edu")) |>
+  drop_na(Project) |> arrange(Project)
+
+DT::datatable(teamz,
+              caption = NULL,
+              options = list(dom = 'Blfrtip',
+                             lengthMenu = list(c(-1, 10, 15),
+                                               c('All', '10', '15')),
+                             paging = T))
+```
