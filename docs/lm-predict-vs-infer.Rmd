@@ -73,7 +73,7 @@ knitr::include_graphics('http://1.bp.blogspot.com/-mXCJsnICEGw/Uwf5wi-JOvI/AAAAA
 
 # Why ONE Model?
 
-- Data-based changes to model (especially simplifications) change CIs, p-values
+- Data-based changes to model (especially simplifications) change inferences/conclusions!
 - Bias toward larger model, overfitting
 - Keep your brain "on" at all times
 

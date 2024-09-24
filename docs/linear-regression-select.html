@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Linear Regression ‘Selection’ &amp; Inference</title>
+    <title>Linear Regression Inference (‘Selection’)</title>
     <meta charset="utf-8" />
     <meta name="author" content="STAT 245" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="slides.css" type="text/css" />
@@ -14,7 +14,7 @@
 class: inverse, middle, left, my-title-slide, title-slide
 
 .title[
-# Linear Regression ‘Selection’ &amp; Inference
+# Linear Regression Inference (‘Selection’)
 ]
 .author[
 ### STAT 245
@@ -34,7 +34,7 @@ class: small
 ### Slope coefficient of 0 (or CI crossing 0) means: 
 
 
-```r
+``` r
 my_model &lt;- lm(response ~ pred1 + pred2, data = my_data)
 summary(my_model)
 ```
@@ -67,7 +67,7 @@ summary(my_model)
 ### Slope coefficient of 0 (or CI crossing 0) means: 
 
 
-```r
+``` r
 my_model &lt;- lm(response ~ pred1 + pred2, data = my_data)
 confint(my_model)
 ```
@@ -86,7 +86,7 @@ confint(my_model)
 ### *May* use but see later IC slides for alternative
 
 
-```r
+``` r
 car::Anova(my_model)
 ```
 
@@ -124,7 +124,8 @@ car::Anova(my_model)
 
 ### There is strong evidence (p-value = 0.0099) that `pred1` is associated with `response`, with the expected `response` increasing by about  \_\_\_\_ (95% CI: \_\_\_\_ to \_\_\_\_) when `pred1` increases by 1 (if `pred2` doesn't change).
 
-*To present `Anova()` results, use your `summary()`, equation, and ESPECIALLY prediction plot to tell the story in context!*
+**State size/direction of effect, exact p-value, and your judgment of strength of evidence...**
+*To present `Anova()` results, use your `summary()`, equation, and prediction plot to tell the story in context!*
 
 ---
 class: small
@@ -138,7 +139,7 @@ class: small
 ## What is WRONG here?
 
 
-```r
+``` r
 movie_mod &lt;- lm(roi ~ clean_test + 
                   budget_2013 +
                   title,
@@ -150,7 +151,7 @@ movie_mod &lt;- lm(roi ~ clean_test +
 ## Better-planned Model
 
 
-```r
+``` r
 bechdel_mod &lt;- lm(roi ~ clean_test + 
                     budget_2013,  
                 data = bechdel_13)
@@ -206,7 +207,7 @@ class: small
 ## Comprehension Check: Verify BIC
 
 
-```r
+``` r
 coef(bechdel_mod)
 ```
 
@@ -217,7 +218,7 @@ coef(bechdel_mod)
 ##        1.18334508       -0.03661270
 ```
 
-```r
+``` r
 nrow(bechdel_13)
 ```
 
@@ -225,7 +226,7 @@ nrow(bechdel_13)
 ## [1] 1600
 ```
 
-```r
+``` r
 logLik(bechdel_mod)
 ```
 
@@ -247,12 +248,30 @@ logLik(bechdel_mod)
 ]
 
 ---
-
-# All-subsets selection
-## Avoid in favor of interpreting the full model or comparing a few key models if possible
+# BIC Example
+### Is there an association between `clean_test` and `roi`?
 
 .small[
-- Use `dredge()` function (`MuMIn` package) to get and display ICs for every possible combo of predictors.
+
+``` r
+bechdel_mod_notest &lt;- 
+  lm(roi ~ budget_2013, data = bechdel_13)
+BIC(bechdel_mod, bechdel_mod_notest)
+```
+
+```
+##                    df      BIC
+## bechdel_mod         7 13975.70
+## bechdel_mod_notest  3 13949.04
+```
+]
+---
+
+## All-subsets selection
+### Avoid in favor of interpreting the full model or comparing a few key models if possible
+
+.small[
+- Use `dredge()` function (`MuMIn` library) to get and display ICs for every possible combo of predictors.
 - First ensure dataset has no missing values, 
 - then set `na.action = 'na.fail'` input for our model (with `update()` or in `lm()`).
 ]
@@ -261,7 +280,7 @@ logLik(bechdel_mod)
 # `dredge()` example
 
 
-```r
+``` r
 require(MuMIn)
 bechdel_mod &lt;- bechdel_mod |&gt; 
   update(na.action = 'na.fail')
@@ -303,11 +322,12 @@ class: small
   ]
 ---
 
-## Quantities derived from (A)IC
+## Side Note: Quantities derived from (A)IC
 
+.small[
 - `\(\Delta AIC\)` is the AIC for a given model, minus the AIC of the best one in the dataset. (Same for `\(\Delta BIC\)`)
 - *Akaike* or *BIC weights* are values (ranging from 0-1) that measure the weight of evidence suggesting that a model is the best one (given that there is one best one in the set)
-
+]
 ---
 
 # Important Caution
@@ -322,7 +342,7 @@ class: small
 ### Evidence the arrow (in causal diagram) is strongly, detectably *there*?
 
 
-```r
+``` r
 no_bechdel_mod &lt;- lm(roi ~ budget_2013,  
                 data = bechdel_13)
 AIC(bechdel_mod, no_bechdel_mod)
@@ -335,11 +355,16 @@ AIC(bechdel_mod, no_bechdel_mod)
 ```
 
 ---
-## ~~`pred1` is significant~~
+## ~~`pred1` is not significant~~
 
-### There is strong evidence (AIC lower by about 5) that a movie's return on investment is associated with its Bechdel test score. Specifically, after controlling for any effect of budget, model results suggest that...[use pred plot here to say which test scores predict more/less ROI!].
+### There is no evidence (AIC higher by about 5) that a movie's return on investment is associated with its Bechdel test score. 
 
-*To present IC results, use your `summary()`, equation, and ESPECIALLY prediction plot to tell the story in context!*
+.small[What if is *was* associated though? ]
+### "...Specifically, after controlling for any effect of budget, model results suggest that...[use pred plot here to say which test scores predict more/less ROI!]."
+
+.small[
+**State size/direction of effect, exact p-value, and your judgment of strength of evidence...**
+*To present IC results, use your `summary()`, equation, and prediction plot to tell the story in context!*]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
