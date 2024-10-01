@@ -4,7 +4,7 @@
     <title>Likelihood (and Seals)</title>
     <meta charset="utf-8" />
     <meta name="author" content="STAT 245" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="slides.css" type="text/css" />
@@ -56,7 +56,7 @@ $$ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} $$
 &lt;br&gt;&lt;br&gt;
 
 
-```r
+``` r
 df_stats(~strandings, data = harp_seals, mean, sd) 
 ```
 
@@ -108,7 +108,7 @@ class: huge center middle inverse subsection
 ## How can we rewrite our model as a linear regression?
 
 
-```r
+``` r
 lm_version &lt;- lm(strandings ~ 1, 
                  data = harp_seals)
 ```
@@ -119,7 +119,7 @@ class: small
 # Model Equation
 
 
-```r
+``` r
 summary(lm_version)
 ```
 
@@ -152,7 +152,7 @@ summary(lm_version)
 ## w/Likelihood - Class example (teamwork problem)
 
 
-```r
+``` r
 gf_point(strandings ~ ice_cover,
          data = harp_seals)
 ```
@@ -161,7 +161,7 @@ gf_point(strandings ~ ice_cover,
 ---
 
 
-```r
+``` r
 lm_version_2 &lt;- lm(strandings ~ ice_cover, 
                            data = harp_seals)
 msummary(lm_version_2)
@@ -182,7 +182,7 @@ msummary(lm_version_2)
 ### *joint likelihood* of residuals given `\(\sigma\)`
 
 
-```r
+``` r
 harp_seals &lt;- harp_seals |&gt;
   mutate(resid1 = resid(lm_version),
          resid2 = resid(lm_version_2))

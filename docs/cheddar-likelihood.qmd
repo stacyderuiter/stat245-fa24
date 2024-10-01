@@ -68,9 +68,10 @@ library(faraway)
 glimpse(cheddar)
 ```
 
-Before you continue, make one, *maybe* two, very quick exploratory data plots to see
-whether you note any trends in `taste` depending on the `H2S`, `Acetic`
-acid, or `Lactic` acid content of the cheeses in the dataset.
+Before you continue, make one, *maybe* two, very quick exploratory data
+plots to see whether you note any trends in `taste` depending on the
+`H2S`, `Acetic` acid, or `Lactic` acid content of the cheeses in the
+dataset.
 
 # Regression model
 
@@ -100,11 +101,12 @@ where you are and if you have any questions.
 
 # Likelihood, instead
 
-We can use likelihood to compare the goodness-of-fit of two models fitted to
-the same data. That's part of how AIC and BIC work. 
+We can use likelihood to compare the goodness-of-fit of two models
+fitted to the same data. That's part of how AIC and BIC work.
 
-But we can use likelihood another way, too: to "fit" a single model to data, *figuring out which exact
-slope and intercept values are BEST for a given dataset and model.*
+But we can use likelihood another way, too: to "fit" a single model to
+data, *figuring out which exact slope and intercept values are BEST for
+a given dataset and model.*
 
 How can we use **likelihood** to find these "best" slope and intercept
 parameter estimates, *ourselves*?
@@ -136,10 +138,15 @@ your regression line (don't use the estimates from the `lm()` summary to
 give unreasonably precise guesses - the point here is to give a wider
 range to "search" for the best parameter values).
 
-**Adjust the code below** so that your range of reasonable intercepts and
-slopes is covered (you may change the `from` and `to` values -- those are the minimum and maximum values R will try as candidate slope or intercept values). 
+**Adjust the code below** so that your range of reasonable intercepts
+and slopes is covered (you may change the `from` and `to` values --
+those are the minimum and maximum values R will try as candidate slope
+or intercept values).
 
-*How can you guess this? Try to guesstimate the slope and intercept based on your data plot. If needed, check your work by CHEATING and looking at R's `lm()` `summary()` -- make sure the correct slope and intercept estimates are within your guessed ranges!*
+*How can you guess this? Try to guesstimate the slope and intercept
+based on your data plot. If needed, check your work by CHEATING and
+looking at R's `lm()summary()` -- make sure the correct slope and
+intercept estimates are within your guessed ranges!*
 
 ```{r}
 MLE_grid <- expand_grid(intercept = seq(from = -15, by = 0.1, to = 10),
@@ -151,10 +158,9 @@ Each row of `MLE_grid` give ONE set of guesses of a possible slope and
 intercept for our regression model.
 
 Now, we want to compute the **likelihood of the dataset given each of
-those sets of parameters**. 
+those sets of parameters**.
 
-We can compare the likelihoods to see which
-estimates are best!
+We can compare the likelihoods to see which estimates are best!
 
 Once you've gotten this far, check in with to the prof to let her know
 where you are and if you have any questions.
@@ -188,12 +194,13 @@ candidate values of $\beta_0$ (the intercepts) and $\beta_1$ (the
 slopes).
 
 We will make our own function to compute fitted values, given a dataset
-and candidate slope and intercept. 
+and candidate slope and intercept.
 
-**The ONLY change you need to make to the code below is to make sure it refers to "your" predictor, not `H2S`.**
+**The ONLY change you need to make to the code below is to make sure it
+refers to "your" predictor, not `H2S`.**
 
-Running this chunk will create a FUNCTION you can use
-later -- so there will be no output yet.
+Running this chunk will create a FUNCTION you can use later -- so there
+will be no output yet.
 
 ```{r}
 get_fitted <- function(slope, intercept, data){
@@ -225,7 +232,8 @@ the *residuals*. We can compute them in a similar way, though. We just
 need to subtract the fitted values from the observed response variable
 values!
 
-**Again make sure you change the code so it refers to YOUR predictor, not `H2S`.**
+**Again make sure you change the code so it refers to YOUR predictor,
+not `H2S`.**
 
 ```{r}
 get_resids <- function(slope, intercept, data){
@@ -265,15 +273,16 @@ where you are and if you have any questions.
 
 ## Compute the actual likelihood
 
-Finally, we are ready to compute the **(natural log of) the likelihood of
-the dataset, given each proposed model (each "proposed model" is one set
-of candidate** $\beta_0$, $\beta_1$, and $\sigma$).
+Finally, we are ready to compute the **(natural log of) the likelihood
+of the dataset, given each proposed model (each "proposed model" is one
+set of candidate** $\beta_0$, $\beta_1$, and $\sigma$).
 
 For each row, we need to compute the **natural logarithm of the product
 of the likelihoods of all the residuals, in a normal distribution with
-mean 0 and sd** $\sigma$. 
+mean 0 and sd** $\sigma$.
 
-We will actually do the mathematical equivalent (which doesn't involve asking the computer to multiply together many very tiny numbers): find
+We will actually do the mathematical equivalent (which doesn't involve
+asking the computer to multiply together many very tiny numbers): find
 the **sum of the natural logarithms of the normal likelihoods of each
 residual value**.
 
