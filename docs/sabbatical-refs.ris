@@ -1,0 +1,1528 @@
+TY  - JOUR
+TI  - Vocal foragers and silent crowds: context-dependent vocal variation in Northeast Atlantic long-finned pilot whales
+AU  - Visser, Fleur
+AU  - Kok, Annebelle C.M.
+AU  - Oudejans, Machiel G.
+AU  - Scott-Hayward, Lindesay A.S.
+AU  - DeRuiter, Stacy L
+AU  - Alves, Ana C.
+AU  - Antunes, Ricardo N.
+AU  - Isojunno, Saana
+AU  - Pierce, Graham J.
+AU  - Slabbekoorn, Hans
+AU  - Huisman, Jef
+AU  - Miller, Patrick J. O.
+T2  - Behavioral Ecology and Sociobiology
+DA  - 2017/12//
+PY  - 2017
+DO  - 10.1007/s00265-017-2397-y
+DP  - DOI.org (Crossref)
+VL  - 71
+IS  - 12
+SP  - 170
+J2  - Behav Ecol Sociobiol
+LA  - en
+SN  - 0340-5443, 1432-0762
+ST  - Vocal foragers and silent crowds
+UR  - http://link.springer.com/10.1007/s00265-017-2397-y
+Y2  - 2024/09/18/01:53:30
+ER  - 
+
+TY  - JOUR
+TI  - Machine learning for modeling animal movement
+AU  - Wijeyakulasuriya, Dhanushi A.
+AU  - Eisenhauer, Elizabeth W.
+AU  - Shaby, Benjamin A.
+AU  - Hanks, Ephraim M.
+T2  - PLOS ONE
+A2  - Zhang, Jie
+DA  - 2020/07/27/
+PY  - 2020
+DO  - 10.1371/journal.pone.0235750
+DP  - DOI.org (Crossref)
+VL  - 15
+IS  - 7
+SP  - e0235750
+J2  - PLoS ONE
+LA  - en
+SN  - 1932-6203
+UR  - https://dx.plos.org/10.1371/journal.pone.0235750
+Y2  - 2024/09/18/02:19:04
+ER  - 
+
+TY  - CONF
+TI  - Detecting changes in movement behaviour in response to disturbance using Mahalanobis distance* (*moved online due to COVID-19)
+AU  - Whyte, Katherine
+AU  - DeRuiter, Stacy L
+AU  - Harris, Catriona
+AU  - Thomas
+T2  - International Statistical Ecology Conference
+C1  - virtual
+DA  - 2020/06//
+PY  - 2020
+ER  - 
+
+TY  - CONF
+TI  - An evaluation of Mahalanobis distance as a method to detect behavioural response in marine mammals from tag data
+AU  - Whyte, Katherine
+AU  - DeRuiter, Stacy L
+AU  - Harris, Catriona
+AU  - Thomas, Len
+T2  - World Marine Mammal Conference
+C1  - Barcelona, Spain
+DA  - 2019/12//
+PY  - 2019
+ER  - 
+
+TY  - JOUR
+TI  - Northern bottlenose whales in a pristine environment respond strongly to close and distant navy sonar signals
+AU  - Wensveen, Paul J.
+AU  - Isojunno, Saana
+AU  - Hansen, Rune R.
+AU  - von Benda-Beckmann, Alexander M.
+AU  - Kleivane, Lars
+AU  - van IJsselmuide, Sander
+AU  - Lam, Frans-Peter A.
+AU  - Kvadsheim, Petter H.
+AU  - DeRuiter Stacy L
+AU  - Cure, Charlotte
+AU  - Narazaki, Tomoko
+AU  - Tyack, Peter L.
+AU  - Miller, Patrick J. O.
+T2  - Proceedings of the Royal Society B: Biological Sciences
+AB  - Impact assessments for sonar operations typically use received sound levels to predict behavioural disturbance in marine mammals. However, there are indications that cetaceans may learn to associate exposures from distant sound sources with lower perceived risk. To investigate the roles of source distance and received level in an area without frequent sonar activity, we conducted multi-scale controlled exposure experiments (n = 3) with 12 northern bottlenose whales near Jan Mayen, Norway. Animals were tagged with high-resolution archival tags (n = 1 per experiment) or medium-resolution satellite tags (n = 9 in total) and subsequently exposed to sonar. We also deployed bottom-moored recorders to acoustically monitor for whales in the exposed area. Tagged whales initiated avoidance of the sound source over a wide range of distances (0.8–28 km), with responses characteristic of beaked whales. Both onset and intensity of response were better predicted by received sound pressure level (SPL) than by source distance. Avoidance threshold SPLs estimated for each whale ranged from 117–126 dB re 1 µPa, comparable to those of other tagged beaked whales. In this pristine underwater acoustic environment, we found no indication that the source distances tested in our experiments modulated the behavioural effects of sonar, as has been suggested for locations where whales are frequently exposed to sonar.
+DA  - 2019/03/27/
+PY  - 2019
+DO  - 10.1098/rspb.2018.2592
+DP  - royalsocietypublishing.org (Atypon)
+VL  - 286
+IS  - 1899
+SP  - 20182592
+J2  - Proceedings of the Royal Society B: Biological Sciences
+UR  - https://royalsocietypublishing.org/doi/10.1098/rspb.2018.2592
+Y2  - 2019/07/05/16:46:42
+KW  - paper
+ER  - 
+
+TY  - JOUR
+TI  - Managing the effects of multiple stressors on wildlife populations in their ecosystems: developing a cumulative risk approach
+AU  - Tyack, Peter L.
+AU  - Thomas, Len
+AU  - Costa, Daniel P.
+AU  - Hall, Ailsa J.
+AU  - Harris, Catriona M.
+AU  - Harwood, John
+AU  - Kraus, Scott D.
+AU  - Miller, Patrick J. O.
+AU  - Moore, Michael
+AU  - Photopoulou, Theoni
+AU  - Pirotta, Enrico
+AU  - Rolland, Rosalind M.
+AU  - Schwacke, Lori H.
+AU  - Simmons, Samantha E.
+AU  - Southall, Brandon L.
+T2  - Proceedings of the Royal Society B: Biological Sciences
+AB  - Assessing cumulative effects of human activities on ecosystems is required by many jurisdictions, but current science cannot meet regulatory demands. Regulations define them as effect(s) of one human action combined with other actions. Here we argue for an approach that evaluates the cumulative risk of multiple stressors for protected wildlife populations within their ecosystems. Monitoring effects of each stressor is necessary but not sufficient to estimate how multiple stressors interact to affect wildlife populations. Examining the mechanistic pathways, from cellular to ecological, by which stressors affect individuals can help prioritize stressors and interpret how they interact. Our approach uses health indicators to accumulate the effects of stressors on individuals and to estimate changes in vital rates, driving population status. We advocate using methods well-established in human health and integrating them into ecosystem-based management to protect the health of commercially and culturally important wildlife populations and to protect against risk of extinction for threatened species. Our approach will improve abilities to conserve and manage ecosystems but will also demand significant increases in research and monitoring effort. We advocate for increased investment proportional to the economic scale of human activities in the Anthropocene and their pervasive effects on ecology and biodiversity.
+DA  - 2022/11/30/
+PY  - 2022
+DO  - 10.1098/rspb.2022.2058
+DP  - DOI.org (Crossref)
+VL  - 289
+IS  - 1987
+SP  - 20222058
+J2  - Proc. R. Soc. B.
+LA  - en
+SN  - 0962-8452, 1471-2954
+ST  - Managing the effects of multiple stressors on wildlife populations in their ecosystems
+UR  - https://royalsocietypublishing.org/doi/10.1098/rspb.2022.2058
+Y2  - 2024/09/18/02:01:24
+ER  - 
+
+TY  - JOUR
+TI  - Behavioural responses of fin whales to military mid-frequency active sonar
+AU  - Southall, Brandon L.
+AU  - Allen, Ann N.
+AU  - Calambokidis, John
+AU  - Casey, Caroline
+AU  - DeRuiter, Stacy L
+AU  - Fregosi, Selene
+AU  - Friedlaender, Ari S.
+AU  - Goldbogen, Jeremy A.
+AU  - Harris, Catriona M.
+AU  - Hazen, Elliott L.
+AU  - Popov, Valentin
+AU  - Stimpert, Alison K.
+T2  - Royal Society Open Science
+AB  - The effect of active sonars on marine mammal behaviour is a topic of considerable interest and scientific investigation. Some whales, including the largest species (blue whales, 
+              Balaenoptera musculus 
+              ), can be impacted by mid-frequency (1–10 kHz) military sonars. Here we apply complementary experimental methods to provide the first experimentally controlled measurements of behavioural responses to military sonar and similar stimuli for a related endangered species, fin whales ( 
+              Balaenoptera physalus 
+              ). Analytical methods include: (i) principal component analysis paired with generalized additive mixed models; (ii) hidden Markov models; and (iii) structured expert elicitation using response severity metrics. These approaches provide complementary perspectives on the nature of potential changes within and across individuals. Behavioural changes were detected in five of 15 whales during controlled exposure experiments using mid-frequency active sonar or pseudorandom noise of similar frequency, duration and source and received level. No changes were detected during six control (no noise) sequences. Overall responses were more limited in occurrence, severity and duration than in blue whales and were less dependent upon contextual aspects of exposure and more contingent upon exposure received level. Quantifying the factors influencing marine mammal responses to sonar is critical in assessing and mitigating future impacts.
+DA  - 2023/12//
+PY  - 2023
+DO  - 10.1098/rsos.231775
+DP  - DOI.org (Crossref)
+VL  - 10
+IS  - 12
+SP  - 231775
+J2  - R. Soc. open sci.
+LA  - en
+SN  - 2054-5703
+UR  - https://royalsocietypublishing.org/doi/10.1098/rsos.231775
+Y2  - 2024/09/17/23:03:00
+ER  - 
+
+TY  - JOUR
+TI  - Behavioral responses of individual blue whales (<i>Balaenoptera musculus</i>) to mid-frequency military sonar
+AU  - Southall, Brandon L.
+AU  - DeRuiter, Stacy L
+AU  - Friedlaender, Ari
+AU  - Stimpert, Alison K.
+AU  - Goldbogen, Jeremy A.
+AU  - Hazen, Elliott
+AU  - Casey, Caroline
+AU  - Fregosi, Selene
+AU  - Cade, David E.
+AU  - Allen, Ann N.
+AU  - Harris, Catriona M.
+AU  - Schorr, Greg
+AU  - Moretti, David
+AU  - Guan, Shane
+AU  - Calambokidis, John
+T2  - Journal of Experimental Biology
+AB  - Skip to Next Section
+This study measured the degree of behavioral responses in blue whales (Balaenoptera musculus) to controlled noise exposure off the southern California coast. High-resolution movement and passive acoustic data were obtained from non-invasive archival tags (n=42) whereas surface positions were obtained with visual focal follows. Controlled exposure experiments (CEEs) were used to obtain direct behavioral measurements before, during and after simulated and operational military mid-frequency active sonar (MFAS), pseudorandom noise (PRN) and controls (no noise exposure). For a subset of deep-feeding animals (n=21), active acoustic measurements of prey were obtained and used as contextual covariates in response analyses. To investigate potential behavioral changes within individuals as a function of controlled noise exposure conditions, two parallel analyses of time-series data for selected behavioral parameters (e.g. diving, horizontal movement and feeding) were conducted. This included expert scoring of responses according to a specified behavioral severity rating paradigm and quantitative change-point analyses using Mahalanobis distance statistics. Both methods identified clear changes in some conditions. More than 50% of blue whales in deep-feeding states responded during CEEs, whereas no changes in behavior were identified in shallow-feeding blue whales. Overall, responses were generally brief, of low to moderate severity, and highly dependent on exposure context such as behavioral state, source-to-whale horizontal range and prey availability. Response probability did not follow a simple exposure–response model based on received exposure level. These results, in combination with additional analytical methods to investigate different aspects of potential responses within and among individuals, provide a comprehensive evaluation of how free-ranging blue whales responded to mid-frequency military sonar.
+DA  - 2019/03/01/
+PY  - 2019
+DO  - 10.1242/jeb.190637
+DP  - jeb.biologists.org
+VL  - 222
+IS  - 5
+SP  - jeb190637
+LA  - en
+SN  - 0022-0949, 1477-9145
+UR  - https://jeb.biologists.org/content/222/5/jeb190637
+Y2  - 2019/07/05/16:47:38
+KW  - paper
+ER  - 
+
+TY  - JOUR
+TI  - Data-processing artefacts in three-dimensional dive path reconstruction from geomagnetic and acceleration data
+AU  - Shiomi, K
+AU  - Narazaki, T
+AU  - Sato, K
+AU  - Shimatani, K
+AU  - Arai, N
+AU  - Ponganis, Pj
+AU  - Miyazaki, N
+T2  - Aquatic Biology
+DA  - 2010/03/16/
+PY  - 2010
+DO  - 10.3354/ab00239
+DP  - DOI.org (Crossref)
+VL  - 8
+SP  - 289
+EP  - 294
+J2  - Aquat. Biol.
+LA  - en
+SN  - 1864-7782, 1864-7790
+UR  - http://www.int-res.com/abstracts/ab/v8/n3/p289-294/
+Y2  - 2024/09/18/02:07:46
+ER  - 
+
+TY  - CONF
+TI  - Diving to the seafloor: Investigating Cuvier’s beaked whale (Ziphius cavirostris) foraging behaviour
+AU  - Quick, Nicola J
+AU  - Kootstra, Cilia P
+AU  - Embling, Claire
+AU  - Jensen, Frants H
+AU  - Southall, Brandon L
+AU  - Read, Andrew J
+T2  - 8th International Meeting on the Effects of Sound on Marine Mammals (ESOMM)
+C1  - The Hague, The Netherlands
+DA  - 2024/09/11/
+PY  - 2024
+ER  - 
+
+TY  - JOUR
+TI  - Central place foragers and moving stimuli: A hidden‐state model to discriminate the processes affecting movement
+AU  - Pirotta, Enrico
+AU  - Edwards, Ewan W. J.
+AU  - New, Leslie
+AU  - Thompson, Paul M.
+T2  - Journal of Animal Ecology
+A2  - Börger, Luca
+AB  - Abstract 
+             
+               
+                 
+                  Human activities can influence the movement of organisms, either repelling or attracting individuals depending on whether they interfere with natural behavioural patterns or enhance access to food. To discern the processes affecting such interactions, an appropriate analytical approach must reflect the motivations driving behavioural decisions at multiple scales. 
+                 
+                 
+                  In this study, we developed a modelling framework for the analysis of foraging trips by central place foragers. By recognising the distinction between movement phases at a larger scale and movement steps at a finer scale, our model can identify periods when animals are actively following moving attractors in their landscape. 
+                 
+                 
+                   
+                    We applied the framework to 
+                    GPS 
+                    tracking data of northern fulmars 
+                    Fulmarus glacialis 
+                    , paired with contemporaneous fishing boat locations, to quantify the putative scavenging activity of these seabirds on discarded fish and offal. We estimated the rate and scale of interaction between individual birds and fishing boats and the interplay with other aspects of a foraging trip. 
+                   
+                 
+                 
+                  The model classified periods when birds were heading out to sea, returning towards the colony or following the closest boat. The probability of switching towards a boat declined with distance and varied depending on the phase of the trip. The maximum distance at which a bird switched towards the closest boat was estimated around 35 km, suggesting the use of olfactory information to locate food. Individuals spent a quarter of a foraging trip, on average, following fishing boats, with marked heterogeneity among trips and individuals. 
+                 
+                 
+                  Our approach can be used to characterise interactions between central place foragers and different anthropogenic or natural stimuli. The model identifies the processes influencing central place foraging at multiple scales, which can improve our understanding of the mechanisms underlying movement behaviour and characterise individual variation in interactions with a range of human activities that may attract or repel these species. Therefore, it can be adapted to explore the movement of other species that are subject to multiple dynamic drivers.
+DA  - 2018/07//
+PY  - 2018
+DO  - 10.1111/1365-2656.12830
+DP  - DOI.org (Crossref)
+VL  - 87
+IS  - 4
+SP  - 1116
+EP  - 1125
+J2  - Journal of Animal Ecology
+LA  - en
+SN  - 0021-8790, 1365-2656
+ST  - Central place foragers and moving stimuli
+UR  - https://besjournals.onlinelibrary.wiley.com/doi/10.1111/1365-2656.12830
+Y2  - 2024/09/18/02:18:29
+ER  - 
+
+TY  - CONF
+TI  - Uncrewed Aerial Systems Aid to Advance Field Studies of Construction Sound
+Exposure of Fin Whales in Southern New England Waters
+AU  - Parks, Susan
+AU  - Adcock, D
+AU  - Burgess, A
+AU  - Pensarosa, A
+AU  - Zadra, C
+AU  - Nowacek, Douglas P
+T2  - 8th International Meeting on the Effects of Sound on Marine Mammals (ESOMM)
+C1  - The Hague, The Netherlands
+DA  - 2024/09/10/
+PY  - 2024
+ER  - 
+
+TY  - JOUR
+TI  - Varying-Coefficient Stochastic Differential Equations with Applications in Ecology
+AU  - Michelot, Théo
+AU  - Glennie, Richard
+AU  - Harris, Catriona
+AU  - Thomas, Len
+T2  - Journal of Agricultural, Biological and Environmental Statistics
+AB  - Abstract 
+            Stochastic differential equations (SDEs) are popular tools to analyse time series data in many areas, such as mathematical finance, physics, and biology. They provide a mechanistic description of the phenomenon of interest, and their parameters often have a clear interpretation. These advantages come at the cost of requiring a relatively simple model specification. We propose a flexible model for SDEs with time-varying dynamics where the parameters of the process are nonparametric functions of covariates, similar to generalized additive models. Combining the SDE and nonparametric approaches allows for the SDE to capture more detailed, non-stationary, features of the data-generating process. We present a computationally efficient method of approximate inference, where the SDE parameters can vary according to fixed covariate effects, random effects, or basis-penalty smoothing splines. We demonstrate the versatility and utility of this approach with three applications in ecology, where there is often a modelling trade-off between interpretability and flexibility. 
+            Supplementary materials accompanying this paper appear online.
+DA  - 2021/09//
+PY  - 2021
+DO  - 10.1007/s13253-021-00450-6
+DP  - DOI.org (Crossref)
+VL  - 26
+IS  - 3
+SP  - 446
+EP  - 463
+J2  - JABES
+LA  - en
+SN  - 1085-7117, 1537-2693
+UR  - https://link.springer.com/10.1007/s13253-021-00450-6
+Y2  - 2024/09/18/01:49:09
+ER  - 
+
+TY  - JOUR
+TI  - Accounting for Positional Uncertainty When Modeling Received Levels for Tagged Cetaceans Exposed to Sonar
+AU  - Schick, Robert S.
+AU  - Bowers, Matthew
+AU  - DeRuiter, Stacy L
+AU  - Friedlaender, Ari S.
+AU  - Joseph, John
+AU  - Margolina, Tetyana
+AU  - Nowacek, Douglas P.
+AU  - Southall, Brandon L.
+T2  - Aquatic Mammals
+DA  - In press
+PY  - In press
+ER  - 
+
+TY  - JOUR
+TI  - A primer on coupled state-switching models for multiple interacting time series
+AU  - Pohle, Jennifer
+AU  - Langrock, Roland
+AU  - Schaar, Mihaela Van Der
+AU  - King, Ruth
+AU  - Jensen, Frants Havmand
+T2  - Statistical Modelling
+AB  - State-switching models such as hidden Markov models or Markov-switching regression models are routinely applied to analyse sequences of observations that are driven by underlying non-observable states. Coupled state-switching models extend these approaches to address the case of multiple observation sequences whose underlying state variables interact. In this article, we provide an overview of the modelling techniques related to coupling in state-switching models, thereby forming a rich and flexible statistical framework particularly useful for modelling correlated time series. Simulation experiments demonstrate the relevance of being able to account for an asynchronous evolution as well as interactions between the underlying latent processes. The models are further illustrated using two case studies related to (a) interactions between a dolphin mother and her calf as inferred from movement data and (b) electronic health record data collected on 696 patients within an intensive care unit.
+DA  - 2021/06//
+PY  - 2021
+DO  - 10.1177/1471082X20956423
+DP  - DOI.org (Crossref)
+VL  - 21
+IS  - 3
+SP  - 264
+EP  - 285
+J2  - Statistical Modelling
+LA  - en
+SN  - 1471-082X, 1477-0342
+UR  - http://journals.sagepub.com/doi/10.1177/1471082X20956423
+Y2  - 2024/09/18/02:18:44
+ER  - 
+
+TY  - JOUR
+TI  - A primer on coupled state-switching models for multiple interacting time series
+AU  - Pohle, Jennifer
+AU  - Langrock, Roland
+AU  - Schaar, Mihaela Van Der
+AU  - King, Ruth
+AU  - Jensen, Frants Havmand
+T2  - Statistical Modelling
+AB  - State-switching models such as hidden Markov models or Markov-switching regression models are routinely applied to analyse sequences of observations that are driven by underlying non-observable states. Coupled state-switching models extend these approaches to address the case of multiple observation sequences whose underlying state variables interact. In this article, we provide an overview of the modelling techniques related to coupling in state-switching models, thereby forming a rich and flexible statistical framework particularly useful for modelling correlated time series. Simulation experiments demonstrate the relevance of being able to account for an asynchronous evolution as well as interactions between the underlying latent processes. The models are further illustrated using two case studies related to (a) interactions between a dolphin mother and her calf as inferred from movement data and (b) electronic health record data collected on 696 patients within an intensive care unit.
+DA  - 2021/06//
+PY  - 2021
+DO  - 10.1177/1471082X20956423
+DP  - DOI.org (Crossref)
+VL  - 21
+IS  - 3
+SP  - 264
+EP  - 285
+J2  - Statistical Modelling
+LA  - en
+SN  - 1471-082X, 1477-0342
+UR  - http://journals.sagepub.com/doi/10.1177/1471082X20956423
+Y2  - 2024/09/18/01:58:17
+ER  - 
+
+TY  - JOUR
+TI  - Understanding the combined effects of multiple stressors: A new perspective on a longstanding challenge
+AU  - Pirotta, Enrico
+AU  - Thomas, Len
+AU  - Costa, Daniel P.
+AU  - Hall, Ailsa J.
+AU  - Harris, Catriona M.
+AU  - Harwood, John
+AU  - Kraus, Scott D.
+AU  - Miller, Patrick J.O.
+AU  - Moore, Michael J.
+AU  - Photopoulou, Theoni
+AU  - Rolland, Rosalind M.
+AU  - Schwacke, Lori
+AU  - Simmons, Samantha E.
+AU  - Southall, Brandon L.
+AU  - Tyack, Peter L.
+T2  - Science of The Total Environment
+DA  - 2022/05//
+PY  - 2022
+DO  - 10.1016/j.scitotenv.2022.153322
+DP  - DOI.org (Crossref)
+VL  - 821
+SP  - 153322
+J2  - Science of The Total Environment
+LA  - en
+SN  - 00489697
+ST  - Understanding the combined effects of multiple stressors
+UR  - https://linkinghub.elsevier.com/retrieve/pii/S0048969722004144
+Y2  - 2024/09/18/02:01:47
+ER  - 
+
+TY  - JOUR
+TI  - Killer whales are attracted to herring fishing vessels
+AU  - Mul, E
+AU  - Blanchet, Ma
+AU  - McClintock, Bt
+AU  - Grecian, Wj
+AU  - Biuw, M
+AU  - Rikardsen, A
+T2  - Marine Ecology Progress Series
+AB  - Marine mammals and fisheries often target the same resources, which can lead to operational interactions. Potential consequences of operational interaction include entanglements and damaged or reduced catches but also enhanced foraging opportunities, which can attract marine mammals to fishing vessels. Responsible fisheries management therefore requires detailed knowledge of the impact of these interactions. In northern Norway, killer whales 
+              Orcinus orca 
+              are frequently observed in association with large herring aggregations during the winter. We use a combination of biotelemetry and fisheries data to study if, to what extent and at what distances killer whales are attracted to fishing activity. Twenty-five satellite transmitters were deployed on killer whales at herring overwintering and spawning grounds, often near fishing vessels. Over 50% of the killer whale core areas of high usage overlapped with the fisheries core areas, and individual whales spent up to 34% of their time close to active fishing. We used a 3-state hidden Markov model to assess whether killer whale movements were biased towards fishing activities. Of the overall whale movements, 15% (CI = 11-21%) were biased towards fishing activities, with marked heterogeneity among individuals (0-57%). During periods of active fishing, whale movements were biased towards fishing events 44% (CI = 24-66%) of the time, with individual percentages ranging from 0 to 79%. Whales were more likely to be attracted when they were within 20 km. This information can be used in fishery management to consider potential consequences for fishers and whales.
+DA  - 2020/10/15/
+PY  - 2020
+DO  - 10.3354/meps13481
+DP  - DOI.org (Crossref)
+VL  - 652
+SP  - 1
+EP  - 13
+J2  - Mar. Ecol. Prog. Ser.
+LA  - en
+SN  - 0171-8630, 1616-1599
+UR  - https://www.int-res.com/abstracts/meps/v652/p1-13/
+Y2  - 2024/09/18/02:18:15
+ER  - 
+
+TY  - JOUR
+TI  - Continuous-time modelling of behavioural responses in animal movement
+AU  - Michelot, Théo
+AU  - Glennie, Richard
+AU  - Thomas, Len
+AU  - Quick, Nicola
+AU  - Harris, Catriona M.
+T2  - The Annals of Applied Statistics
+AB  - There is great interest in ecology to understand how wild animals are affected by anthropogenic disturbances, such as sounds. For example, behavioural response studies are an important approach to quantify the impact of naval activity on marine mammals. Controlled exposure experiments are undertaken where the behaviour of animals is quantified before, during, and after exposure to a controlled sound source, often using telemetry tags (e.g., accelerometers or satellite trackers). Statistical modelling is required to formally compare patterns before and after exposure, to quantify deviations from baseline behaviour. We propose varying-coefficient stochastic differential equations (SDEs) as a flexible framework to model such data with two components: (1) time-varying baseline dynamics, modelled with nonparametric or random effects of time-varying covariates, and (2) a nonparametric response model, which captures deviations from baseline. SDEs are specified in continuous time, which makes it straightforward to analyse data collected at irregular time intervals, a common situation for animal tracking studies. We describe how the model can be embedded into a state-space modelling framework to account for measurement error. We present inferential methods for model fitting, model checking, and uncertainty quantification (including on the response model). We apply this approach to two behavioural response study data sets on beaked whales: a satellite track and high-resolution depth data. Our results suggest that the whales’ horizontal movement and vertical diving behaviour changed after exposure to the sound source, and future work should evaluate the severity and possible consequences of these responses. These two very different examples showcase the versatility of varying-coefficient SDEs to measure changes in behaviour, and we discuss implications of disturbances for the whales’ energetic balance.
+DA  - 2023/12//
+PY  - 2023
+DO  - 10.1214/23-AOAS1776
+DP  - Project Euclid
+VL  - 17
+IS  - 4
+SP  - 3570
+EP  - 3588
+SN  - 1932-6157, 1941-7330
+UR  - https://projecteuclid.org/journals/annals-of-applied-statistics/volume-17/issue-4/Continuous-time-modelling-of-behavioural-responses-in-animal-movement/10.1214/23-AOAS1776.full
+Y2  - 2024/09/18/01:50:26
+KW  - Stochastic differential equation
+KW  - beaked whale
+KW  - behavioural response study
+KW  - diffusion process
+ER  - 
+
+TY  - JOUR
+TI  - Uncovering ecological state dynamics with hidden Markov models
+AU  - McClintock, Brett T.
+AU  - Langrock, Roland
+AU  - Gimenez, Olivier
+AU  - Cam, Emmanuelle
+AU  - Borchers, David L.
+AU  - Glennie, Richard
+AU  - Patterson, Toby A.
+T2  - Ecology Letters
+A2  - Coulson, Tim
+AB  - Abstract 
+            Ecological systems can often be characterised by changes among a finite set of underlying states pertaining to individuals, populations, communities or entire ecosystems through time. Owing to the inherent difficulty of empirical field studies, ecological state dynamics operating at any level of this hierarchy can often be unobservable or ‘hidden’. Ecologists must therefore often contend with incomplete or indirect observations that are somehow related to these underlying processes. By formally disentangling state and observation processes based on simple yet powerful mathematical properties that can be used to describe many ecological phenomena, hidden Markov models (HMMs) can facilitate inferences about complex system state dynamics that might otherwise be intractable. However, HMMs have only recently begun to gain traction within the broader ecological community. We provide a gentle introduction to HMMs, establish some common terminology, review the immense scope of HMMs for applied ecological research and provide a tutorial on implementation and interpretation. By illustrating how practitioners can use a simple conceptual template to customise HMMs for their specific systems of interest, revealing methodological links between existing applications, and highlighting some practical considerations and limitations of these approaches, our goal is to help establish HMMs as a fundamental inferential tool for ecologists.
+DA  - 2020/12//
+PY  - 2020
+DO  - 10.1111/ele.13610
+DP  - DOI.org (Crossref)
+VL  - 23
+IS  - 12
+SP  - 1878
+EP  - 1903
+J2  - Ecology Letters
+LA  - en
+SN  - 1461-023X, 1461-0248
+UR  - https://onlinelibrary.wiley.com/doi/10.1111/ele.13610
+Y2  - 2024/09/18/01:47:58
+ER  - 
+
+TY  - JOUR
+TI  - momentuHMM: <span style="font-variant:small-caps;">R</span> package for generalized hidden Markov models of animal movement
+AU  - McClintock, Brett T.
+AU  - Michelot, Théo
+T2  - Methods in Ecology and Evolution
+A2  - Goslee, Sarah
+AB  - Abstract 
+             
+               
+                 
+                  Discrete‐time hidden Markov models (HMMs) have become an immensely popular tool for inferring latent animal behaviours from telemetry data. While movement HMMs typically rely solely on location data (e.g. step length and turning angle), auxiliary biotelemetry and environmental data are powerful and readily‐available resources for incorporating much more ecological and behavioural realism. However, complex movement or observation process models often necessitate custom and computationally demanding HMM model‐fitting techniques that are impractical for most practitioners, and there is a paucity of generalized user‐friendly software available for implementing multivariate HMMs of animal movement. 
+                 
+                 
+                   
+                    Here, we introduce an open‐source 
+                    R 
+                    package, 
+                    momentuHMM 
+                    , that addresses many of the deficiencies in existing HMM software. Features include: (1) data pre‐processing and visualization; (2) user‐specified probability distributions for an unlimited number of data streams and latent behaviour states; (3) biased and correlated random walk movement models, including dynamic “activity centres” associated with attractive or repulsive forces; (4) user‐specified design matrices and constraints for covariate modelling of parameters using formulas familiar to most R users; (5) multiple imputation methods that account for measurement error and temporally irregular or missing data; (6) seamless integration of spatio‐temporal covariate raster data; (7) 
+                    cosinor 
+                    and spline models for cyclical and other complicated patterns; (8) model checking and selection; and (9) simulation. 
+                   
+                 
+                 
+                   
+                    After providing an overview of the main features of the package, we demonstrate some of the capabilities of 
+                    momentuHMM 
+                    using real‐world examples. These include models for cyclical movement patterns of African elephants, foraging trips of northern fur seals, loggerhead turtle movements relative to ocean surface currents, and grey seal movements among three activity centres. 
+                   
+                 
+                 
+                   
+                    momentuHMM 
+                    considerably extends the capabilities of existing HMM software while accounting for common challenges associated with telemetry data. It therefore facilitates more realistic hypothesis‐driven animal movement analyses that have hitherto been largely inaccessible to non‐statisticians. While motivated by telemetry data, the package can be used for analysing any type of data that is amenable to HMMs. Practitioners interested in additional features are encouraged to contact the authors.
+DA  - 2018/06//
+PY  - 2018
+DO  - 10.1111/2041-210X.12995
+DP  - DOI.org (Crossref)
+VL  - 9
+IS  - 6
+SP  - 1518
+EP  - 1530
+J2  - Methods Ecol Evol
+LA  - en
+SN  - 2041-210X, 2041-210X
+ST  - momentuHMM
+UR  - https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12995
+Y2  - 2024/09/18/01:39:54
+ER  - 
+
+TY  - GEN
+TI  - An Introduction to Animal Movement Modeling with Hidden Markov Models using Stan for Bayesian Inference
+AU  - Leos-Barajas, Vianey
+AU  - Michelot, Théo
+AB  - Hidden Markov models (HMMs) are popular time series model in many fields including ecology, economics and genetics. HMMs can be defined over discrete or continuous time, though here we only cover the former. In the field of movement ecology in particular, HMMs have become a popular tool for the analysis of movement data because of their ability to connect observed movement data to an underlying latent process, generally interpreted as the animal's unobserved behavior. Further, we model the tendency to persist in a given behavior over time. Notation presented here will generally follow the format of Zucchini et al. (2016) and cover HMMs applied in an unsupervised case to animal movement data, specifically positional data. We provide Stan code to analyze movement data of the wild haggis as presented first in Michelot et al. (2016).
+DA  - 2018///
+PY  - 2018
+DO  - 10.48550/ARXIV.1806.10639
+DP  - DOI.org (Datacite)
+PB  - arXiv
+UR  - https://arxiv.org/abs/1806.10639
+Y2  - 2024/09/18/01:38:57
+KW  - Applications (stat.AP)
+KW  - FOS: Biological sciences
+KW  - FOS: Computer and information sciences
+KW  - Quantitative Methods (q-bio.QM)
+ER  - 
+
+TY  - JOUR
+TI  - Modelling group dynamic animal movement
+AU  - Langrock, Roland
+AU  - Hopcraft, J. Grant C.
+AU  - Blackwell, Paul G.
+AU  - Goodall, Victoria
+AU  - King, Ruth
+AU  - Niu, Mu
+AU  - Patterson, Toby A.
+AU  - Pedersen, Martin W.
+AU  - Skarin, Anna
+AU  - Schick, Robert S.
+T2  - Methods in Ecology and Evolution
+A2  - Yoccoz, Nigel
+AB  - Summary 
+             
+               
+                 
+                  Group dynamics are a fundamental aspect of many species' movements. The need to adequately model individuals' interactions with other group members has been recognized, particularly in order to differentiate the role of social forces in individual movement from environmental factors. However, to date, practical statistical methods, which can include group dynamics in animal movement models, have been lacking. 
+                 
+                 
+                  We consider a flexible modelling framework that distinguishes a group‐level model, describing the movement of the group's centre, and an individual‐level model, such that each individual makes its movement decisions relative to the group centroid. The basic idea is framed within the flexible class of hidden Markov models, extending previous work on modelling animal movement by means of multistate random walks. 
+                 
+                 
+                  While in simulation experiments parameter estimators exhibit some bias in non‐ideal scenarios, we show that generally the estimation of models of this type is both feasible and ecologically informative. 
+                 
+                 
+                   
+                    We illustrate the approach using real movement data from 11 reindeer ( 
+                    Rangifer tarandus 
+                    ). Results indicate a directional bias towards a group centroid for reindeer in an encamped state. Though the attraction to the group centroid is relatively weak, our model successfully captures group‐influenced movement dynamics. Specifically, as compared to a regular mixture of correlated random walks, the group dynamic model more accurately predicts the non‐diffusive behaviour of a cohesive mobile group. 
+                   
+                 
+                 
+                  As technology continues to develop, it will become easier and less expensive to tag multiple individuals within a group in order to follow their movements. Our work provides a first inferential framework for understanding the relative influences of individual versus group‐level movement decisions. This framework can be extended to include covariates corresponding to environmental influences or body condition. As such, this framework allows for a broader understanding of the many internal and external factors that can influence an individual's movement.
+DA  - 2014/02//
+PY  - 2014
+DO  - 10.1111/2041-210X.12155
+DP  - DOI.org (Crossref)
+VL  - 5
+IS  - 2
+SP  - 190
+EP  - 199
+J2  - Methods Ecol Evol
+LA  - en
+SN  - 2041-210X, 2041-210X
+UR  - https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12155
+Y2  - 2024/09/18/02:17:53
+ER  - 
+
+TY  - GEN
+TI  - Inference on the state process of periodically inhomogeneous hidden Markov models for animal behavior
+AU  - Koslik, Jan-Ole
+AU  - Feldmann, Carlina C.
+AU  - Mews, Sina
+AU  - Michels, Rouven
+AU  - Langrock, Roland
+AB  - Over the last decade, hidden Markov models (HMMs) have become increasingly popular in statistical ecology, where they constitute natural tools for studying animal behavior based on complex sensor data. Corresponding analyses sometimes explicitly focus on - and in any case need to take into account - periodic variation, for example by quantifying the activity distribution over the daily cycle or seasonal variation such as migratory behavior. For HMMs including periodic components, we establish important mathematical properties that allow for comprehensive statistical inference related to periodic variation, thereby also providing guidance for model building and model checking. Specifically, we derive the periodically varying unconditional state distribution as well as the time-varying and overall state dwell-time distributions - all of which are of key interest when the inferential focus lies on the dynamics of the state process. We use the associated novel inference and model-checking tools to investigate changes in the diel activity patterns of fruit flies in response to changing light conditions.
+DA  - 2023///
+PY  - 2023
+DO  - 10.48550/ARXIV.2312.14583
+DP  - DOI.org (Datacite)
+PB  - arXiv
+UR  - https://arxiv.org/abs/2312.14583
+Y2  - 2024/09/18/01:57:43
+KW  - Applications (stat.AP)
+KW  - FOS: Computer and information sciences
+KW  - Methodology (stat.ME)
+ER  - 
+
+TY  - JOUR
+TI  - The active space of sperm whale codas: inter-click information for intra-unit communication
+AU  - Jacobs, Ellen R.
+AU  - Gero, Shane
+AU  - Malinka, Chloe E.
+AU  - Tønnesen, Pernille H.
+AU  - Beedholm, Kristian
+AU  - DeRuiter, Stacy L
+AU  - Madsen, Peter T.
+T2  - Journal of Experimental Biology
+AB  - ABSTRACT 
+            Sperm whales (Physeter macrocephalus) are social mega-predators who form stable matrilineal units that often associate within a larger vocal clan. Clan membership is defined by sharing a repertoire of coda types consisting of specific temporal spacings of multi-pulsed clicks. It has been hypothesized that codas communicate membership across socially segregated sympatric clans, but others propose that codas are primarily used for behavioral coordination and social cohesion within a closely spaced social unit. Here, we test these hypotheses by combining measures of ambient noise levels and coda click source levels with models of sound propagation to estimate the active space of coda communication. Coda clicks were localized off the island of Dominica with a four- or five-element 80 m vertical hydrophone array, allowing us to calculate the median RMS source levels of 1598 clicks from 444 codas to be 161 dB re. 1 μPa (IQR 153–167), placing codas among the most powerful communication sounds in toothed whales. However, together with measured ambient noise levels, these source levels lead to a median active space of coda communication of ∼4 km, reflecting the maximum footprint of a single foraging sperm whale unit. We conclude that while sperm whale codas may contain information about clan affiliation, their moderate active space shows that codas are not used for long range acoustic communication between units and clans, but likely serve to mediate social cohesion and behavioral transitions in intra-unit communication.
+DA  - 2024/02/15/
+PY  - 2024
+DO  - 10.1242/jeb.246442
+DP  - DOI.org (Crossref)
+VL  - 227
+IS  - 4
+SP  - jeb246442
+LA  - en
+SN  - 0022-0949, 1477-9145
+ST  - The active space of sperm whale codas
+UR  - https://journals.biologists.com/jeb/article/227/4/jeb246442/343116/The-active-space-of-sperm-whale-codas-inter-click
+Y2  - 2024/09/17/23:00:55
+ER  - 
+
+TY  - JOUR
+TI  - Foraging behavior and disruption in blue, fin, and humpback whales in relation to sonar exposure: the challenges of generalizing responsiveness in species with high individual variability.
+AU  - Harris, Catriona M.
+AU  - Burt, M. Louise
+AU  - Allen, Ann N.
+AU  - Wensveen, Paul J.
+AU  - Miller, Patrick JO
+AU  - Sivle, Lise D.
+T2  - Aquatic Mammals
+DA  - 2019///
+PY  - 2019
+DP  - Google Scholar
+VL  - 45
+IS  - 6
+ST  - Foraging behavior and disruption in blue, fin, and humpback whales in relation to sonar exposure
+UR  - https://new.aquaticmammalsjournal.org/wp-content/uploads/2019/11/45_6_harris_1.pdf
+Y2  - 2024/09/18/02:03:16
+ER  - 
+
+TY  - JOUR
+TI  - Continuous-time discrete-space models for animal movement
+AU  - Hanks, Ephraim M.
+AU  - Hooten, Mevin B.
+AU  - Alldredge, Mat W.
+T2  - The Annals of Applied Statistics
+DA  - 2015/03/01/
+PY  - 2015
+DO  - 10.1214/14-AOAS803
+DP  - DOI.org (Crossref)
+VL  - 9
+IS  - 1
+J2  - Ann. Appl. Stat.
+SN  - 1932-6157
+UR  - https://projecteuclid.org/journals/annals-of-applied-statistics/volume-9/issue-1/Continuous-time-discrete-space-models-for-animal-movement/10.1214/14-AOAS803.full
+Y2  - 2024/09/18/02:17:10
+ER  - 
+
+TY  - GEN
+TI  - hmmTMB: Hidden Markov models with flexible covariate effects in R
+AU  - Michelot, Théo
+AB  - Hidden Markov models (HMMs) are widely applied in studies where a discrete-valued process of interest is observed indirectly. They have for example been used to model behaviour from human and animal tracking data, disease status from medical data, and financial market volatility from stock prices. The model has two main sets of parameters: transition probabilities, which drive the latent state process, and observation parameters, which characterise the state-dependent distributions of observed variables. One particularly useful extension of HMMs is the inclusion of covariates on those parameters, to investigate the drivers of state transitions or to implement Markov-switching regression models. We present the new R package hmmTMB for HMM analyses, with flexible covariate models in both the hidden state and observation parameters. In particular, non-linear effects are implemented using penalised splines, including multiple univariate and multivariate splines, with automatic smoothness selection. The package allows for various random effect formulations (including random intercepts and slopes), to capture between-group heterogeneity. hmmTMB can be applied to multivariate observations, and it accommodates various types of response data, including continuous (bounded or not), discrete, and binary variables. Parameter constraints can be used to implement non-standard dependence structures, such as semi-Markov, higher-order Markov, and autoregressive models. Here, we summarise the relevant statistical methodology, we describe the structure of the package, and we present an example analysis of animal tracking data to showcase the workflow of the package.
+DA  - 2022///
+PY  - 2022
+DO  - 10.48550/ARXIV.2211.14139
+DP  - DOI.org (Datacite)
+PB  - arXiv
+ST  - hmmTMB
+UR  - https://arxiv.org/abs/2211.14139
+Y2  - 2024/09/18/01:51:18
+KW  - Computation (stat.CO)
+KW  - FOS: Computer and information sciences
+KW  - Methodology (stat.ME)
+ER  - 
+
+TY  - JOUR
+TI  - Worth the effort? A practical examination of random effects in hidden Markov models for animal telemetry data
+AU  - McClintock, Brett T.
+T2  - Methods in Ecology and Evolution
+AB  - Abstract 
+             
+               
+                 
+                  Hidden Markov models (HMMs) that include individual‐level random effects have recently been promoted for inferring animal movement behaviour from biotelemetry data. These ‘mixed HMMs’ come at significant cost in terms of implementation and computation, and discrete random effects have been advocated as a practical alternative to more computationally intensive continuous random effects. However, the performance of mixed HMMs has not yet been sufficiently explored to justify their widespread adoption, and there is currently little guidance for practitioners weighing the costs and benefits of mixed HMMs for a particular research objective. 
+                 
+                 
+                  I performed an extensive simulation study comparing the performance of a suite of fixed and random effect models for individual heterogeneity in the hidden state process of a two‐state HMM. I focused on sampling scenarios more typical of telemetry studies, which often consist of relatively long time series (30–250 observations per animal) for relatively few individuals (5–100 animals). 
+                 
+                 
+                  I generally found mixed HMMs did not improve state assignment relative to standard HMMs. Reliable estimation of random effects required larger sample sizes than are often feasible in telemetry studies. Continuous random effect models performed reasonably well with data generated under discrete random effects, but not vice versa. Random effects accounting for unexplained individual variation can improve estimation of state transition probabilities and measurable covariate effects, but discrete random effects can be a relatively poor (and potentially misleading) approximation for continuous variation. 
+                 
+                 
+                  When weighing the costs and benefits of mixed HMMs, three important considerations are study objectives, sample size and model complexity. HMM applications often focus on state assignment with little emphasis on heterogeneity in state transition probabilities, in which case random effects in the hidden state process simply may not be worth the additional effort. However, if explaining variation in state transition probabilities is a primary objective and sufficient explanatory covariates are not available, then random effects are worth pursuing as a more parsimonious alternative to individual fixed effects. 
+                 
+                 
+                  To help put my findings in context and illustrate some potential challenges that practitioners may encounter when applying mixed HMMs, I revisit a previous analysis of long‐finned pilot whale biotelemetry data.
+DA  - 2021/08//
+PY  - 2021
+DO  - 10.1111/2041-210X.13619
+DP  - DOI.org (Crossref)
+VL  - 12
+IS  - 8
+SP  - 1475
+EP  - 1497
+J2  - Methods Ecol Evol
+LA  - en
+SN  - 2041-210X, 2041-210X
+ST  - Worth the effort?
+UR  - https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13619
+Y2  - 2024/09/18/01:40:20
+ER  - 
+
+TY  - CHAP
+TI  - Marine Animal Acoustics
+AU  - Lurton, Xavier
+AU  - DeRuiter, Stacy L
+T2  - An Introduction to Underwater Acoustics: Principles and Applications
+T3  - Springer-Praxis Books in Geophysical Sciences
+CY  - Berlin
+DA  - 2010///
+PY  - 2010
+ET  - 2
+SP  - 424
+EP  - 473
+PB  - Springer-Verlag
+ER  - 
+
+TY  - JOUR
+TI  - Analysis of animal accelerometer data using hidden Markov models
+AU  - Leos‐Barajas, Vianey
+AU  - Photopoulou, Theoni
+AU  - Langrock, Roland
+AU  - Patterson, Toby A.
+AU  - Watanabe, Yuuki Y.
+AU  - Murgatroyd, Megan
+AU  - Papastamatiou, Yannis P.
+T2  - Methods in Ecology and Evolution
+A2  - O'Hara, Robert B.
+AB  - Summary 
+             
+               
+                 
+                  Use of accelerometers is now widespread within animal biologging as they provide a means of measuring an animal's activity in a meaningful and quantitative way where direct observation is not possible. In sequential acceleration data, there is a natural dependence between observations of behaviour, a fact that has been largely ignored in most analyses. 
+                 
+                 
+                   
+                    Analyses of acceleration data where serial dependence has been explicitly modelled have largely relied on hidden Markov models ( 
+                    HMM 
+                    s). Depending on the aim of an analysis, an 
+                    HMM 
+                    can be used for state prediction or to make inferences about drivers of behaviour. For state prediction, a supervised learning approach can be applied. That is, an 
+                    HMM 
+                    is trained to classify unlabelled acceleration data into a finite set of pre‐specified categories. An unsupervised learning approach can be used to infer new aspects of animal behaviour when biologically meaningful response variables are used, with the caveat that the states may not map to specific behaviours. 
+                   
+                 
+                 
+                   
+                    We provide the details necessary to implement and assess an 
+                    HMM 
+                    in both the supervised and unsupervised learning context and discuss the data requirements of each case. We outline two applications to marine and aerial systems (shark and eagle) taking the unsupervised learning approach, which is more readily applicable to animal activity measured in the field. 
+                    HMM 
+                    s were used to infer the effects of temporal, atmospheric and tidal inputs on animal behaviour. 
+                   
+                 
+                 
+                   
+                    Animal accelerometer data allow ecologists to identify important correlates and drivers of animal activity (and hence behaviour). The 
+                    HMM 
+                    framework is well suited to deal with the main features commonly observed in accelerometer data and can easily be extended to suit a wide range of types of animal activity data. The ability to combine direct observations of animal activity with statistical models, which account for the features of accelerometer data, offers a new way to quantify animal behaviour and energetic expenditure and to deepen our insights into individual behaviour as a constituent of populations and ecosystems.
+DA  - 2017/02//
+PY  - 2017
+DO  - 10.1111/2041-210X.12657
+DP  - DOI.org (Crossref)
+VL  - 8
+IS  - 2
+SP  - 161
+EP  - 173
+J2  - Methods Ecol Evol
+LA  - en
+SN  - 2041-210X, 2041-210X
+UR  - https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12657
+Y2  - 2024/09/18/02:05:45
+ER  - 
+
+TY  - JOUR
+TI  - Multi-scale Modeling of Animal Movement and General Behavior Data Using Hidden Markov Models with Hierarchical Structures
+AU  - Leos-Barajas, Vianey
+AU  - Gangloff, Eric J.
+AU  - Adam, Timo
+AU  - Langrock, Roland
+AU  - Van Beest, Floris M.
+AU  - Nabe-Nielsen, Jacob
+AU  - Morales, Juan M.
+T2  - Journal of Agricultural, Biological and Environmental Statistics
+DA  - 2017/09//
+PY  - 2017
+DO  - 10.1007/s13253-017-0282-9
+DP  - DOI.org (Crossref)
+VL  - 22
+IS  - 3
+SP  - 232
+EP  - 248
+J2  - JABES
+LA  - en
+SN  - 1085-7117, 1537-2693
+UR  - http://link.springer.com/10.1007/s13253-017-0282-9
+Y2  - 2024/09/18/01:39:19
+ER  - 
+
+TY  - JOUR
+TI  - Avoidance responses of minke whales to 1–4 kHz naval sonar
+AU  - Kvadsheim, Petter H.
+AU  - DeRuiter, Stacy L
+AU  - Sivle, Lise D.
+AU  - Goldbogen, Jeremy
+AU  - Roland-Hansen, Rune
+AU  - Miller, Patrick J.O.
+AU  - Lam, Frans-Peter A.
+AU  - Calambokidis, John
+AU  - Friedlaender, Ari
+AU  - Visser, Fleur
+AU  - Tyack, Peter L.
+AU  - Kleivane, Lars
+AU  - Southall, Brandon
+T2  - Marine Pollution Bulletin
+DA  - 2017/08//
+PY  - 2017
+DO  - 10.1016/j.marpolbul.2017.05.037
+DP  - DOI.org (Crossref)
+VL  - 121
+IS  - 1-2
+SP  - 60
+EP  - 68
+J2  - Marine Pollution Bulletin
+LA  - en
+SN  - 0025326X
+UR  - https://linkinghub.elsevier.com/retrieve/pii/S0025326X17304253
+Y2  - 2024/09/19/03:18:13
+ER  - 
+
+TY  - JOUR
+TI  - Individual, ecological, and anthropogenic influences on activity budgets of long-finned pilot whales
+AU  - Isojunno, S.
+AU  - Sadykova, D.
+AU  - DeRuiter, Stacy L
+AU  - Curé, C.
+AU  - Visser, F.
+AU  - Thomas, L.
+AU  - Miller, P. J. O.
+AU  - Harris, C. M.
+T2  - Ecosphere
+AB  - Time allocation to different activities and habitats enables individuals to modulate their perceived risks and access to resources and can reveal important trade-offs between fitness-enhancing activities (e.g., feeding vs. social behavior). Species with long reproductive cycles and high parental investment, such as marine mammals, rely on such behavioral plasticity to cope with rapid environmental change, including anthropogenic stressors. We quantified activity budgets of free-ranging long-finned pilot whales in order to assess individual time trade-offs between foraging and other behaviors in different individual and ecological contexts, and during experimental sound exposures. The experiments included 1–2 and 6–7 kHz naval sonar exposures (a potential anthropogenic stressor), playback of killer whale (a potential predator/competitor) vocalizations, and negative controls. We combined multiple time series data from digital acoustic recording tags (DTAG) as well as group-level social behavior data from visual observations of tagged whales at the surface. The data were classified into near-surface behaviors and dive types (using a hidden Markov model for dive transitions) and aggregated into time budgets. On average, individuals (N = 19) spent most of their time (69%) resting and transiting near surface, 21% in shallow dives (depth <40 m), and only 10% of their time in deep foraging dives, of which 65% reached a depth 10 m from the sea bottom. Individuals in the largest of three body size classes or accompanied by calves tended to spend more time foraging than others. Simultaneous tagging of pairs of individuals showed that up to 50% of the activity budget was synchronized between conspecifics with decreased synchrony during foraging periods. Individuals spent less time foraging when forming larger non-vocal aggregations of individuals in late afternoons, and more time foraging when in the mid-range of water depths (300–400 m) available in the study area (50–700 m). Individuals reduced foraging time by 83% (29–96%) during their first exposure to sonar, but not during killer whale sound playbacks. A relative increase in foraging during repeat sonar exposures indicated habituation or change in response tactic. We discuss the possible adaptive value of these trade-offs in time allocation to reduce individual conflict while maintaining benefits of group living.
+DA  - 2017///
+PY  - 2017
+DO  - 10.1002/ecs2.2044
+DP  - Wiley Online Library
+VL  - 8
+IS  - 12
+SP  - e02044
+SN  - 2150-8925
+UR  - https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1002/ecs2.2044
+Y2  - 2019/07/05/16:51:50
+KW  - DTAG
+KW  - Globicephala melas
+KW  - activity synchrony
+KW  - anthropogenic noise
+KW  - benthic habitat
+KW  - deep-diving mammal
+KW  - ethogram
+KW  - hidden Markov model
+KW  - naval sonar
+KW  - paper
+ER  - 
+
+TY  - JOUR
+TI  - Kernel density estimation of conditional distributions to detect responses in satellite tag data
+AU  - Hewitt, Joshua
+AU  - Gelfand, Alan E.
+AU  - Quick, Nicola J.
+AU  - Cioffi, William R.
+AU  - Southall, Brandon L.
+AU  - DeRuiter, Stacy L
+AU  - Schick, Robert S.
+T2  - Animal Biotelemetry
+AB  - As levels of anthropogenic noise in the marine environment rise, it is crucial to quantify potential associated effects on marine mammals. Yet measuring responses is challenging because most species spend the majority of their time submerged. Consequently, much of their sub-surface behavior is difficult or impossible to observe and it can be difficult to determine if—during or following an exposure to sound—an observed dive differs from previously recorded dives. We propose a method for initial assessment of potential behavioral responses observed during controlled exposure experiments (CEEs), in which animals are intentionally exposed to anthropogenic sound sources. To identify possible behavioral responses in dive data collected from satellite-linked time–depth recorders, and to inform the selection and parameters for subsequent individual and population-level response analyses, we propose to use kernel density estimates of conditional distributions for quantitative comparison of pre- and post-exposure behavior.
+DA  - 2022/09/27/
+PY  - 2022
+DO  - 10.1186/s40317-022-00299-7
+DP  - Springer Link
+VL  - 10
+IS  - 1
+SP  - 28
+J2  - Anim Biotelemetry
+LA  - en
+SN  - 2050-3385
+UR  - https://doi.org/10.1186/s40317-022-00299-7
+Y2  - 2024/09/17/23:08:42
+KW  - Behavioral response
+KW  - Discrepancy statistics
+KW  - Kernel density estimator
+KW  - Pre- and post-data windows
+KW  - Summary statistics
+KW  - Tail probability
+KW  - Time-series
+ER  - 
+
+TY  - JOUR
+TI  - Hidden Markov models: Pitfalls and opportunities in ecology
+AU  - Glennie, Richard
+AU  - Adam, Timo
+AU  - Leos‐Barajas, Vianey
+AU  - Michelot, Théo
+AU  - Photopoulou, Theoni
+AU  - McClintock, Brett T.
+T2  - Methods in Ecology and Evolution
+AB  - Abstract 
+             
+               
+                 
+                  Hidden Markov models (HMMs) and their extensions are attractive methods for analysing ecological data where noisy, multivariate measurements are made of a hidden, ecological process, and where this hidden process is represented by a sequence of discrete states. Yet, as these models become more complex and challenging to understand, it is important to consider what pitfalls these methods have and what opportunities there are for future research to address these pitfalls. 
+                 
+                 
+                  In this paper, we review five lesser known pitfalls one can encounter when using HMMs or their extensions to solve ecological problems: (a) violation of the snapshot property in continuous‐time HMMs; (b) biased inference from hierarchical HMMs when applied to temporally misaligned processes; (c) sensitive inference from using random effects to partially pool across heterogeneous individuals; (d) computational burden when using HMMs to approximate models with continuous state spaces; and (e) difficulty linking the hidden process to space or environment. 
+                 
+                 
+                  This review is for ecologists and ecological statisticians familiar with HMMs, but who may be less aware of the problems that arise in more specialised applications. We demonstrate how each pitfall arises, by simulation or example, and discuss why this pitfall is important to consider. Along with identifying the problems, we highlight potential research opportunities and offer ideas that may help alleviate these pitfalls. 
+                 
+                 
+                  Each of the methods we review are solutions to current ecological research problems. We intend for this paper to heighten awareness of the pitfalls ecologists may encounter when applying these more advanced methods, but we also hope that by highlighting future research opportunities, we can inspire ecological statisticians to weaken these pitfalls and provide improved methods.
+DA  - 2023/01//
+PY  - 2023
+DO  - 10.1111/2041-210X.13801
+DP  - DOI.org (Crossref)
+VL  - 14
+IS  - 1
+SP  - 43
+EP  - 56
+J2  - Methods Ecol Evol
+LA  - en
+SN  - 2041-210X, 2041-210X
+ST  - Hidden Markov models
+UR  - https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13801
+Y2  - 2024/09/18/01:37:50
+ER  - 
+
+TY  - JOUR
+TI  - Movement modeling and patterns of within- and among-individual behavioral variation across time scales in neonate garter snakes (Thamnophis elegans)
+AU  - Gangloff, Eric J.
+AU  - Leos-Barajas, Vianey
+AU  - Demuth, Gabriel
+AU  - Zhang, Haozhe
+AU  - Kelly, Clint D.
+AU  - Bronikowski, Anne M.
+T2  - Behavioral Ecology and Sociobiology
+DA  - 2021/12//
+PY  - 2021
+DO  - 10.1007/s00265-021-03099-w
+DP  - DOI.org (Crossref)
+VL  - 75
+IS  - 12
+SP  - 162
+J2  - Behav Ecol Sociobiol
+LA  - en
+SN  - 0340-5443, 1432-0762
+UR  - https://link.springer.com/10.1007/s00265-021-03099-w
+Y2  - 2024/09/18/01:38:21
+ER  - 
+
+TY  - JOUR
+TI  - Flexible Modelling of Diel and Other Periodic Variation in Hidden Markov Models
+AU  - Feldmann, Carlina C.
+AU  - Mews, Sina
+AU  - Coculla, Angelica
+AU  - Stanewsky, Ralf
+AU  - Langrock, Roland
+T2  - Journal of Statistical Theory and Practice
+AB  - Abstract 
+            Animal behaviour is often characterised by periodic patterns such as seasonality or diel variation. Such periodic variation can be comprehensively studied from the increasingly detailed ecological time series that are nowadays collected, e.g. using GPS tracking. Within the class of hidden Markov models (HMMs), which is a popular tool for modelling time series driven by underlying behavioural modes, periodic variation is commonly modelled by including trigonometric functions in the linear predictors for the state transition probabilities. This parametric modelling can be too inflexible to capture complex periodic patterns, e.g. featuring multiple activity peaks per day. Here, we explore an alternative approach using penalised splines to model periodic variation in the state-switching dynamics of HMMs. The challenge of estimating the corresponding complex models is substantially reduced by the expectation–maximisation algorithm, which allows us to make use of the existing machinery (and software) for nonparametric regression. The practicality and potential usefulness of our approach is demonstrated in two real-data applications, modelling the movements of African elephants and of common fruit flies.
+DA  - 2023/09//
+PY  - 2023
+DO  - 10.1007/s42519-023-00342-7
+DP  - DOI.org (Crossref)
+VL  - 17
+IS  - 3
+SP  - 45
+J2  - J Stat Theory Pract
+LA  - en
+SN  - 1559-8608, 1559-8616
+UR  - https://link.springer.com/10.1007/s42519-023-00342-7
+Y2  - 2024/09/18/01:58:03
+ER  - 
+
+TY  - JOUR
+TI  - Diving behaviour of Cuvier's beaked whales exposed to two types of military sonar
+AU  - Falcone, Erin A.
+AU  - Schorr, Gregory S.
+AU  - Watwood, Stephanie L.
+AU  - DeRuiter, Stacy L
+AU  - Zerbini, Alexandre
+AU  - Andrews, Russel D.
+AU  - Morrissey, Ronald P.
+AU  - Moretti, David J.
+T2  - Royal Society Open Science
+AB  - Cuvier's beaked whales (Ziphius cavirostris) have stranded in association with mid-frequency active sonar (MFAS) use, and though the causative mechanism linking these events remains unclear, it is believed to be behaviourally mediated. To determine whether MFAS use was associated with behavioural changes in this species, satellite tags were used to record the diving and movements of 16 Cuvier's beaked whales for up to 88 days in a region of frequent MFAS training off the coast of Southern California. Tag data were combined with summarized records of concurrent bouts of high-power, surface-ship and mid-power, helicopter-deployed MFAS use, along with other potential covariates, in generalized additive mixed-effects models. Deep dives, shallow dives and surface intervals tended to become longer during MFAS use, with some variation associated with the total amount of overlapping MFAS during the behaviour. These changes in dives and surface intervals contributed to a longer interval between deep dives, a proxy for foraging disruption in this species. Most responses intensified with proximity and were more pronounced during mid-power than high-power MFAS use at comparable distances within approximately 50 km, despite the significantly lower source level of mid-power MFAS. However, distance-mediated responses to high-power MFAS, and increased deep dive intervals during mid-power MFAS, were evident up to approximately 100 km away.
+DA  - 2017///
+PY  - 2017
+DO  - 10.1098/rsos.170629
+DP  - royalsocietypublishing.org (Atypon)
+VL  - 4
+IS  - 8
+SP  - 170629
+J2  - Royal Society Open Science
+UR  - https://royalsocietypublishing.org/doi/full/10.1098/rsos.170629
+Y2  - 2019/07/05/16:55:32
+KW  - paper
+ER  - 
+
+TY  - COMP
+TI  - tagtools: Work with Data from High-Resolution Biologging Tags
+AU  - DeRuiter, Stacy L
+AU  - Sweeney, David A
+AU  - McNamara-Oh, Ye Joo
+AU  - Tejevbo, Oghenekevwe
+AU  - Marques, Tiago A
+AU  - Ogedegbe, Oghenesuvwe
+AU  - Johnson, Mark P
+DA  - 2023///
+PY  - 2023
+LA  - R
+UR  - https://CRAN.R-project.org/package=tagtools
+ER  - 
+
+TY  - JOUR
+TI  - Delphinid whistle production and call matching during playback of simulated military sonar
+AU  - DeRuiter, Stacy L
+AU  - Boyd, Ian L.
+AU  - Claridge, Diane E.
+AU  - Clark, Christopher W.
+AU  - Gagnon, Chuck
+AU  - Southall, Brandon L.
+AU  - Tyack, Peter L.
+T2  - Marine Mammal Science
+AB  - Abstract 
+             
+             
+              In 2007 and 2008, controlled exposure experiments were performed in the Bahamas to study behavioral responses to simulated mid‐frequency active sonar (MFA) by three groups of odontocetes: false killer whales, 
+              Pseudorca crassidens 
+              ; short‐finned pilot whales, 
+              Globicephala macrorhynchus 
+              ; and melon‐headed whales, 
+              Peponocephala electra 
+              . An individual in each group was tagged with a Dtag to record acoustic and movement data. During exposures, some individuals produced whistles that seemed similar to the experimental MFA stimulus. Statistical tests were thus applied to investigate whistle‐MFA similarity and the relationship between whistle production rate and MFA reception time. For the false killer whale group, overall whistle rate and production rate of the most MFA‐like whistles decreased with time since last MFA reception. Despite quite low whistle rates overall by the melon‐headed whales, statistical results indicated minor transient silencing after each signal reception. There were no apparent relationships between pilot whale whistle rates and MFA sounds within the exposure period. This variability of responses suggests that changes in whistle production in response to acoustic stimuli depend not only on species and sound source, but also on the social, behavioral, or environmental contexts of exposure.
+DA  - 2013/04//
+PY  - 2013
+DO  - 10.1111/j.1748-7692.2012.00587.x
+DP  - DOI.org (Crossref)
+VL  - 29
+IS  - 2
+J2  - Marine Mammal Science
+LA  - en
+SN  - 0824-0469, 1748-7692
+UR  - https://onlinelibrary.wiley.com/doi/10.1111/j.1748-7692.2012.00587.x
+Y2  - 2024/09/18/01:52:36
+ER  - 
+
+TY  - CONF
+TI  - Assessing goose-beaked whale behavioral response to naval sonar using a hierarchical hidden Markov model
+AU  - DeRuiter, Stacy L
+AU  - Li, Yuese
+AU  - Nsengiyumva, Faith Liz
+AU  - Watwood, Stephanie L
+AU  - Sweeney, David A
+AU  - Rone, Brenda K
+AU  - Dolan, Karin
+AU  - Andrews, Russel D
+AU  - Falcone, Erin A
+AU  - Schorr, Gregory S
+T2  - 8th International Meeting on the Effects of Sound on Marine Mammals (ESOMM)
+C1  - The Hague, The Netherlands
+DA  - 2024/09/10/
+PY  - 2024
+ER  - 
+
+TY  - CONF
+TI  - Assessing beaked whale behavioral response to naval sonar using a hierarchical hidden Markov model
+AU  - DeRuiter, Stacy L
+AU  - Watwood, Stephanie L
+AU  - Sweeney, David A
+AU  - Rone, Brenda K
+AU  - Dolan, Karin
+AU  - Coates, Shannon
+AU  - Falcone, Erin
+AU  - Andrews, Russel D
+AU  - Schorr, Gregory S
+T2  - 7th International Meeting on the Effects of Sound in the Ocean on Marine Mammals (ESOMM)
+C1  - Beaufort, NC
+DA  - 2022/03/17/
+PY  - 2022
+ER  - 
+
+TY  - JOUR
+TI  - A multivariate mixed hidden Markov model for blue whale behaviour and responses to sound exposure
+AU  - DeRuiter, Stacy L
+AU  - Langrock, Roland
+AU  - Skirbutas, Tomas
+AU  - Goldbogen, Jeremy A.
+AU  - Calambokidis, John
+AU  - Friedlaender, Ari S.
+AU  - Southall, Brandon L.
+T2  - The Annals of Applied Statistics
+DA  - 2017/03/01/
+PY  - 2017
+DO  - 10.1214/16-AOAS1008
+DP  - DOI.org (Crossref)
+VL  - 11
+IS  - 1
+J2  - Ann. Appl. Stat.
+SN  - 1932-6157
+UR  - https://projecteuclid.org/journals/annals-of-applied-statistics/volume-11/issue-1/A-multivariate-mixed-hidden-Markov-model-for-blue-whale-behaviour/10.1214/16-AOAS1008.full
+Y2  - 2024/09/19/03:50:29
+ER  - 
+
+TY  - CONF
+TI  - Training, data archive integration, and analysis tools for high-resolution tag data. 7th International Bio-logging Symposium
+AU  - Fynewever, Samuel
+AU  - Tejevbo, Oghenekevwe
+AU  - Johnson, Mark P
+AU  - Shorter, K Alex
+AU  - Martín López, Lucia M
+AU  - DeRuiter, Stacy L
+T2  - 7th International Bio-logging Symposium
+C1  - virtual
+DA  - 2021/10/18/
+PY  - 2021
+ER  - 
+
+TY  - JOUR
+TI  - Changes in the Movement and Calling Behavior of Minke Whales (Balaenoptera acutorostrata) in Response to Navy Training
+AU  - Durbach, Ian N.
+AU  - Harris, Catriona M.
+AU  - Martin, Cameron
+AU  - Helble, Tyler A.
+AU  - Henderson, E. Elizabeth
+AU  - Ierley, Glenn
+AU  - Thomas, Len
+AU  - Martin, Stephen W.
+T2  - Frontiers in Marine Science
+AB  - Many marine mammals rely on sound for foraging, maintaining group cohesion, navigation, finding mates, and avoiding predators. These behaviors are potentially disrupted by anthropogenic noise. Behavioral responses to sonar have been observed in a number of baleen whale species but relatively little is known about the responses of minke whales ( 
+              Balaenoptera acutorostrata 
+              ). Previous analyses demonstrated a spatial redistribution of localizations derived from passive acoustic detections in response to sonar activity, but the lack of a mechanism for associating localizations prevented discriminating between movement and cessation of calling as possible explanations for this redistribution. Here we extend previous analyses by including an association mechanism, allowing us to differentiate between movement responses and calling responses, and to provide direct evidence of horizontal avoidance responses by individual minke whales to sonar during U.S. Navy training activities. We fitted hidden Markov models to 627 tracks that were reconstructed from 3 years of minke whale ( 
+              B. acutorostrata 
+              ) vocalizations recorded before, during, and after naval training events at the U.S. Navy’s Pacific Missile Range Facility, Kauai, Hawaii. The fitted models were used to identify different movement behaviors and to investigate the effect of sonar activity on these behaviors. Movement was faster and more directed during sonar exposure than in baseline phases. The mean direction of movement differed during sonar exposure, and was consistent with movement away from sonar-producing ships. Animals were also more likely to cease calling during sonar. There was substantial individual variation in response. Our findings add large-sample support to previous demonstrations of horizontal avoidance responses by individual minke whales to sonar in controlled exposure experiments, and demonstrate the complex nature of behavioral responses to sonar activity: some, but not all, whales exhibited behavioral changes, which took the form of horizontal avoidance or ceasing to call.
+DA  - 2021/07/09/
+PY  - 2021
+DO  - 10.3389/fmars.2021.660122
+DP  - DOI.org (Crossref)
+VL  - 8
+SP  - 660122
+J2  - Front. Mar. Sci.
+SN  - 2296-7745
+UR  - https://www.frontiersin.org/articles/10.3389/fmars.2021.660122/full
+Y2  - 2024/09/18/02:02:35
+ER  - 
+
+TY  - JOUR
+TI  - Localizing the latent structure canonical uncertainty: entropy profiles for hidden Markov models
+AU  - Durand, Jean-Baptiste
+AU  - Guédon, Yann
+T2  - Statistics and Computing
+DA  - 2016/01//
+PY  - 2016
+DO  - 10.1007/s11222-014-9494-9
+DP  - DOI.org (Crossref)
+VL  - 26
+IS  - 1-2
+SP  - 549
+EP  - 567
+J2  - Stat Comput
+LA  - en
+SN  - 0960-3174, 1573-1375
+ST  - Localizing the latent structure canonical uncertainty
+UR  - http://link.springer.com/10.1007/s11222-014-9494-9
+Y2  - 2024/09/19/03:06:33
+ER  - 
+
+TY  - JOUR
+TI  - First direct measurements of behavioural responses by Cuvier's beaked whales to mid-frequency active sonar
+AU  - DeRuiter, Stacy L
+AU  - Southall, Brandon L.
+AU  - Calambokidis, John
+AU  - Zimmer, Walter M. X.
+AU  - Sadykova, Dinara
+AU  - Falcone, Erin A.
+AU  - Friedlaender, Ari S.
+AU  - Joseph, John E.
+AU  - Moretti, David
+AU  - Schorr, Gregory S.
+AU  - Thomas, Len
+AU  - Tyack, Peter L.
+T2  - Biology Letters
+AB  - Most marine mammal­ strandings coincident with naval sonar exercises have involved Cuvier's beaked whales (
+              Ziphius cavirostris
+              ). We recorded animal movement and acoustic data on two tagged
+              Ziphius
+              and obtained the first direct measurements of behavioural responses of this species to mid-frequency active (MFA) sonar signals. Each recording included a 30-min playback (one 1.6-s simulated MFA sonar signal repeated every 25 s); one whale was also incidentally exposed to MFA sonar from distant naval exercises. Whales responded strongly to playbacks at low received levels (RLs; 89–127 dB re 1 µPa): after ceasing normal fluking and echolocation, they swam rapidly, silently away, extending both dive duration and subsequent non-foraging interval. Distant sonar exercises (78–106 dB re 1 µPa) did not elicit such responses, suggesting that context may moderate reactions. The observed responses to playback occurred at RLs well below current regulatory thresholds; equivalent responses to operational sonars could elevate stranding risk and reduce foraging efficiency.
+DA  - 2013/08/23/
+PY  - 2013
+DO  - 10.1098/rsbl.2013.0223
+DP  - DOI.org (Crossref)
+VL  - 9
+IS  - 4
+SP  - 20130223
+J2  - Biol. Lett.
+LA  - en
+SN  - 1744-9561, 1744-957X
+UR  - https://royalsocietypublishing.org/doi/10.1098/rsbl.2013.0223
+Y2  - 2021/07/28/19:59:37
+ER  - 
+
+TY  - CONF
+TI  - Assessing beaked whale behavioral response to naval sonar using a hierarchical hidden Markov model
+AU  - DeRuiter, Stacy L
+AU  - Li, Yuese
+AU  - Nsengiyumva, Faith Liz
+AU  - Watwood, Stephanie L
+AU  - Sweeney, David A
+AU  - Rone, Brenda K
+AU  - Dolan, Karin
+AU  - Andrews, Russel D
+AU  - Falcone, Erin A
+AU  - Schorr, Gregory S
+T2  - 8th International Bio-logging Science Symposium (BLS8)
+C1  - Tokyo, Japan
+DA  - 2024/03/06/
+PY  - 2024
+ER  - 
+
+TY  - CONF
+TI  - Using the Dirichlet distribution to specify a random effect on a transition probability matrix
+AU  - DeRuiter, Stacy L
+AU  - Harris, Catriona
+AU  - Isojunno, Saana
+AU  - King, Ruth
+AU  - Langrock, Roland
+AU  - Miller, Patrick J. O
+AU  - Thomas, Len
+T2  - International Statistical Ecology Conference
+C1  - St Andrews, Scotland, U.K.
+DA  - 2014/06//
+PY  - 2014
+ER  - 
+
+TY  - CONF
+TI  - High-resolution movement analysis [half-day workshop]
+AU  - DeRuiter, Stacy L
+AU  - Johnson, Mark P
+T2  - 8th International Bio-logging Science Symposium (BLS8)
+C1  - Tokyo, Japan
+DA  - 2024/03/03/
+PY  - 2024
+ER  - 
+
+TY  - SLIDE
+TI  - Behavioral responses of whales to military mid-frequency active sonar
+A2  - DeRuiter, Stacy
+CY  - Woods Hole, MA
+DA  - 2024/02/14/
+PY  - 2024
+M3  - Woods Hole Oceanographic Institution Biology Seminar
+ER  - 
+
+TY  - CONF
+TI  - Assessing beaked whale behavioral response to naval sonar using a HHMM
+AU  - DeRuiter, Stacy L
+T2  - 2022 Annual Meeting of the Michigan Section of the Mathematical Association of America (MAA) and the Michigan Mathematical Association of Two-Year Colleges (MichMATYC)
+C1  - Grand Rapids, MI
+DA  - 2024/04/09/
+PY  - 2024
+ER  - 
+
+TY  - JOUR
+TI  - Insights into foraging behavior from multi-day sound recording tags on goose-beaked whales (Ziphius cavirostris) in the Southern California Bight
+AU  - Coates, Shannon N.
+AU  - Sweeney, David A.
+AU  - Falcone, Erin A.
+AU  - Watwood, Stephanie L.
+AU  - Rone, Brenda K.
+AU  - DeRuiter, Stacy L
+AU  - Barlow, Jay
+AU  - Dolan, Karin A.
+AU  - Morrissey, Ronald P.
+AU  - DiMarzio, Nancy A.
+AU  - Jarvis, Susan M.
+AU  - Andrews, Russel D.
+AU  - Schorr, Gregory S.
+T2  - Frontiers in Marine Science
+AB  - Goose-beaked whales (Ziphius cavirostris) are deep-diving cetaceans known for their elusive nature and specialized foraging behavior. In 2019 and 2020, six telemetry tags were deployed on these whales in Southern California, resulting in 395 h of acoustic and diving data. Foraging dives were manually identified by the presence of echolocation pulses and buzzes, and generalized additive models assessed factors influencing foraging behavior. The median bathymetric depth at foraging sites was 1,419 m (IQR = 359), and the maximum dive depth was highly correlated with bathymetry depth. Individuals started echolocating on descent at a median depth of 410 m (IQR = 74); pulses were not observed shallower than 292 m. Echolocation ceased during the bottom phase for 81.6% of dives, at a median depth of 1,265 m (IQR = 472); pulses were not observed shallower than 587 m on ascent. The median depth of buzzes was 1,215 m (IQR = 479) with 63% occurring during the bottom phase. Deeper dives correlated with longer durations of diving and echolocation, greater echolocation end depths, and wider bottom phase echolocation depth inter-quartile range. The median difference between dive depth and bottom phase median echolocation depth was 98.3 m (IQR = 48.5), suggesting whales in this region forage in a narrow band close to the seafloor. In the San Nicolas Basin, individuals exhibited longer echolocation durations, produced more pulses, and started and ended echolocating at greater depths compared to adjacent regions. These records validate and expand upon previous studies, providing insights into factors influencing foraging behavior in an area with high anthropogenic disturbance.
+DA  - 2024/09/04/
+PY  - 2024
+DO  - 10.3389/fmars.2024.1415602
+DP  - Crossref
+VL  - 11
+J2  - Front. Mar. Sci.
+SN  - 2296-7745
+UR  - https://www.frontiersin.org/articles/10.3389/fmars.2024.1415602/full
+Y2  - 2024/09/17/22:57:25
+ER  - 
+
+TY  - JOUR
+TI  - Common dolphin whistle responses to experimental mid-frequency sonar
+AU  - Casey, Caroline
+AU  - Fregosi, Selene
+AU  - Oswald, Julie N.
+AU  - Janik, Vincent M.
+AU  - Visser, Fleur
+AU  - Southall, Brandon
+T2  - PLOS ONE
+A2  - Paiva, Vitor Hugo Rodrigues
+AB  - Oceanic delphinids that occur in and around Navy operational areas are regularly exposed to intense military sonar broadcast within the frequency range of their hearing. However, empirically measuring the impact of sonar on the behavior of highly social, free-ranging dolphins is challenging. Additionally, baseline variability or the frequency of vocal state-switching among social oceanic dolphins during undisturbed conditions is lacking, making it difficult to attribute changes in vocal behavior to anthropogenic disturbance. Using a network of drifting acoustic buoys in controlled exposure experiments, we investigated the effects of mid-frequency (3–4 kHz) active sonar (MFAS) on whistle production in short-beaked ( 
+              Delphinus delphis delphis 
+              ) and long-beaked common dolphins ( 
+              Delphinus delphis bairdii 
+              ) in southern California. Given the complexity of acoustic behavior exhibited by these group-living animals, we conducted our response analysis over varying temporal windows (10 min– 5 s) to describe both longer-term and instantaneous changes in sound production. We found that common dolphins exhibited acute and pronounced changes in whistle rate in the 5 s following exposure to simulated Navy MFAS. This response was sustained throughout sequential MFAS exposures within experiments simulating operational conditions, suggesting that dolphins may not habituate to this disturbance. These results indicate that common dolphins exhibit brief yet clearly detectable acoustic responses to MFAS. They also highlight how variable temporal analysis windows–tuned to key aspects of baseline vocal behavior as well as experimental parameters related to MFAS exposure–enable the detection of behavioral responses. We suggest future work with oceanic delphinids explore baseline vocal rates a-priori and use information on the rate of change in vocal behavior to inform the analysis time window over which behavioral responses are measured.
+DA  - 2024/04/26/
+PY  - 2024
+DO  - 10.1371/journal.pone.0302035
+DP  - DOI.org (Crossref)
+VL  - 19
+IS  - 4
+SP  - e0302035
+J2  - PLoS ONE
+LA  - en
+SN  - 1932-6203
+UR  - https://dx.plos.org/10.1371/journal.pone.0302035
+Y2  - 2024/09/18/01:51:58
+ER  - 
+
+TY  - JOUR
+TI  - Mesoscale eddies release pelagic sharks from thermal constraints to foraging in the ocean twilight zone
+AU  - Braun, Camrin D.
+AU  - Gaube, Peter
+AU  - Sinclair-Taylor, Tane H.
+AU  - Skomal, Gregory B.
+AU  - Thorrold, Simon R.
+T2  - Proceedings of the National Academy of Sciences
+AB  - Mesoscale eddies are critical components of the ocean’s “internal weather” system. Mixing and stirring by eddies exerts significant control on biogeochemical fluxes in the open ocean, and eddies may trap distinctive plankton communities that remain coherent for months and can be transported hundreds to thousands of kilometers. Debate regarding how and why predators use fronts and eddies, for example as a migratory cue, enhanced forage opportunities, or preferred thermal habitat, has been ongoing since the 1950s. The influence of eddies on the behavior of large pelagic fishes, however, remains largely unexplored. Here, we reconstruct movements of a pelagic predator, the blue shark ( 
+              Prionace glauca 
+              ), in the Gulf Stream region using electronic tags, earth-observing satellites, and data-assimilating ocean forecasting models. Based on 
+               
+                 
+                  > 
+                 
+               
+              2,000 tracking days and nearly 500,000 high-resolution time series measurements collected by 15 instrumented individuals, we show that blue sharks seek out the interiors of anticyclonic eddies where they dive deep while foraging. Our observations counter the existing paradigm that anticyclonic eddies are unproductive ocean “deserts” and suggest anomalously warm temperatures in these features connect surface-oriented predators to the most abundant fish community on the planet in the mesopelagic. These results also shed light on the ecosystem services provided by mesopelagic prey. Careful consideration will be needed before biomass extraction from the ocean twilight zone to avoid interrupting a key link between planktonic production and top predators. Moreover, robust associations between targeted fish species and oceanographic features increase the prospects for effective dynamic ocean management.
+DA  - 2019/08/27/
+PY  - 2019
+DO  - 10.1073/pnas.1903067116
+DP  - DOI.org (Crossref)
+VL  - 116
+IS  - 35
+SP  - 17187
+EP  - 17192
+J2  - Proc. Natl. Acad. Sci. U.S.A.
+LA  - en
+SN  - 0027-8424, 1091-6490
+UR  - https://pnas.org/doi/full/10.1073/pnas.1903067116
+Y2  - 2024/09/18/14:18:44
+ER  - 
+
+TY  - JOUR
+TI  - High thresholds for avoidance of sonar by free-ranging long-finned pilot whales (Globicephala melas)
+AU  - Antunes, R.
+AU  - Kvadsheim, P.H.
+AU  - Lam, F.P.A.
+AU  - Tyack, P.L.
+AU  - Thomas, L.
+AU  - Wensveen, P.J.
+AU  - Miller, P.J.O.
+T2  - Marine Pollution Bulletin
+DA  - 2014/06//
+PY  - 2014
+DO  - 10.1016/j.marpolbul.2014.03.056
+DP  - DOI.org (Crossref)
+VL  - 83
+IS  - 1
+SP  - 165
+EP  - 180
+J2  - Marine Pollution Bulletin
+LA  - en
+SN  - 0025326X
+UR  - https://linkinghub.elsevier.com/retrieve/pii/S0025326X14001994
+Y2  - 2024/09/19/03:17:57
+ER  - 
+
+TY  - JOUR
+TI  - Joint modelling of multi‐scale animal movement data using hierarchical hidden Markov models
+AU  - Adam, Timo
+AU  - Griffiths, Christopher A.
+AU  - Leos‐Barajas, Vianey
+AU  - Meese, Emily N.
+AU  - Lowe, Christopher G.
+AU  - Blackwell, Paul G.
+AU  - Righton, David
+AU  - Langrock, Roland
+T2  - Methods in Ecology and Evolution
+A2  - Auger‐Méthé, Marie
+AB  - Abstract 
+             
+               
+                 
+                  Hidden Markov models are prevalent in animal movement modelling, where they are widely used to infer behavioural modes and their drivers from various types of telemetry data. To allow for meaningful inference, observations need to be equally spaced in time, or otherwise regularly sampled, where the corresponding temporal resolution strongly affects what kind of behaviours can be inferred from the data. 
+                 
+                 
+                  Recent advances in biologging technology have led to a variety of novel telemetry sensors which often collect data from the same individual simultaneously at different time‐scales, for example step lengths obtained from GPS tags every hour, dive depths obtained from time‐depth recorders once per dive, or accelerations obtained from accelerometers several times per second. However, to date, statistical machinery to address the corresponding complex multi‐stream and multi‐scale data is lacking. 
+                 
+                 
+                  We propose hierarchical hidden Markov models as a versatile statistical framework that naturally accounts for differing temporal resolutions across multiple variables. In these models, the observations are regarded as stemming from multiple connected behavioural processes, each of which operates at the time‐scale at which the corresponding variables were observed. 
+                 
+                 
+                  By jointly modelling multiple data streams, collected at different temporal resolutions, corresponding models can be used to infer behavioural modes at multiple time‐scales and in particular, help to draw a much more comprehensive picture of an animal's movement patterns, for example with regard to long‐term versus short‐term movement strategies. 
+                 
+                 
+                   
+                    The suggested approach is illustrated in two real‐data applications, where we jointly model (a) 
+                    coarse 
+                    ‐scale horizontal and 
+                    fine 
+                    ‐scale vertical Atlantic cod 
+                    Gadus morhua 
+                    movements throughout the English Channel, and (b) 
+                    coarse 
+                    ‐scale horizontal movements and corresponding 
+                    fine 
+                    ‐scale accelerations of a horn shark 
+                    Heterodontus francisci 
+                    tagged off the Californian coast.
+DA  - 2019/09//
+PY  - 2019
+DO  - 10.1111/2041-210X.13241
+DP  - DOI.org (Crossref)
+VL  - 10
+IS  - 9
+SP  - 1536
+EP  - 1550
+J2  - Methods Ecol Evol
+LA  - en
+SN  - 2041-210X, 2041-210X
+UR  - https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13241
+Y2  - 2024/09/18/01:38:39
+ER  - 
+
+TY  - CONF
+TI  - Behavioral and physiological responses of oceanic dolphins to military sonar
+AU  - Casey, Caroline
+AU  - Durban, John D
+AU  - Visser, Fleur
+AU  - Calambokidis, J
+AU  - Fearnbach, H
+AU  - Kellar, N
+AU  - Fregosi, Selene
+AU  - Clayton, H
+AU  - Fahlbusch, J
+AU  - Flynn, K
+AU  - Friedlaender, Ari S
+AU  - Janik, Vincent
+AU  - Oswald, Julie
+AU  - Leander, S
+AU  - Oudejans, Machiel
+AU  - Scharf, H
+AU  - Vanderzee, A
+AU  - Southall, Brandon L
+T2  - 8th International Meeting on the Effects of Sound on Marine Mammals (ESOMM)
+C1  - The Hague, The Netherlands
+DA  - 2024/09/11/
+PY  - 2024
+ER  - 
+
