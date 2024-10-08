@@ -1,0 +1,126 @@
+---
+title: "Interaction Practice"
+format: 
+  html:
+    toc: true
+    toc_float: true
+    embed-resources: true
+    code-tools: true
+  pdf:
+    toc: false
+editor: visual
+---
+
+## Data
+
+For this assignment, you will consider a dataset simulated according to
+material published in [Brody et al.
+2014](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4019687/) (Note:
+reading the article is not required). Earlier in Perusall you saw a talk
+on "Unnatural Causes" by Dr. David Williams that provides context and
+refers to the Brody study.
+
+You can access the data at:
+<https://sldr.netlify.app/data/brody-allostatic-load.csv>
+
+Use the data to answer the questions below.
+
+The response variable in your model will the Allostatic Load Index
+`ALI`.
+
+## Questions
+
+1.  **Diagram** Draw a causal diagram (or, work through the [model
+    planning
+    checklist](https://stacyderuiter.github.io/stat245-fa24/model-plan-checklist.pdf)).
+    Try to make it consistent with Brody and colleagues' discussion of
+    their study, quoted below. **To do so you will need to include at
+    least one interaction in which a variable moderates the relationship
+    of your key predictor of interest with the response.**
+
+> > The research literature has shown perceived racial discrimination to
+> > be correlated with the confounder variables \[SES = socio-economic
+> > status, perceived life stress, depressive symptoms, and unhealthy
+> > behaviors\]; therefore, we controlled them in the data analyses.
+> > These variables might be expected to serve as mediators linking
+> > perceived discrimination with AL... From a myriad of options that
+> > merit exploration, we suggest that future research begin with a
+> > focus on the regulation of negative emotions. One consistent
+> > consequence of perceived discrimination is the development and
+> > expression of elevated levels of anger and hostility (Brody et al.,
+> > 2006), which have been shown to influence physiological functioning
+> > across several systems. For example, hostility has been associated
+> > with amplified blood pressure reactions to stress (Fredrickson et
+> > al., 2000), elevated fasting glucose (Shen, Countryman, Spiro, &
+> > Niaura, 2008), and heightened plasma lipid levels (Weidner, Sexton,
+> > McLellarn, Connor, & Matarazzo, 1987). Elevated levels of anger
+> > forecast CRP levels in adolescents (Brody et al., 2013). Whether
+> > anger and hostility mediate the association of perceived
+> > discrimination with AL remains an open question, but they remain
+> > prime candidates for this role....Several limitations of this study
+> > should be addressed in future research. First, the discrimination
+> > measure assessed interpersonal discrimination only, rather than
+> > structured or institutional discrimination \[but\]... the present
+> > study is among the first to show a positive, prospective association
+> > between perceived discrimination and AL. It also highlights the
+> > benefits of supportive relationships in ameliorating this
+> > association and underscores the importance of supportive
+> > relationships in keeping stress from "getting under the skin."
+> > --[Brody et al.
+> > 2014](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4019687/)
+
+2.  **Plan** Interpret your diagram (plus the n/15 rule) to articulate
+    your model plan for the model *you* will fit to the data. **This
+    might match up with what you just did for #1, or you can make
+    changes if you think differently that Brody and colleagues!**
+
+3.  **Explore -- optional/if time permits** Read your data into R and
+    make a one well-designed exploratory plot of the data including the
+    response variable and at two interacting predictors. (This is
+    optional to use your limited in-class time on new stuff, but great
+    to do if you can.)
+
+4.  **Fit** a linear regression model that is consistent with your model
+    plan. Show its `summary()` and write down its equation. (Refer to:
+    <https://connect.cs.calvin.edu/STAT341/symbols/> as needed.)
+
+5.  **Optional/if time permits: Assess** your model. Show all your work:
+    for any graph, state which condition(s) you are checking, whether
+    the condition(s) are met, and how you know. (This is optional *only*
+    to save in-class time.)
+
+6.  **Conclusions** Show any needed **model selection results** and **at
+    least *one* prediction plot - remember interacting predictors must
+    be shown together in a single graph, not one-by-one.** (*You **may**
+    use the `ggpredict()`* *shortcut!*). Based on these, and on all your
+    work so far (don't forget the assessment results), what can you
+    conclude about the relationship between your key predictor of
+    interest and the response?
+
+# What to hand in
+
+Wait, what? Hand in?
+
+Yes: You're asked to write up and hand in (part of) your work instead of
+an individual practice assignment next week.
+
+Submissions are due next Thursday.
+
+**You are encouraged to submit one report per group (with all names on
+it!) but may submit individually if desired.**
+
+You may submit all your work, but you'll get credit for (and feedback
+on) only the following parts:
+
+1.  Plan and checklist - does it include an interaction?
+2.  Model selection - Figure out and explain: is your key predictor
+    associated with the response?
+3.  One prediction plot *showing both the interacting variables*
+4.  Conclusions (taking into account selection results for the
+    interacting predictors and the prediction plot, and noting the lack
+    of assessment results - which you'd need to know whether your
+    conclusions are valid or not - if you didn't do it). These can be in
+    bullet-point form if time limited.
+
+*Notice: the model equation is not part of the material to hand
+in...including it is not a bad idea but is not required.*
