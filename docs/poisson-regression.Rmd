@@ -116,7 +116,7 @@ summary(theft_lm)
 ```
 
 ---
-## Response vs Fitted: *optional* way to see goodness of fit
+## Response vs Fitted: *optional* way to see ~~good~~badness of fit
 
 ```{r}
 gf_point(Thefts ~ fitted(theft_lm), 
@@ -234,7 +234,7 @@ s245::gf_acf(~resid(theft_pois)) |> gf_lims(y = c(-1,1))
 
 ```{r}
 gf_point(log(Thefts) ~ NEnrollment, 
-         data =sscrime)
+         data = sscrime)
 ```
 
 ---
@@ -243,12 +243,13 @@ gf_point(log(Thefts) ~ NEnrollment,
 
 ```{r}
 gf_point(log(Thefts) ~ TrainingHours, 
-         data =sscrime)
+         data = sscrime)
 ```
 
 ---
 
 ## Assessment: Error Variance
+### DON'T REALLY USE THIS
 ### Error Variance **is equal to mean predicted count**
 
 ```{r}
@@ -338,7 +339,8 @@ plotResiduals(pois_sim)
 ---
 
 # DHARMa Scaled Residuals
-## How it *should* look if all is well: UNIFORM, trendless
+## How it *should* look if all is well: 
+## UNIFORM vertically, trendless
 
 ```{r, include = FALSE}
 testData = createData(sampleSize = 250)

@@ -4,7 +4,7 @@
     <title>Count Data Regression: Poisson GLMs</title>
     <meta charset="utf-8" />
     <meta name="author" content="STAT 245" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="slides.css" type="text/css" />
@@ -52,7 +52,7 @@ Today's dataset was collected by surveying school administrators across the US a
 # Graphs
 
 
-```r
+``` r
 gf_point(Thefts ~ TrainingHours, data = sscrime)
 ```
 
@@ -63,7 +63,7 @@ gf_point(Thefts ~ TrainingHours, data = sscrime)
 # Graphs
 
 
-```r
+``` r
 gf_boxplot(Location ~ Thefts,
            data = sscrime)
 ```
@@ -75,7 +75,7 @@ gf_boxplot(Location ~ Thefts,
 # Graphs
 
 
-```r
+``` r
 gf_point(Thefts ~ NEnrollment, data = sscrime)
 ```
 
@@ -86,7 +86,7 @@ gf_point(Thefts ~ NEnrollment, data = sscrime)
 # Graphs
 
 
-```r
+``` r
 gf_boxplot(Thefts ~ Lockers | LockedGates,
            data = sscrime) |&gt;
   gf_jitter(color = 'grey44', alpha = 0.1)
@@ -104,7 +104,7 @@ gf_boxplot(Thefts ~ Lockers | LockedGates,
 ## doing it to show why we need a new kind of model
 
 
-```r
+``` r
 theft_lm &lt;- lm(Thefts ~ NEnrollment + Location + 
                  TrainingHours + SecurityCameras, 
                data = sscrime)
@@ -114,7 +114,7 @@ theft_lm &lt;- lm(Thefts ~ NEnrollment + Location +
 class: smaller
 
 
-```r
+``` r
 summary(theft_lm)
 ```
 
@@ -146,10 +146,10 @@ summary(theft_lm)
 ```
 
 ---
-## Response vs Fitted: *optional* way to see goodness of fit
+## Response vs Fitted: *optional* way to see ~~good~~badness of fit
 
 
-```r
+``` r
 gf_point(Thefts ~ fitted(theft_lm), 
          data = sscrime) |&gt;
   gf_abline(intercept = 0, slope = 1)
@@ -164,7 +164,7 @@ gf_point(Thefts ~ fitted(theft_lm),
 # Assessment
 
 
-```r
+``` r
 gf_point(resid(theft_lm) ~ fitted(theft_lm))
 ```
 
@@ -175,7 +175,7 @@ gf_point(resid(theft_lm) ~ fitted(theft_lm))
 # Assessment
 
 
-```r
+``` r
 gf_histogram(~resid(theft_lm))
 ```
 
@@ -202,7 +202,7 @@ gf_histogram(~resid(theft_lm))
 ## this is a GLM = "Generalized Linear Model"
 
 
-```r
+``` r
 theft_pois &lt;- glm(Thefts ~ NEnrollment + Location + 
                  TrainingHours + SecurityCameras, 
                data = sscrime,
@@ -214,7 +214,7 @@ theft_pois &lt;- glm(Thefts ~ NEnrollment + Location +
 ## Another way to do SAME thing - more extensible
 
 
-```r
+``` r
 library(glmmTMB)
 theft_pois &lt;- glmmTMB(Thefts ~ NEnrollment + Location + 
                  TrainingHours + SecurityCameras, 
@@ -226,7 +226,7 @@ theft_pois &lt;- glmmTMB(Thefts ~ NEnrollment + Location +
 class: smaller
 
 
-```r
+``` r
 summary(theft_pois)
 ```
 
@@ -258,7 +258,7 @@ summary(theft_pois)
 # Response vs Fitted
 
 
-```r
+``` r
 gf_point(Thefts ~ fitted(theft_pois), 
          data = sscrime) |&gt;
   gf_abline(intercept = 0, slope = 1)
@@ -290,7 +290,7 @@ gf_point(Thefts ~ fitted(theft_pois),
 ## Independence - check it same as before
 
 
-```r
+``` r
 s245::gf_acf(~resid(theft_pois)) |&gt; gf_lims(y = c(-1,1))
 ```
 
@@ -302,9 +302,9 @@ s245::gf_acf(~resid(theft_pois)) |&gt; gf_lims(y = c(-1,1))
 ## Linearity (for quantitative predictors)
 
 
-```r
+``` r
 gf_point(log(Thefts) ~ NEnrollment, 
-         data =sscrime)
+         data = sscrime)
 ```
 
 &lt;img src="poisson-regression_files/figure-html/unnamed-chunk-17-1.png" width="60%" style="display: block; margin: auto;" /&gt;
@@ -314,9 +314,9 @@ gf_point(log(Thefts) ~ NEnrollment,
 ## Linearity (for quantitative predictors)
 
 
-```r
+``` r
 gf_point(log(Thefts) ~ TrainingHours, 
-         data =sscrime)
+         data = sscrime)
 ```
 
 &lt;img src="poisson-regression_files/figure-html/unnamed-chunk-18-1.png" width="60%" style="display: block; margin: auto;" /&gt;
@@ -324,10 +324,11 @@ gf_point(log(Thefts) ~ TrainingHours,
 ---
 
 ## Assessment: Error Variance
+### DON'T REALLY USE THIS
 ### Error Variance **is equal to mean predicted count**
 
 
-```r
+``` r
 gf_point(resid(theft_pois, type = 'response') ~ 
            fitted(theft_pois)) |&gt;
   gf_labs(y = 'Response Residuals', x = 'Fitted Values')
@@ -341,7 +342,7 @@ gf_point(resid(theft_pois, type = 'response') ~
 ### Pearson residuals: scale each residual by expected variance
 
 
-```r
+``` r
 gf_point(resid(theft_pois, type = 'pearson') ~ 
            fitted(theft_pois)) |&gt;
   gf_labs(y = 'Pearson Residuals', x = 'Fitted Values')
@@ -355,7 +356,7 @@ gf_point(resid(theft_pois, type = 'pearson') ~
 ### Bin residuals and plot mean, var for each bin
 
 
-```r
+``` r
 resid_mean_var &lt;- sscrime |&gt;
   mutate(preds = fitted(theft_pois),
          resids = resid(theft_pois, type = 'response'),
@@ -371,7 +372,7 @@ resid_mean_var &lt;- sscrime |&gt;
 ### Bin residuals and plot mean, var for each bin
 
 
-```r
+``` r
 gf_point(var_resid ~ mean_pred,
          data = resid_mean_var) |&gt;
   gf_abline(intercept = 0, slope = 1)
@@ -411,7 +412,7 @@ gf_point(var_resid ~ mean_pred,
 ## We can use for all models from now on! (even `lm()` ones!)
 
 
-```r
+``` r
 library(DHARMa)
 pois_sim &lt;- simulateResiduals(theft_pois)
 plotResiduals(pois_sim) 
@@ -422,7 +423,8 @@ plotResiduals(pois_sim)
 ---
 
 # DHARMa Scaled Residuals
-## How it *should* look if all is well: UNIFORM, trendless
+## How it *should* look if all is well: 
+## UNIFORM vertically, trendless
 
 
 
