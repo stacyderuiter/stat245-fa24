@@ -1,0 +1,149 @@
+---
+title: "What's your model process map?"
+author: "STAT 245"
+date: ""
+output:
+  xaringan::moon_reader:
+    css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
+    lib_dir: libs
+    nature:
+      titleSlideClass: ['inverse','middle','left',my-title-slide]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: "%total%"
+      ratio: '16:9'
+---
+
+```{r, setup, include=FALSE}
+library(tidyverse)
+library(mosaic)    
+library(ggformula)
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.width = 7, 
+                      fig.height = 3,
+                      tidy = FALSE,
+                      fig.align = 'center', 
+                      message = FALSE, 
+                      warning = FALSE,
+                      error = TRUE,
+                      out.width = '60%', 
+                      dpi = 300)
+theme_set(theme_minimal(base_size = 22))
+
+```
+
+```{r, include=FALSE}
+sscrime <- read_csv('https://sldr.netlify.app/data/sscrime.csv') |>
+  mutate(Location = fct_relevel(Location, 'City', 'Town', 'Urban Fringe', 'Rural'))
+
+theft_pois <- glm(Thefts ~ NEnrollment + Location + 
+                 TrainingHours + SecurityCameras, 
+               data = sscrime,
+               family = poisson(link = 'log'))
+```
+
+
+
+class: huge inverse center middle subsection
+# Response Type
+
+---
+
+class: huge inverse center middle subsection
+# Model Family & Link Function
+
+---
+
+class: huge inverse center middle subsection
+# Assessment Conditions
+
+---
+
+class: huge inverse center middle subsection
+# Check Using Plots:
+
+---
+
+# Multiple Linear Regression
+
+---
+
+
+
+# Poisson Regression
+
+---
+
+
+# Negative Binomial Regression
+
+---
+
+
+
+# Binary Regression
+
+---
+
+# Lack of non-linearity
+
+---
+
+# Independence of Residuals
+
+---
+
+# Normality of Residuals
+
+---
+
+# Constant Residual Variance
+
+---
+
+# Mean-Variance Relationship as expected
+
+---
+
+# Logit-Linearity (or probit- or cloglog-linearity)
+
+---
+
+# Log-linearity
+
+---
+
+# Residuals vs fitted values
+
+---
+# Residual histogram
+
+---
+# ACF plot
+
+---
+# Scaled residual plot
+
+---
+# Scatter plot of response (or log(response) or logit(response) etc.) vs quantitative predictor(s)
+
+---
+# Quantitative variable
+
+---
+# Count variable
+
+---
+
+# Categorical variable (2 categories)
+
+---
+
+# Categorical variable (3+ categories)
+
+---
+
+# Counts of "successes" and "failures"
+
+
