@@ -1,7 +1,7 @@
 ---
 title: "Binary Regression - The other way"
 author: "STAT 245"
-date: "March 19, 2024"
+date: ""
 output:
   xaringan::moon_reader:
     css: ['default', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 'slides.css']
@@ -58,7 +58,7 @@ class: small
 ## Like we're already used to
 
 ```{r}
-cold <- read.csv('https://sldr.netlify.com/data/cold.csv') |>
+cold <- read.csv('https://sldr.netlify.app/data/cold.csv') |>
   na.omit()  |>
   glimpse()
 ```
@@ -73,7 +73,7 @@ mosaic::tally(~therm_pref, data = cold)
 
 ---
 
-# Data "The Other Way"
+# Data Another Way
 
 .small[
 - Especially if we have categorical predictors, we can...
@@ -115,10 +115,12 @@ cold2 <- cold2 |>
   ungroup()
 ```
 
+.small[
+
 ```{r, echo = FALSE}
 glimpse(cold2)
 ```
-
+]
 ---
 
 # Why???
@@ -242,7 +244,9 @@ class: small
 
 The model equation for our model is:
 
+.smaller[
 $$logit(p) = log\bigg{(}\frac{p}{(1-p)}\bigg{)} = \beta_0 + \beta_1 I_{outdoor} + \dots$$
+]
 
 Where $I_{outdoor}$ is an indicator variable that is 1 when outside and 0 when inside, and our estimate of $\beta_1$ is $\hat{\beta}_1 = 0.745$ (from the model summary).
 

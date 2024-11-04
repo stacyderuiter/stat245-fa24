@@ -4,8 +4,7 @@
     <title>Binary Regression - The other way</title>
     <meta charset="utf-8" />
     <meta name="author" content="STAT 245" />
-    <meta name="date" content="2024-03-19" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="slides.css" type="text/css" />
@@ -19,9 +18,6 @@ class: inverse, middle, left, my-title-slide, title-slide
 ]
 .author[
 ### STAT 245
-]
-.date[
-### March 19, 2024
 ]
 
 ---
@@ -55,8 +51,8 @@ class: small
 ## Like we're already used to
 
 
-```r
-cold &lt;- read.csv('https://sldr.netlify.com/data/cold.csv') |&gt;
+``` r
+cold &lt;- read.csv('https://sldr.netlify.app/data/cold.csv') |&gt;
   na.omit()  |&gt;
   glimpse()
 ```
@@ -81,7 +77,7 @@ cold &lt;- read.csv('https://sldr.netlify.com/data/cold.csv') |&gt;
 ## How many coefficients can we estimate?
 
 
-```r
+``` r
 mosaic::tally(~therm_pref, data = cold)
 ```
 
@@ -93,7 +89,7 @@ mosaic::tally(~therm_pref, data = cold)
 
 ---
 
-# Data "The Other Way"
+# Data Another Way
 
 .small[
 - Especially if we have categorical predictors, we can...
@@ -107,6 +103,8 @@ mosaic::tally(~therm_pref, data = cold)
 
 
 
+.small[
+
 
 ```
 ## Rows: 40
@@ -119,7 +117,7 @@ mosaic::tally(~therm_pref, data = cold)
 ## $ pref_warmer  &lt;int&gt; 35, 4, 20, 94, 17, 10, 10, 21, 12, 5, 7, 3, 128, 17, 14, …
 ## $ comfortable  &lt;int&gt; 161, 94, 96, 47, 98, 1, 70, 110, 157, 88, 69, 85, 261, 58…
 ```
-
+]
 ---
 
 # Why???
@@ -132,7 +130,7 @@ mosaic::tally(~therm_pref, data = cold)
 
 .small[
 
-```r
+``` r
 gf_boxplot((pref_warmer / (pref_warmer + comfortable)) ~ 
              ambient_temp, 
            data = cold2) |&gt; 
@@ -150,7 +148,7 @@ gf_boxplot((pref_warmer / (pref_warmer + comfortable)) ~
 
 .small[
 
-```r
+``` r
 gf_boxplot(logit(pref_warmer / (pref_warmer + comfortable)) ~ 
              quant_predictor, 
            data = cold2) |&gt; 
@@ -169,7 +167,7 @@ gf_boxplot(logit(pref_warmer / (pref_warmer + comfortable)) ~
 
 .small[
 
-```r
+``` r
 cold_logit &lt;- 
   glmmTMB(cbind(pref_warmer, comfortable) ~
             location + sex + exercise +
@@ -186,7 +184,7 @@ cold_logit &lt;-
 
 .smaller[
 
-```r
+``` r
 msummary(cold_logit)
 ```
 
@@ -222,7 +220,7 @@ msummary(cold_logit)
 ## One trial per row
 
 
-```r
+``` r
 old_cold_logit &lt;- 
   glmmTMB(factor(therm_pref) ~
         location + sex + exercise +
@@ -238,7 +236,7 @@ old_cold_logit &lt;-
 
 .smaller[
 
-```r
+``` r
 msummary(old_cold_logit)
 ```
 
@@ -304,7 +302,9 @@ class: small
 
 The model equation for our model is:
 
+.smaller[
 `$$logit(p) = log\bigg{(}\frac{p}{(1-p)}\bigg{)} = \beta_0 + \beta_1 I_{outdoor} + \dots$$`
+]
 
 Where `\(I_{outdoor}\)` is an indicator variable that is 1 when outside and 0 when inside, and our estimate of `\(\beta_1\)` is `\(\hat{\beta}_1 = 0.745\)` (from the model summary).
 
@@ -315,7 +315,7 @@ How do the odds of "Prefer warmer" change, when outside instead of inside?
 
 .small[
 
-```r
+``` r
 ggeffects::ggpredict(old_cold_logit, 
                      terms = 'location') |&gt;
   plot() |&gt;
