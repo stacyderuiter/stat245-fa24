@@ -1,0 +1,110 @@
+---
+title: "Data Wrangling Examples: Housing Loan Data"
+format: 
+  html:
+    toc: true
+    toc_float: true
+    code-copy: true
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| include: FALSE
+knitr::opts_chunk$set(eval = FALSE)
+library(tidyverse)
+```
+
+## Motivation
+
+These examples are provided to help you complete Part 1 (Individual
+Practice) for Case Study 2.
+
+## Cautionary Note
+
+**Even if you don't want to do *any of* this, make sure you `factor()`
+your response variable, plus any categorical predictors you want to use
+in your model, so they are not treated as numeric data. Something
+like:**
+
+```{r}
+hdma_mi_20 <- hdma_mi_20 |>
+  mutate(cat_variable = factor(cat_variable))
+```
+
+## Renaming a variable
+
+```{r}
+hdma_mi_20 <- hdma_mi_20 |>
+  # form is: newname = oldname
+  # if old name has special characters or spaces,
+  # write `oldname` (enclose in back-ticks as below)
+  rename(metro_area = `derived_msa-md`)
+```
+
+## Recoding a categorical variable stored as numeric
+
+According to
+<https://ffiec.cfpb.gov/documentation/2019/lar-data-fields/>,
+`action_taken` is 1 if the load was given, and 3 if it was denied.
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+hdma_mi_20 <- hdma_mi_20 |>
+  # for case_when, each variable value gets a line of the form
+  #  logical_condition_statement ~ new_value_to_assign
+  mutate(action_taken = case_when(action_taken == 1 ~ 'Loan granted',
+                                  action_taken == 3 ~ 'Loan denied')) |>
+  # also make sure the variable is a "factor" and "Loan granted" is the second (success) value
+  mutate(action_taken = fct_relevel(action_taken, 'Loan denied', 'Loan granted'))
+
+mosaic::tally(~action_taken, data = hdma_mi_20)
+```
+
+*Note: there are other ways to do this; if you know and prefer one,
+okay.*
+
+## Reordering a categorical variable *your way*
+
+Use the function: `forcats::fct_reorder()`
+
+```{r, message = FALSE, warning = FALSE}
+hdma_mi_20 <- hdma_mi_20 |>
+  # list levels in the new order you prefer
+  mutate(applicant_age = fct_relevel(applicant_age,
+                                    '<25',
+                                    '25-34',
+                                    '35-44',
+                                    '45-54',
+                                    '55-64',
+                                    '65-74',
+                                    '>74',
+                                    '8888' # yes you'd want to change this too...
+                                    ))
+```
+
+*Other ways of doing this are acceptable too if you know them; more
+examples at:
+<https://r4ds.had.co.nz/factors.html#modifying-factor-order>*
+
+## Reordering a categorical variable *by another variable*
+
+For this, you'd use: `forcats::fct_reorder()` (this would most often be
+useful for graphs; for fitting a model it won't really make a
+difference).
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+hdma_mi_20 <- hdma_mi_20 |>
+  # dwelling type will be ordered by increasing median loan_amount
+  mutate(applicant_age = fct_reorder(derived_dwelling_category,
+                                    loan_amount))
+```
+
+*Other ways of doing this are acceptable too if you know them; more
+examples at:
+<https://r4ds.had.co.nz/factors.html#modifying-factor-order>*
+
+## 
