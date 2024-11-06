@@ -52,7 +52,7 @@ class: small
 
 
 ```{r}
-zc_dives <- read.csv('http://sldr.netlify.com/data/zshal.csv') |>
+zc_dives <- read.csv('https://sldr.netlify.app/data/zshal.csv') |>
   mutate(SonarA = factor(SonarA)) |>
   mutate(DurAvg = DurAvg / 60,
          DepthAvg = DepthAvg) |>
@@ -144,7 +144,7 @@ $$ y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ...\beta_n x_n +  \epsilon$$
 - [NY car crashes](https://sldr.netlify.app/data/ny_cars.csv)
 - [Sports votes](https://sldr.netlify.app/data/sports-votes-lz27.csv)
 - [PhD innovation](https://sldr.netlify.app/data/phd_innovation.csv)
-- [Wood frog abnormality](http://sldr.netlify.com/data/FrogAbnormalities.csv)
+- [Wood frog abnormality](https://sldr.netlify.app/data/FrogAbnormalities.csv)
 
 ---
 

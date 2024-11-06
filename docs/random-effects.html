@@ -4,7 +4,7 @@
     <title>Hierarchical Models: Random Effects</title>
     <meta charset="utf-8" />
     <meta name="author" content="STAT 245" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="slides.css" type="text/css" />
@@ -45,8 +45,8 @@ class: small
 
 
 
-```r
-zc_dives &lt;- read.csv('http://sldr.netlify.com/data/zshal.csv') |&gt;
+``` r
+zc_dives &lt;- read.csv('https://sldr.netlify.app/data/zshal.csv') |&gt;
   mutate(SonarA = factor(SonarA)) |&gt;
   mutate(DurAvg = DurAvg / 60,
          DepthAvg = DepthAvg) |&gt;
@@ -104,7 +104,7 @@ class: small
 
 .small[
 
-```r
+``` r
 base_model &lt;- lm(DurAvg ~ DepthAvg + TimeOfDay + SonarA, 
                  data = zc_dives)
 ```
@@ -115,7 +115,7 @@ base_model &lt;- lm(DurAvg ~ DepthAvg + TimeOfDay + SonarA,
 class: small
 
 
-```r
+``` r
 mosaic::msummary(base_model)
 ```
 
@@ -138,7 +138,7 @@ mosaic::msummary(base_model)
 ## Data are *time series* so we are most suspicious about...
 
 
-```r
+``` r
 gf_acf(~base_model)
 ```
 
@@ -162,7 +162,7 @@ $$ y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ...\beta_n x_n +  \epsilon$$
 - [NY car crashes](https://sldr.netlify.app/data/ny_cars.csv)
 - [Sports votes](https://sldr.netlify.app/data/sports-votes-lz27.csv)
 - [PhD innovation](https://sldr.netlify.app/data/phd_innovation.csv)
-- [Wood frog abnormality](http://sldr.netlify.com/data/FrogAbnormalities.csv)
+- [Wood frog abnormality](https://sldr.netlify.app/data/FrogAbnormalities.csv)
 
 ---
 
@@ -184,7 +184,7 @@ $$ + (1|\text{ variable})$$
 ## Random effect of individual whale
 
 
-```r
+``` r
 rem1 &lt;- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay + 
                   SonarA + (1|TagID),
                 data = zc_dives)
@@ -197,7 +197,7 @@ rem1 &lt;- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay +
 
 .pull-left[
 
-```r
+``` r
 gf_acf(~base_model)
 ```
 
@@ -206,7 +206,7 @@ gf_acf(~base_model)
 
 .pull-right[
 
-```r
+``` r
 gf_acf(~resid(rem1))
 ```
 
@@ -219,7 +219,7 @@ class: smaller
 # What can we try next?
 
 
-```r
+``` r
 glimpse(zc_dives)
 ```
 
@@ -247,7 +247,7 @@ glimpse(zc_dives)
 # What can we try next?
 
 
-```r
+``` r
 rem2 &lt;- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay + 
                   SonarA +
                   (1|TagID/TagDayPeriod), 
@@ -258,7 +258,7 @@ rem2 &lt;- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay +
 # Better?
 
 
-```r
+``` r
 gf_acf(~resid(rem2))
 ```
 
@@ -318,7 +318,7 @@ class: small
 ## (one way)
 
 
-```r
+``` r
 zc_dives_noNA &lt;- zc_dives |&gt;
   drop_na(DepthAvg, TimeOfDay, SonarA, TagID, TagDayPeriod) 
 rem_sonar &lt;- glmmTMB(DurAvg ~ DepthAvg + TimeOfDay + SonarA +
