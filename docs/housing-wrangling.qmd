@@ -45,7 +45,7 @@ hdma_mi_20 <- hdma_mi_20 |>
 ## Recoding a categorical variable stored as numeric
 
 According to
-<https://ffiec.cfpb.gov/documentation/2019/lar-data-fields/>,
+<https://ffiec.cfpb.gov/documentation/publications/loan-level-datasets/lar-data-fields>,
 `action_taken` is 1 if the load was given, and 3 if it was denied.
 
 ```{r}

@@ -134,7 +134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="recoding-a-categorical-variable-stored-as-numeric" class="level2">
 <h2 class="anchored" data-anchor-id="recoding-a-categorical-variable-stored-as-numeric">Recoding a categorical variable stored as numeric</h2>
-<p>According to <a href="https://ffiec.cfpb.gov/documentation/2019/lar-data-fields/" class="uri">https://ffiec.cfpb.gov/documentation/2019/lar-data-fields/</a>, <code>action_taken</code> is 1 if the load was given, and 3 if it was denied.</p>
+<p>According to <a href="https://ffiec.cfpb.gov/documentation/publications/loan-level-datasets/lar-data-fields" class="uri">https://ffiec.cfpb.gov/documentation/publications/loan-level-datasets/lar-data-fields</a>, <code>action_taken</code> is 1 if the load was given, and 3 if it was denied.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>hdma_mi_20 <span class="ot">&lt;-</span> hdma_mi_20 <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># for case_when, each variable value gets a line of the form</span></span>
