@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       dpi = 300)
 theme_set(theme_minimal(base_size = 22))
 
-zc_dives <- read.csv('http://sldr.netlify.com/data/zshal.csv') |>
+zc_dives <- read.csv('https://sldr.netlify.app/data/zshal.csv') |>
   mutate(SonarA = factor(SonarA),
          SonarB = factor(SonarB),
          TagID = factor(TagID)) |>
@@ -117,7 +117,7 @@ ggpredict(rem4,
   plot() |> 
   gf_labs(y = 'Dive Duration (minutes)',
           title = '') |>
-  gf_lims(y = c(17, 28))
+  gf_lims(y = c(10, 35))
 ```
 
 ---
@@ -142,8 +142,8 @@ ggpredict(rem4,
           type = 're') |> 
   plot() |> 
   gf_labs(y = 'Dive Duration (minutes)',
-          title = '') 
-
+          title = '') |>
+  gf_lims(y = c(10, 35))
 ```
 
 
@@ -256,7 +256,7 @@ gf_point(pred ~ SonarA, data = new_data_pboot) |>
           y='Dive Duration\n(minutes)') |>
   gf_errorbar(CIlow + CIhigh ~ SonarA, 
               data = new_data_pboot, width = 0) |>
-  gf_lims(y = c(17, 28))
+  gf_lims(y = c(10, 35))
 ```
 
 ---

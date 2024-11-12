@@ -3,12 +3,13 @@ title: "Example"
 author: "Prof DR"
 format: 
   revealjs:
+    code-copy: true
     slide-number: c/t
     width: 1600
     height: 900
     theme: [moon, 'calvin-slides.scss']
     title-slide-attributes: 
-      data-background-image: "https://stacyderuiter.github.io/stat245-sp24/CalvinUniv-vert-full-color-NoDate.png"
+      data-background-image: "https://stacyderuiter.github.io/stat245-fa24/CalvinUniv-vert-full-color-NoDate.png"
       data-background-size: 15%
       data-background-position: 99%  90%
       data-background-color: '#8d2232'
@@ -24,9 +25,12 @@ editor: visual
 ```
 
 ## YAML Header
-If you grab the example quarto presentation file from an online source, it seems the YAML header isn't preserved. Copy/paste from the next slide to the very start of your qmd file!
 
-##
+If you grab the example quarto presentation file from an online source,
+it seems the YAML header isn't preserved. Copy/paste from the next slide
+to the very start of your qmd file!
+
+## 
 
 ```{r}
 #| eval: false
@@ -60,7 +64,7 @@ editor: visual
     <https://quarto.org/docs/presentations/>. Much more customization is
     possible, but we're trying to keep it simpler!
 -   If you want the Calvin colors/theme/logo, download the file
-    <https://stacyderuiter.github.io/stat245-sp24/calvin-slides.scss>
+    <https://stacyderuiter.github.io/stat245-fa24/calvin-slides.scss>
     and save it to the same directory as your quarto file
 
 ## Instructions: RE Lit Presentation
@@ -83,7 +87,10 @@ editor: visual
     with a RE model. Try to write the question as simply as possible -
     in words a 6th-grader could understand!
 
->> If you would like to include a direct quote from the paper, you can do it like this -- start with two greater-than signs, and then add the text you want to quote. It will be formatted like a block quote (check out the rendered version to see the effect).
+> > If you would like to include a direct quote from the paper, you can
+> > do it like this -- start with two greater-than signs, and then add
+> > the text you want to quote. It will be formatted like a block quote
+> > (check out the rendered version to see the effect).
 
 ## Best Figure - Interp!
 
@@ -144,8 +151,8 @@ answer)?
 
 ## Submit!
 
--   Don't forget to **Submit your rendered slides on Moodle at the end of
-    class.**
+-   Don't forget to **Submit your rendered slides on Moodle at the end
+    of class.**
 -   *Submit whatever you have finished during class time - you are not
     required to finish on your own time.*
 -   You may present work in class Tuesday - plan for this as a group!

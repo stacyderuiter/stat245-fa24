@@ -4,7 +4,7 @@
     <title>Predictions and Interpretation for Random Effects Models</title>
     <meta charset="utf-8" />
     <meta name="author" content="STAT 245" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="slides.css" type="text/css" />
@@ -30,7 +30,7 @@ class: inverse, middle, left, my-title-slide, title-slide
 ## Our RE model for whale dive duration and sonar
 
 
-```r
+``` r
 rem4 &lt;- glmmTMB(DurAvg ~ DepthAvg + TransClass + 
                   SonarA + (1|TagID/TagDayPeriod), 
              data = zc_dives,
@@ -42,7 +42,7 @@ rem4 &lt;- glmmTMB(DurAvg ~ DepthAvg + TransClass +
 class: smaller
 
 
-```r
+``` r
 summary(rem4)
 ```
 
@@ -68,12 +68,12 @@ summary(rem4)
 ## 
 ## Conditional model:
 ##                   Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)     10.6143686  0.5522635   19.22  &lt; 2e-16 ***
+## (Intercept)     10.6143814  0.5522635   19.22  &lt; 2e-16 ***
 ## DepthAvg         0.0399694  0.0005071   78.83  &lt; 2e-16 ***
-## TransClassDay   -0.1605063  0.2540850   -0.63 0.527581    
-## TransClassDusk  -1.2486613  0.3384696   -3.69 0.000225 ***
-## TransClassNight -2.3023830  0.2554556   -9.01  &lt; 2e-16 ***
-## SonarA1          2.8549470  0.6902208    4.14 3.53e-05 ***
+## TransClassDay   -0.1605083  0.2540850   -0.63 0.527576    
+## TransClassDusk  -1.2486656  0.3384696   -3.69 0.000225 ***
+## TransClassNight -2.3023853  0.2554556   -9.01  &lt; 2e-16 ***
+## SonarA1          2.8549212  0.6902209    4.14 3.53e-05 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -115,7 +115,7 @@ class: small
 ## Pred. plot w/ `ggpredict()`
 
 
-```r
+``` r
 library(ggeffects)
 ggpredict(rem4, 
           terms = 'SonarA', 
@@ -123,7 +123,7 @@ ggpredict(rem4,
   plot() |&gt; 
   gf_labs(y = 'Dive Duration (minutes)',
           title = '') |&gt;
-  gf_lims(y = c(17, 28))
+  gf_lims(y = c(10, 35))
 ```
 
 ---
@@ -141,13 +141,14 @@ class: small
 ### Should you do this? Depends if want to include variation across RE groups (whale/hours)
 
 
-```r
+``` r
 ggpredict(rem4, 
           terms = 'SonarA', 
           type = 're') |&gt; 
   plot() |&gt; 
   gf_labs(y = 'Dive Duration (minutes)',
-          title = '') 
+          title = '') |&gt;
+  gf_lims(y = c(10, 35))
 ```
 
 
@@ -185,7 +186,7 @@ class: small
 ## 1. create **function** that makes **predictions from our model**.
 
 
-```r
+``` r
 predict_rem4 &lt;- function(model){
   new_dat &lt;- data_grid(
     model,
@@ -206,7 +207,7 @@ predict_rem4 &lt;- function(model){
 ## 2. Simulate, make predictions for many new fake individuals
 
 
-```r
+``` r
 library(lme4)
 # this will take a while
 boot_rem4 &lt;- bootMer(rem4, 
@@ -220,27 +221,27 @@ boot_rem4 &lt;- bootMer(rem4,
 # Simulation Results
 
 
-```r
+``` r
 glimpse(boot_rem4$t)
 ```
 
 ```
-##  num [1:1000, 1:2] 21.5 17.5 19.7 17.2 17.9 ...
+##  num [1:1000, 1:2] 22.6 13.2 19.3 19.9 15.9 ...
 ```
 
-```r
+``` r
 # show the first few rows of results
 head(boot_rem4$t)
 ```
 
 ```
 ##          [,1]     [,2]
-## [1,] 21.54057 24.20254
-## [2,] 17.47506 21.54708
-## [3,] 19.73681 23.22158
-## [4,] 17.23103 19.43753
-## [5,] 17.91001 21.09942
-## [6,] 21.28587 22.95536
+## [1,] 22.58739 26.13058
+## [2,] 13.23180 15.08863
+## [3,] 19.31824 21.06538
+## [4,] 19.91677 23.00232
+## [5,] 15.94057 19.30863
+## [6,] 20.78756 23.14115
 ```
 
 ---
@@ -249,7 +250,7 @@ head(boot_rem4$t)
 ## 3. Compute CIs from simulated-individual predictions
 
 
-```r
+``` r
 new_data_pboot &lt;- data_grid(rem4, 
                        terms = 'SonarA') |&gt;
   mutate(pred = apply(boot_rem4$t, 2, mean),
@@ -266,7 +267,7 @@ new_data_pboot &lt;- data_grid(rem4,
 
 .small[
 
-```r
+``` r
 glimpse(new_data_pboot)
 ```
 
@@ -278,9 +279,9 @@ glimpse(new_data_pboot)
 ## $ TransClass   &lt;fct&gt; Night, Night
 ## $ TagDayPeriod &lt;lgl&gt; NA, NA
 ## $ TagID        &lt;lgl&gt; NA, NA
-## $ pred         &lt;dbl&gt; 19.88828, 22.78376
-## $ CIlow        &lt;dbl&gt; 14.43996, 16.99437
-## $ CIhigh       &lt;dbl&gt; 25.36845, 28.30132
+## $ pred         &lt;dbl&gt; 20.04807, 22.91534
+## $ CIlow        &lt;dbl&gt; 14.90660, 17.68737
+## $ CIhigh       &lt;dbl&gt; 25.15564, 28.25651
 ```
 ]
 
@@ -289,13 +290,13 @@ glimpse(new_data_pboot)
 ## 4. Plot results
 
 
-```r
+``` r
 gf_point(pred ~ SonarA, data = new_data_pboot) |&gt;
   gf_labs(x='Sonar A Presence', 
           y='Dive Duration\n(minutes)') |&gt;
   gf_errorbar(CIlow + CIhigh ~ SonarA, 
               data = new_data_pboot, width = 0) |&gt;
-  gf_lims(y = c(17, 28))
+  gf_lims(y = c(10, 35))
 ```
 
 ---
