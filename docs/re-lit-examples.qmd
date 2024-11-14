@@ -88,7 +88,7 @@ group should try to choose a different paper.
 
 -   [Racial Discrimination in the U.S. Housing and Mortgage Lending
     Markets: A Quantitative Review of Trends,
-    1976–2016](https://link.springer.com/article/10.1007/s12552-019-09276-x)
+    1976–2016](https://www.pnas.org/doi/10.1073/pnas.2212875120)
 
 -   [Kids Out; evaluation of a brief multimodal cluster randomized
     intervention integrated in health education lessons to increase
