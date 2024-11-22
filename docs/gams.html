@@ -4,7 +4,7 @@
     <title>GAMs (Generalized Additive Models)</title>
     <meta charset="utf-8" />
     <meta name="author" content="STAT 245" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="slides.css" type="text/css" />
@@ -79,7 +79,7 @@ class: small
 ## Our case study: [GRR weather station](https://www.ncdc.noaa.gov/cdo-web/search) + [metadata](https://www.ncei.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf)
 
 
-```r
+``` r
 grweather &lt;- read_csv('https://sldr.netlify.app/data/grr-weather-metric.csv',
          show_col_types = FALSE) |&gt;
     select(SNOW, TMIN, DATE, TSUN) |&gt;
@@ -93,19 +93,19 @@ grweather &lt;- read_csv('https://sldr.netlify.app/data/grr-weather-metric.csv',
 
 
 
-```r
+``` r
 gf_point(SNOW ~ DATE, data = grweather, alpha = 0.2)
 ```
 
-```r
+``` r
 gf_point(SNOW ~ DAY, data = grweather, alpha = 0.2)
 ```
 
-```r
+``` r
 gf_point(SNOW ~ TMIN, data = grweather, alpha = 0.2)
 ```
 
-```r
+``` r
 gf_point(SNOW ~ TSUN, data = grweather, alpha = 0.2)
 ```
 
@@ -211,7 +211,7 @@ We can also fit the model and smooths by different methods and with options:
 # GAM Example - Snow
 
 
-```r
+``` r
 library(mgcv)
 snow.gam &lt;- gam(SNOW ~ s(DAY, k = 20, bs = 'cc') +
                 s(TMIN, k = 5, bs = 'cs') +
@@ -232,7 +232,7 @@ snow.gam &lt;- gam(SNOW ~ s(DAY, k = 20, bs = 'cc') +
 class: smaller
 
 
-```r
+``` r
 summary(snow.gam)
 ```
 
@@ -290,7 +290,7 @@ class: small
 ## Additional Checks for GAM
 
 
-```r
+``` r
 par(mar=c(4,4,2,2))
 gam.check(snow.gam)
 ```
@@ -299,7 +299,7 @@ gam.check(snow.gam)
 ## 
 ## Method: ML   Optimizer: outer newton
 ## full convergence after 7 iterations.
-## Gradient range [-0.006501825,0.000858677]
+## Gradient range [-0.006501825,0.0008586765]
 ## (score 13886.46 &amp; scale 303.8515).
 ## Hessian positive definite, eigenvalue range [0.006419922,1621.505].
 ## Model rank =  28 / 28 
@@ -308,9 +308,9 @@ gam.check(snow.gam)
 ## indicate that k is too low, especially if edf is close to k'.
 ## 
 ##              k'     edf k-index p-value
-## s(DAY)  18.0000  4.6218    1.03    0.94
-## s(TMIN)  4.0000  3.9223    1.04    0.99
-## s(YEAR)  4.0000  0.0147    1.02    0.85
+## s(DAY)  18.0000  4.6218    1.03    0.96
+## s(TMIN)  4.0000  3.9223    1.04    1.00
+## s(YEAR)  4.0000  0.0147    1.02    0.87
 ```
 
 ---
@@ -318,31 +318,22 @@ gam.check(snow.gam)
 ## Prediction Plots (as usual)
 
 
-```r
+``` r
 spred &lt;- ggpredict(snow.gam,
                    terms = c('DAY', 'YEAR[2022]')) 
-```
-
-```
-## Error in ggpredict(snow.gam, terms = c("DAY", "YEAR[2022]")): could not find function "ggpredict"
-```
-
-```r
 plot(spred) |&gt; 
   gf_labs(title = '', 
           y = 'Expected Snow (mm)', x = 'Day of Year')
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'spred' not found
-```
+&lt;img src="gams_files/figure-html/unnamed-chunk-12-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 class: small
 ##  Which fixed values were used?
 
 
-```r
+``` r
 spred
 ```
 
@@ -382,7 +373,7 @@ spred
 - Best when using ML (1st choice), REML (2nd choice).
 
 
-```r
+``` r
 anova(snow.gam)
 ```
 
@@ -390,7 +381,7 @@ Note: use `anova()` (not `Anova()`) for GAMs - **unlike** `lm()`, `glm()`, `glmm
 ---
 class: small
 
-```r
+``` r
 anova(snow.gam)
 ```
 
