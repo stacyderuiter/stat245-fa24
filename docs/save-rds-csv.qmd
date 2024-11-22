@@ -1,0 +1,74 @@
+---
+title: "Saving Prepared Data"
+format: 
+  html:
+    embed-resources: true
+    code-tools: true
+    toc: true
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+
+# Motivation
+What if you want to have one Quarto document in which you do all your data prep...
+
+And then all your graphics and analysis in a second, tech report document?
+
+Or, what if you want separate report documents for several different research questions that all use the same dataset?
+
+Or, what if you want to save a .csv file with your prepared, clean dataset to share with your project partner?
+
+The approach below will allow you to save the prepped dataset in one of two formats:
+
+- **an .RMD file** (good for reading in in another quarto document, since things like variable types and factor level order will be preserved; can really only open in R)
+- **a .csv file** (good for sharing with partner; easy to open without using R)
+
+# Example Data
+
+Here, we will read in and "prepare" an example dataset. Instead of this code, you'll have *all your existing code to read in your project data from its original format and then clean and prepare it.*
+
+```{r}
+FSSA_data <- read_csv('https://sldr.netlify.app/data/indiana_fssa.csv',
+                      show_col_types = FALSE) |>
+  mutate(TANF_payments_millions = TANF_payments / 1e6,
+         TANF_families_10k = TANF_families / 10000,
+         COVID = fct_relevel(COVID, 'pre-pandemic', 'pandemic'),
+         month = fct_relevel(month, "January", "February", "March", "April",
+                             "May", "June", "July", "August",
+                             "September", "October", "November", "December"))
+```
+
+# Saving RDS and csv files
+
+Now, to save the fully-prepared dataset `FSSA_data` to a file called FSSA_data.RDS, we run:
+
+```{r}
+saveRDS(FSSA_data, file = "FSSA_data.RDS")
+```
+
+If we want to also (or instead) save a .csv instead, the code would be:
+
+```{r}
+write_csv(FSSA_data, file = "FSSA_data.csv")
+```
+
+# Reading .RDS files
+
+We can read in the fully-prepped dataset that we saved as an RDS file by running code like this in any qmd:
+
+```{r}
+FSSA_data <- readRDS("FSSA_data.RDS")
+```
+
+(So you can have multiple qmd files as part of your project work, *without* copy-pasting or re-running all your data prep code!)
+
+
+
