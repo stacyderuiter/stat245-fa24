@@ -93,7 +93,7 @@ gf_boxplot(mpg ~ factor(cyl), data = mtcars,
     -   Make it clear what model type(s), response(s), predictors, RE
         were used.
     -   See the [literature papers you worked
-        on](https://stacyderuiter.github.io/stat245-sp24/re-lit-examples.html)
+        on](https://stacyderuiter.github.io/stat245-fa24/re-lit-examples.html)
         for inspiration (Additional examples will be given.)
 
 # Main Findings
